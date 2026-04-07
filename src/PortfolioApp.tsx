@@ -372,14 +372,14 @@ const Services = () => {
               transition={{ delay: idx * 0.1 }}
               className="relative group"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} rounded-[2rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} rounded-[2rem] blur-2xl opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500`} />
               <div className="relative bg-white p-6 rounded-[2rem] border border-slate-100 card-shadow h-full flex flex-col hover:border-primary/20 transition-all duration-300">
-                <div className={`w-14 h-14 rounded-xl bg-slate-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${service.accent}`}>
+                <div className={`w-14 h-14 rounded-xl bg-slate-50 flex items-center justify-center mb-6 md:group-hover:scale-110 transition-transform duration-300 ${service.accent}`}>
                   {service.icon}
                 </div>
-                <h4 className="text-lg font-bold mb-3 group-hover:text-primary transition-colors">{service.title}</h4>
+                <h4 className="text-lg font-bold mb-3 md:group-hover:text-primary transition-colors">{service.title}</h4>
                 <p className="text-slate-500 leading-relaxed mb-6 flex-1 text-sm">{service.description}</p>
-                <div className="flex items-center gap-2 text-xs font-bold text-navy group-hover:gap-3 transition-all">
+                <div className="flex items-center gap-2 text-xs font-bold text-navy md:group-hover:gap-3 transition-all">
                   Learn More <ArrowRight size={14} className="text-primary" />
                 </div>
               </div>
@@ -702,7 +702,7 @@ const Portfolio = () => {
                   href={project.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6"
+                  className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6"
                 >
                   <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2">{project.category}</p>
                   <h4 className="text-lg font-bold text-white leading-tight">{project.name}</h4>
@@ -782,9 +782,9 @@ const WhyChooseMe = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className={`${point.color} p-8 rounded-[2.5rem] border border-transparent hover:border-slate-200 transition-all group`}
+                className={`${point.color} p-8 rounded-[2.5rem] border border-transparent md:hover:border-slate-200 transition-all group`}
               >
-                <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center mb-6 shadow-sm md:group-hover:scale-110 transition-transform">
                   {point.icon}
                 </div>
                 <h4 className="font-bold text-navy mb-3 text-lg">{point.title}</h4>
@@ -831,12 +831,12 @@ const Process = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="relative group bg-white p-8 rounded-[2.5rem] border border-slate-100 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500"
+              className="relative group bg-white p-8 rounded-[2.5rem] border border-slate-100 md:hover:shadow-xl md:hover:shadow-slate-200/50 transition-all duration-500"
             >
-              <div className={`w-12 h-12 ${step.color} text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+              <div className={`w-12 h-12 ${step.color} text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg md:group-hover:scale-110 transition-transform duration-300`}>
                 {step.icon}
               </div>
-              <div className="absolute top-8 right-8 text-4xl font-display font-black text-slate-50 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute top-8 right-8 text-4xl font-display font-black text-slate-50 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                 0{idx + 1}
               </div>
               <h4 className="text-xl font-bold mb-3">{step.title}</h4>
