@@ -53,6 +53,14 @@ const Navbar = () => {
               {link.name}
             </a>
           ))}
+          <a 
+            href="https://drive.google.com/file/d/1WcE5cmkdpbTareNfdCMGB_SXJAFTf0gF/view?usp=sharing" 
+            target="_blank" 
+            rel="noreferrer"
+            className="text-sm font-semibold text-navy hover:text-primary transition-colors flex items-center gap-2"
+          >
+            <FileText size={18} /> Resume
+          </a>
           <a href="#contact" className="bg-navy text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-navy/90 transition-all">
             Let's Talk
           </a>
@@ -82,6 +90,15 @@ const Navbar = () => {
             </a>
           ))}
           <a 
+            href="https://drive.google.com/file/d/1WcE5cmkdpbTareNfdCMGB_SXJAFTf0gF/view?usp=sharing" 
+            target="_blank" 
+            rel="noreferrer"
+            className="text-lg font-semibold text-navy flex items-center gap-3"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <FileText size={22} /> View Resume
+          </a>
+          <a 
             href="#contact" 
             className="bg-navy text-white px-6 py-4 rounded-xl text-center font-semibold"
             onClick={() => setIsMenuOpen(false)}
@@ -110,13 +127,13 @@ const Hero = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
-            Available for Freelance Projects
+            Available for Projects
           </div>
           <h1 className="text-2xl md:text-4xl lg:text-6xl font-display leading-[1.05] mb-6">
             Helping Brands Grow Through <span className="text-primary">Design, Content & Video</span>
           </h1>
           <p className="text-base md:text-lg text-slate-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Freelance Social Media Manager & Digital Designer crafting scroll-stopping visuals, engaging reels, and powerful brand presence.
+            Social Media Manager & Digital Designer crafting scroll-stopping visuals, engaging reels, and powerful brand presence.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a href="#portfolio" className="bg-navy text-white px-10 py-5 rounded-full font-bold hover:bg-navy/90 transition-all flex items-center gap-2 text-lg">
@@ -282,7 +299,7 @@ const About = () => {
             className="order-2 lg:order-1"
           >
             <h2 className="text-sm uppercase tracking-widest text-primary font-bold mb-3">Who I Am</h2>
-            <h3 className="text-3xl md:text-4xl mb-6">I’m Naveen, a freelance Social Media Manager & Digital Designer.</h3>
+            <h3 className="text-3xl md:text-4xl mb-6">I’m Naveen, a Social Media Manager & Digital Designer.</h3>
             <div className="space-y-4 text-base md:text-lg text-slate-600 leading-relaxed">
               <p>
                 I help brands grow with impactful visuals and engaging content. With 1.5+ years of real client work experience, I’ve handled everything from daily social media management to video editing, branding creatives, and website design.
@@ -396,7 +413,7 @@ const Experience = () => {
   const experiences = [
     {
       company: "Apollo Dental Clinic",
-      role: "Freelancer – Social Media & Digital Design",
+      role: "Social Media Manager and Digital Designer",
       location: "RS Puram, Coimbatore, Tamil Nadu",
       duration: "Nov 2024 - Present",
       description: [
@@ -439,7 +456,7 @@ const Experience = () => {
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
           <h2 className="text-sm uppercase tracking-widest text-primary font-bold mb-4">Work Experience</h2>
           <h3 className="text-3xl md:text-5xl mb-6">Real Client Projects</h3>
-          <p className="text-slate-400 text-sm md:text-base">As a freelancer, I handle end-to-end digital branding and social media for these brands.</p>
+          <p className="text-slate-400 text-sm md:text-base">I handle end-to-end digital branding and social media for these brands.</p>
         </div>
 
         <div className="space-y-12 md:space-y-16">
@@ -633,29 +650,36 @@ const Portfolio = () => {
       name: "Apollo Dental Clinic", 
       category: "Websites", 
       type: "Healthcare", 
-      img: "https://image2url.com/r2/default/images/1775567270735-9f31738c-e14f-443e-bc63-25dc45697c09.png",
+      img: "https://sacred-beige-xci2dhqb5j.edgeone.app/1.png",
       link: "https://apollodentalclinic.netlify.app/"
+    },
+    { 
+      name: "Vel ADSS", 
+      category: "Websites", 
+      type: "Business", 
+      img: "https://spatial-bronze-dpcvfkivhg.edgeone.app/4.png",
+      link: "https://veladss.netlify.app/"
     },
     { 
       name: "Sajal Tech Portfolio", 
       category: "Websites", 
       type: "Portfolio", 
-      img: "https://picsum.photos/seed/sajal/800/600",
+      img: "https://mass-gold-uzmy29scbn.edgeone.app/2.png",
       link: "https://sajaltech-portfolio.netlify.app/"
     },
     { 
       name: "HobbyMate", 
       category: "Websites", 
       type: "Community", 
-      img: "https://picsum.photos/seed/hobby/800/600",
+      img: "https://flaky-harlequin-cqssfghxdn.edgeone.app/3.png",
       link: "https://hobbymate.in/"
     },
     { 
-      name: "DomainMarkt", 
+      name: "Domain Markt", 
       category: "Websites", 
       type: "Marketplace", 
-      img: "https://picsum.photos/seed/domain/800/600",
-      link: "https://domainmarkt.io/"
+      img: "https://well-fuchsia-anyg3pte2c.edgeone.app/5.png",
+      link: "https://dev.domainmarkt.io/"
     },
   ];
 
@@ -899,7 +923,7 @@ const Contact = () => {
               </a>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 flex flex-wrap gap-4">
               <a 
                 href="https://wa.me/6385941180" 
                 target="_blank" 
@@ -907,6 +931,14 @@ const Contact = () => {
                 className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-full font-bold hover:opacity-90 transition-all shadow-lg shadow-green-200 text-sm"
               >
                 <MessageSquare size={20} /> WhatsApp Me
+              </a>
+              <a 
+                href="https://drive.google.com/file/d/1WcE5cmkdpbTareNfdCMGB_SXJAFTf0gF/view?usp=sharing" 
+                target="_blank" 
+                rel="noreferrer"
+                className="inline-flex items-center gap-3 bg-navy text-white px-8 py-4 rounded-full font-bold hover:bg-navy/90 transition-all shadow-lg shadow-navy/20 text-sm"
+              >
+                <FileText size={20} /> View Resume
               </a>
             </div>
           </motion.div>
@@ -951,7 +983,7 @@ const Footer = () => {
               Naveen<span className="text-primary">.</span>
             </a>
             <p className="text-slate-500 max-w-sm leading-relaxed">
-              Freelance Social Media Manager & Digital Designer helping brands grow with impactful visuals and engaging content.
+              Social Media Manager & Digital Designer helping brands grow with impactful visuals and engaging content.
             </p>
           </div>
           <div>
