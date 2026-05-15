@@ -16,7 +16,11 @@ import {
   ChevronRight,
   Facebook,
   Youtube,
-  Layout
+  Layout,
+  Figma,
+  Scissors,
+  Image,
+  Layers
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -34,8 +38,8 @@ const Navbar = () => {
   const navLinks = [
     { name: "About", href: "#about" },
     { name: "Services", href: "#services" },
+    { name: "Experience", href: "#experience" },
     { name: "Work", href: "#work" },
-    { name: "Portfolio", href: "#portfolio" },
     { name: "Contact", href: "#contact" },
   ];
 
@@ -136,7 +140,7 @@ const Hero = () => {
             Social Media Manager & Digital Designer crafting scroll-stopping visuals, engaging reels, and powerful brand presence.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="#portfolio" className="bg-navy text-white px-10 py-5 rounded-full font-bold hover:bg-navy/90 transition-all flex items-center gap-2 text-lg">
+            <a href="#work" className="bg-navy text-white px-10 py-5 rounded-full font-bold hover:bg-navy/90 transition-all flex items-center gap-2 text-lg">
               View My Work <ArrowRight size={22} />
             </a>
             <a href="#contact" className="border-2 border-navy text-navy px-10 py-5 rounded-full font-bold hover:bg-navy hover:text-white transition-all text-lg">
@@ -334,39 +338,45 @@ const About = () => {
 
 // --- Services Section ---
 const Services = () => {
+  const [openModalId, setOpenModalId] = useState<string | null>(null);
+
   const services = [
     {
       icon: <Instagram size={28} />,
       title: "Social Media Management",
       description: "Daily posts & content planning, Instagram reels & engagement, page handling & growth.",
       gradient: "from-pink-500/10 to-orange-500/10",
-      accent: "text-pink-500"
+      accent: "text-pink-500",
+      hasModal: true
     },
     {
       icon: <Layout size={28} />,
       title: "Website Design",
       description: "Custom UI/UX design, live website development, and hosting setup for your business.",
       gradient: "from-cyan-500/10 to-blue-500/10",
-      accent: "text-cyan-500"
+      accent: "text-cyan-500",
+      hasModal: true
     },
     {
       icon: <Video size={28} />,
       title: "Video Editing",
       description: "Reels & Shorts editing, promotional videos, real estate & business edits.",
       gradient: "from-red-500/10 to-rose-500/10",
-      accent: "text-red-500"
+      accent: "text-red-500",
+      hasModal: true
     },
     {
       icon: <Palette size={28} />,
       title: "Digital & Creative Design",
       description: "Posters, social media creatives, branding visuals, business cards, invitations, certificates, PDFs, and professional documents.",
       gradient: "from-blue-500/10 to-indigo-500/10",
-      accent: "text-blue-500"
+      accent: "text-blue-500",
+      hasModal: true
     }
   ];
 
   return (
-    <section id="services" className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white">
+    <section id="services" className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white relative">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <motion.div
@@ -396,14 +406,586 @@ const Services = () => {
                 </div>
                 <h4 className="text-lg font-bold mb-3 md:group-hover:text-primary transition-colors">{service.title}</h4>
                 <p className="text-slate-500 leading-relaxed mb-6 flex-1 text-sm">{service.description}</p>
-                <div className="flex items-center gap-2 text-xs font-bold text-navy md:group-hover:gap-3 transition-all">
+                <button 
+                  onClick={() => service.hasModal && setOpenModalId(service.title)}
+                  className={`flex items-center gap-2 text-xs font-bold text-navy md:group-hover:gap-3 transition-all ${service.hasModal ? 'cursor-pointer hover:text-primary' : 'cursor-default'}`}
+                >
                   Learn More <ArrowRight size={14} className="text-primary" />
-                </div>
+                </button>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* Tools Section - Auto Scrolling Marquee */}
+        <div className="mt-20 md:mt-24">
+          <div className="text-center mb-10">
+            <h4 className="text-sm font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 font-mono">My Creative Toolkit</h4>
+            <div className="h-0.5 w-12 bg-primary mx-auto"></div>
+          </div>
+          
+          <div className="relative overflow-hidden w-full py-4">
+            {/* Gradient Overlays for smooth edges */}
+            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10"></div>
+            
+            <motion.div 
+              className="flex whitespace-nowrap gap-8 md:gap-12 w-fit"
+              animate={{ x: [0, -1000] }}
+              transition={{ 
+                duration: 25, 
+                repeat: Infinity, 
+                ease: "linear" 
+              }}
+            >
+              {[
+                { name: "Figma", img: "https://artificial-amber-gp5uouqxoc.edgeone.app/figma%20icon.png" },
+                { name: "Canva", img: "https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" },
+                { name: "Inshot", img: "https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" },
+                { name: "Lightroom", img: "https://relevant-fuchsia-ztsw7kvcyc.edgeone.app/lightroom%20icon.png" },
+                { name: "Notion", icon: <FileText size={20} />, color: "text-slate-700", bg: "bg-slate-100" },
+                { name: "CapCut", img: "https://illegal-lavender-nbqxozp2kk.edgeone.app/capcut%20icon.png" },
+                { name: "Meta Business", icon: <Instagram size={20} />, color: "text-pink-600", bg: "bg-pink-50" },
+                // Double for seamless loop
+                { name: "Figma", img: "https://artificial-amber-gp5uouqxoc.edgeone.app/figma%20icon.png" },
+                { name: "Canva", img: "https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" },
+                { name: "Inshot", img: "https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" },
+                { name: "Lightroom", img: "https://relevant-fuchsia-ztsw7kvcyc.edgeone.app/lightroom%20icon.png" },
+                { name: "Notion", icon: <FileText size={20} />, color: "text-slate-700", bg: "bg-slate-100" },
+                { name: "CapCut", img: "https://illegal-lavender-nbqxozp2kk.edgeone.app/capcut%20icon.png" },
+                { name: "Meta Business", icon: <Instagram size={20} />, color: "text-pink-600", bg: "bg-pink-50" },
+                // Triple for extra safety on wide screens
+                { name: "Figma", img: "https://artificial-amber-gp5uouqxoc.edgeone.app/figma%20icon.png" },
+                { name: "Canva", img: "https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" },
+                { name: "Inshot", img: "https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" },
+                { name: "Lightroom", img: "https://relevant-fuchsia-ztsw7kvcyc.edgeone.app/lightroom%20icon.png" },
+                { name: "Notion", icon: <FileText size={20} />, color: "text-slate-700", bg: "bg-slate-100" },
+                { name: "CapCut", img: "https://illegal-lavender-nbqxozp2kk.edgeone.app/capcut%20icon.png" },
+                { name: "Meta Business", icon: <Instagram size={20} />, color: "text-pink-600", bg: "bg-pink-50" },
+              ].map((tool: any, index) => (
+                <div 
+                  key={index} 
+                  className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white border border-slate-100 shadow-sm hover:border-primary/30 transition-colors group cursor-default"
+                >
+                  <div className={`w-10 h-10 rounded-lg ${tool.bg || 'bg-slate-50'} ${tool.color || 'text-navy'} flex items-center justify-center group-hover:scale-110 transition-transform overflow-hidden`}>
+                    {tool.img ? (
+                      <img src={tool.img} alt={tool.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    ) : (
+                      tool.icon
+                    )}
+                  </div>
+                  <span className="text-sm font-bold text-navy uppercase tracking-wider">{tool.name}</span>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
       </div>
+
+      {/* Modals */}
+      {openModalId === "Social Media Management" && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpenModalId(null)}
+            className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="relative w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+          >
+            <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
+              <button 
+                onClick={() => setOpenModalId(null)}
+                className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors text-slate-500 hover:text-navy"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-16 h-16 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500">
+                  <Instagram size={32} />
+                </div>
+                <div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-navy">Social Media Management</h3>
+                  <p className="text-primary font-bold text-sm uppercase tracking-widest">Instagram Growth & Strategy</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className="space-y-4 text-slate-600 leading-relaxed">
+                  <p>I help brands build a strong and consistent presence on Instagram through strategic content, creative design, and data-driven growth techniques.</p>
+                  <p>From planning daily content to managing engagement and optimizing performance, I handle everything needed to grow your brand online.</p>
+                </div>
+
+                <div>
+                  <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🚀 What I Do</h4>
+                  <ul className="grid sm:grid-cols-2 gap-3">
+                    {[
+                      "Content Planning & Strategy",
+                      "Daily Post Management",
+                      "Instagram Reels Creation",
+                      "Page Handling & Optimization",
+                      "Audience Engagement",
+                      "Hashtag & Trend Research"
+                    ].map((item) => (
+                      <li key={item} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <CheckCircle2 size={16} className="text-green-500 shrink-0" />
+                        <span className="text-sm font-medium text-slate-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">📈 Expected Results</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "Increased engagement & reach",
+                        "Consistent brand presence",
+                        "Better audience connection",
+                        "Growth in followers & visibility",
+                        "Professional & attractive feed"
+                      ].map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🎯 Who This Is For</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "Clinics & healthcare brands",
+                        "Real estate businesses",
+                        "Personal brands",
+                        "Small businesses & startups"
+                      ].map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
+                          <div className="w-1.5 h-1.5 rounded-full bg-navy shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="bg-navy p-6 rounded-2xl text-white">
+                  <h4 className="font-bold mb-2 flex items-center gap-2">💼 My Approach</h4>
+                  <p className="text-sm text-white/80 leading-relaxed">I focus on creating content that is not just visually appealing, but also strategic and result-driven — helping your brand stand out and grow consistently.</p>
+                </div>
+
+                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                  <div>
+                    <p className="text-slate-500 text-sm font-medium">👉 Let's grow your brand together</p>
+                    <p className="text-navy font-bold">Contact me or DM me today!</p>
+                  </div>
+                  <div className="flex gap-3 w-full sm:w-auto">
+                    <a 
+                      href="#contact" 
+                      onClick={() => setOpenModalId(null)}
+                      className="flex-1 sm:flex-initial bg-primary text-white px-6 py-3 rounded-xl font-bold text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                    >
+                      Contact Me
+                    </a>
+                    <a 
+                      href="https://wa.me/6385941180"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 sm:flex-initial bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold text-center hover:opacity-90 transition-all shadow-lg"
+                    >
+                      WhatsApp
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {openModalId === "Website Design" && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpenModalId(null)}
+            className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="relative w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+          >
+            <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
+              <button 
+                onClick={() => setOpenModalId(null)}
+                className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors text-slate-500 hover:text-navy"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-16 h-16 rounded-2xl bg-cyan-50 flex items-center justify-center text-cyan-500">
+                  <Layout size={32} />
+                </div>
+                <div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-navy">Website Design</h3>
+                  <p className="text-primary font-bold text-sm uppercase tracking-widest">UI/UX & Custom Development</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className="space-y-4 text-slate-600 leading-relaxed">
+                  <p>I design and develop modern, user-focused websites that help your business stand out online. From UI/UX design to live deployment, I handle the complete process to deliver a clean, responsive, and professional website experience.</p>
+                </div>
+
+                <div>
+                  <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🚀 What I Do</h4>
+                  <ul className="grid sm:grid-cols-2 gap-3">
+                    {[
+                      "UI/UX Design",
+                      "Custom Website Development",
+                      "Landing Page Design",
+                      "Website Optimization",
+                      "Hosting & Deployment Setup",
+                      "Design Consistency"
+                    ].map((item) => (
+                      <li key={item} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <CheckCircle2 size={16} className="text-green-500 shrink-0" />
+                        <span className="text-sm font-medium text-slate-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">📈 Expected Results</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "Professional online presence",
+                        "Better user experience & navigation",
+                        "Increased credibility and trust",
+                        "Mobile-friendly and responsive design",
+                        "Improved conversions and engagement"
+                      ].map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🎯 Who This Is For</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "Clinics & healthcare websites",
+                        "Real estate businesses",
+                        "Personal brands & portfolios",
+                        "Startups & small businesses"
+                      ].map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
+                          <div className="w-1.5 h-1.5 rounded-full bg-navy shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="bg-navy p-6 rounded-2xl text-white">
+                  <h4 className="font-bold mb-2 flex items-center gap-2">💼 My Approach</h4>
+                  <p className="text-sm text-white/80 leading-relaxed">I focus on creating websites that are not just visually appealing but also functional, fast, and conversion-driven, ensuring your visitors turn into customers.</p>
+                </div>
+
+                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                  <div>
+                    <p className="text-slate-500 text-sm font-medium">👉 Let's build your website</p>
+                    <p className="text-navy font-bold">Contact me or DM me today!</p>
+                  </div>
+                  <div className="flex gap-3 w-full sm:w-auto">
+                    <a 
+                      href="#contact" 
+                      onClick={() => setOpenModalId(null)}
+                      className="flex-1 sm:flex-initial bg-primary text-white px-6 py-3 rounded-xl font-bold text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                    >
+                      Contact Me
+                    </a>
+                    <a 
+                      href="https://wa.me/6385941180"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 sm:flex-initial bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold text-center hover:opacity-90 transition-all shadow-lg"
+                    >
+                      WhatsApp
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+      {openModalId === "Video Editing" && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpenModalId(null)}
+            className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="relative w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+          >
+            <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
+              <button 
+                onClick={() => setOpenModalId(null)}
+                className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors text-slate-500 hover:text-navy"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center text-red-500">
+                  <Video size={32} />
+                </div>
+                <div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-navy">Video Editing</h3>
+                  <p className="text-primary font-bold text-sm uppercase tracking-widest">Impactful Video Content</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className="space-y-4 text-slate-600 leading-relaxed">
+                  <p>I create high-impact video content tailored for social media platforms like Instagram, YouTube Shorts, and more. From reels to promotional videos, I focus on editing styles that are engaging, trend-driven, and optimized for maximum reach.</p>
+                </div>
+
+                <div>
+                  <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🚀 What I Do</h4>
+                  <ul className="grid sm:grid-cols-2 gap-3">
+                    {[
+                      "Reels & Shorts Editing",
+                      "Promotional Videos",
+                      "Real Estate Video Editing",
+                      "Business & Brand Videos",
+                      "Trend-Based Editing",
+                      "Sound Design & Effects"
+                    ].map((item) => (
+                      <li key={item} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <CheckCircle2 size={16} className="text-green-500 shrink-0" />
+                        <span className="text-sm font-medium text-slate-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">📈 Expected Results</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "Higher engagement and reach",
+                        "Better audience retention",
+                        "More shares and saves",
+                        "Strong visual storytelling",
+                        "Professional brand presence"
+                      ].map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🎯 Who This Is For</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "Social media brands & creators",
+                        "Real estate businesses",
+                        "Clinics & service-based brands",
+                        "Startups & small businesses"
+                      ].map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
+                          <div className="w-1.5 h-1.5 rounded-full bg-navy shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="bg-navy p-6 rounded-2xl text-white">
+                  <h4 className="font-bold mb-2 flex items-center gap-2">💼 My Approach</h4>
+                  <p className="text-sm text-white/80 leading-relaxed">I focus on creating videos that are not just visually appealing but also optimized for attention, engagement, and performance — helping your content stand out in a crowded feed.</p>
+                </div>
+
+                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                  <div>
+                    <p className="text-slate-500 text-sm font-medium">👉 Let's create impactful videos</p>
+                    <p className="text-navy font-bold">Contact me or DM me today!</p>
+                  </div>
+                  <div className="flex gap-3 w-full sm:w-auto">
+                    <a 
+                      href="#contact" 
+                      onClick={() => setOpenModalId(null)}
+                      className="flex-1 sm:flex-initial bg-primary text-white px-6 py-3 rounded-xl font-bold text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                    >
+                      Contact Me
+                    </a>
+                    <a 
+                      href="https://wa.me/6385941180"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 sm:flex-initial bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold text-center hover:opacity-90 transition-all shadow-lg"
+                    >
+                      WhatsApp
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+      {openModalId === "Digital & Creative Design" && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpenModalId(null)}
+            className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="relative w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+          >
+            <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
+              <button 
+                onClick={() => setOpenModalId(null)}
+                className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors text-slate-500 hover:text-navy"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500">
+                  <Palette size={32} />
+                </div>
+                <div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-navy">Digital & Creative Design</h3>
+                  <p className="text-primary font-bold text-sm uppercase tracking-widest">Brand Identity & Visuals</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className="space-y-4 text-slate-600 leading-relaxed">
+                  <p>I create visually compelling designs that elevate your brand identity across digital and print platforms. From social media creatives to complete branding materials, every design is crafted to be clean, modern, and aligned with your brand vision.</p>
+                </div>
+
+                <div>
+                  <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🚀 What I Do</h4>
+                  <ul className="grid sm:grid-cols-2 gap-3">
+                    {[
+                      "Social Media Creatives",
+                      "Posters & Marketing Materials",
+                      "Branding Visuals",
+                      "Business & Corporate Designs",
+                      "PDF & Presentation Design",
+                      "Custom Design Solutions"
+                    ].map((item) => (
+                      <li key={item} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <CheckCircle2 size={16} className="text-green-500 shrink-0" />
+                        <span className="text-sm font-medium text-slate-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">📈 Expected Results</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "Strong and consistent brand identity",
+                        "Professional and premium visual appeal",
+                        "Better audience engagement",
+                        "Improved brand recognition",
+                        "Clean and modern design presence"
+                      ].map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🎯 Who This Is For</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "Businesses & startups",
+                        "Clinics & healthcare brands",
+                        "Real estate companies",
+                        "Personal brands & professionals"
+                      ].map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
+                          <div className="w-1.5 h-1.5 rounded-full bg-navy shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="bg-navy p-6 rounded-2xl text-white">
+                  <h4 className="font-bold mb-2 flex items-center gap-2">💼 My Approach</h4>
+                  <p className="text-sm text-white/80 leading-relaxed">I focus on creating designs that are not just visually attractive but also purpose-driven, ensuring every element supports your brand communication and marketing goals.</p>
+                </div>
+
+                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                  <div>
+                    <p className="text-slate-500 text-sm font-medium">👉 Let's design your brand identity</p>
+                    <p className="text-navy font-bold">Contact me or DM me today!</p>
+                  </div>
+                  <div className="flex gap-3 w-full sm:w-auto">
+                    <a 
+                      href="#contact" 
+                      onClick={() => setOpenModalId(null)}
+                      className="flex-1 sm:flex-initial bg-primary text-white px-6 py-3 rounded-xl font-bold text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                    >
+                      Contact Me
+                    </a>
+                    <a 
+                      href="https://wa.me/6385941180"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 sm:flex-initial bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold text-center hover:opacity-90 transition-all shadow-lg"
+                    >
+                      WhatsApp
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
     </section>
   );
 };
@@ -448,7 +1030,7 @@ const Experience = () => {
   ];
 
   return (
-    <section id="work" className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-navy text-white overflow-hidden relative">
+    <section id="experience" className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-navy text-white overflow-hidden relative">
       {/* Abstract Background Shapes */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-white/5 skew-x-12 translate-x-1/4 -z-0"></div>
       
@@ -486,7 +1068,7 @@ const Experience = () => {
                       <p className="text-base md:text-lg font-bold">{exp.duration}</p>
                     </div>
                     <a 
-                      href="#portfolio" 
+                      href="#work" 
                       className="inline-flex items-center gap-2 bg-white text-navy px-4 py-2 rounded-full font-bold text-xs hover:bg-primary hover:text-white transition-all shadow-md"
                     >
                       View My Works <ArrowRight size={14} />
@@ -536,6 +1118,27 @@ const Portfolio = () => {
   
   const projects = [
     // Posters
+    { 
+      name: "Free Mental Health Counseling", 
+      category: "Posters", 
+      type: "Healthcare", 
+      img: "https://scary-azure-ggewvsbdlm.edgeone.app/Free%20Mental%20Health%20Counseling.png",
+      link: "#"
+    },
+    { 
+      name: "Summer Vacation Special Offer", 
+      category: "Posters", 
+      type: "Promotion", 
+      img: "https://compact-tomato-mi8bghykch.edgeone.app/Summer%20vacation%20special%20offer%20(2).png",
+      link: "#"
+    },
+    { 
+      name: "Chettinad Hospital & Research Institute", 
+      category: "Posters", 
+      type: "Healthcare", 
+      img: "https://equivalent-magenta-7znxjkz6qb.edgeone.app/Chettinad%20Hospital%20&%20Research%20Institute%20(3).png",
+      link: "#"
+    },
     { 
       name: "Professional Course Poster", 
       category: "Posters", 
@@ -686,7 +1289,7 @@ const Portfolio = () => {
   const filteredProjects = filter === "All" ? projects : projects.filter(p => p.category === filter);
 
   return (
-    <section id="portfolio" className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white">
+    <section id="work" className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-sm uppercase tracking-widest text-primary font-bold mb-4">My Work</h2>
@@ -991,7 +1594,8 @@ const Footer = () => {
             <ul className="space-y-4 text-slate-500 font-medium">
               <li><a href="#about" className="hover:text-primary transition-colors">About Me</a></li>
               <li><a href="#services" className="hover:text-primary transition-colors">Services</a></li>
-              <li><a href="#portfolio" className="hover:text-primary transition-colors">Portfolio</a></li>
+              <li><a href="#experience" className="hover:text-primary transition-colors">Experience</a></li>
+              <li><a href="#work" className="hover:text-primary transition-colors">Work</a></li>
               <li><a href="#contact" className="hover:text-primary transition-colors">Contact</a></li>
             </ul>
           </div>
