@@ -133,7 +133,7 @@ const Navbar = () => {
             </a>
           ))}
           <a 
-            href="https://drive.google.com/file/d/1-XcVYxJoQDDnD8-wLkxR3YPLB-MJEJWq/view?usp=sharing" 
+            href="https://drive.google.com/file/d/1kDpctx6LzftvoRItSdBWx3oabkkUyFlw/view?usp=sharing" 
             target="_blank" 
             rel="noreferrer"
             className="text-sm font-semibold text-navy hover:text-primary transition-colors flex items-center gap-2"
@@ -169,7 +169,7 @@ const Navbar = () => {
             </a>
           ))}
           <a 
-            href="https://drive.google.com/file/d/1-XcVYxJoQDDnD8-wLkxR3YPLB-MJEJWq/view?usp=sharing" 
+            href="https://drive.google.com/file/d/1kDpctx6LzftvoRItSdBWx3oabkkUyFlw/view?usp=sharing" 
             target="_blank" 
             rel="noreferrer"
             className="text-lg font-semibold text-navy flex items-center gap-3"
@@ -245,7 +245,7 @@ const Hero = () => {
                 </motion.span>
               </motion.a>
               <motion.a 
-                href="https://drive.google.com/file/d/1-XcVYxJoQDDnD8-wLkxR3YPLB-MJEJWq/view?usp=sharing" 
+                href="https://drive.google.com/file/d/1kDpctx6LzftvoRItSdBWx3oabkkUyFlw/view?usp=sharing" 
                 target="_blank" 
                 rel="noreferrer"
                 whileHover={{ y: -3, scale: 1.02 }}
@@ -2804,7 +2804,7 @@ const Contact = () => {
                 <MessageSquare size={18} /> WhatsApp Live Chat
               </a>
               <a 
-                href="https://drive.google.com/file/d/1-XcVYxJoQDDnD8-wLkxR3YPLB-MJEJWq/view?usp=sharing" 
+                href="https://drive.google.com/file/d/1kDpctx6LzftvoRItSdBWx3oabkkUyFlw/view?usp=sharing" 
                 target="_blank" 
                 rel="noreferrer"
                 className="inline-flex items-center gap-2.5 bg-navy text-white px-8 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-navy/10 transition-all text-sm select-none"
