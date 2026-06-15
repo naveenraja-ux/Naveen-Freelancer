@@ -20,6 +20,7 @@ import {
   Figma,
   Scissors,
   Image,
+  Camera,
   Layers,
   Globe,
   TrendingUp,
@@ -27,7 +28,10 @@ import {
   Sparkles,
   Smartphone,
   Play,
-  Pause
+  Pause,
+  Maximize,
+  Volume2,
+  VolumeX
 } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 
@@ -337,7 +341,7 @@ const Hero = () => {
             {/* Actual Stats Cards with Glass Styling & Micro-Scale Effects */}
             {[
               {
-                value: 2,
+                value: 1.5,
                 suffix: "+",
                 title: "Years of Experience",
                 colorClass: "text-primary",
@@ -389,7 +393,7 @@ const Hero = () => {
                   <AnimatedCounter 
                     value={item.value} 
                     suffix={item.suffix} 
-                    decimals={0} 
+                    decimals={item.value % 1 !== 0 ? 1 : 0} 
                     delay={150 * idx} 
                     colorClass={item.colorClass} 
                   />
@@ -1064,24 +1068,24 @@ const Services = () => {
               </div>
 
               <h3 className="text-lg font-display font-black text-navy mb-1 tracking-tight">
-                Video Editing
+                Videography & Video Editing
               </h3>
               <p className="text-slate-500 text-[12px] mb-4 font-medium leading-relaxed min-h-[36px]">
-                High-quality engaging reels, shorts, and professional promo videos for maximum reach.
+                End-to-end video production, custom video shoots, and professional trend-driven video editing.
               </p>
 
               <div className="space-y-1.5 mb-6 text-[11px] font-bold text-navy">
                 <div className="flex items-center gap-2">
                   {checkMark}
-                  <span>Reels Editing</span>
+                  <span>Independent Video Shoots</span>
                 </div>
                 <div className="flex items-center gap-2">
                   {checkMark}
-                  <span>Shorts Editing</span>
+                  <span>Pro Videography & Photography</span>
                 </div>
                 <div className="flex items-center gap-2">
                   {checkMark}
-                  <span>Promo Videos</span>
+                  <span>High-End Reels & Shorts Editing</span>
                 </div>
               </div>
             </div>
@@ -1281,6 +1285,9 @@ const Services = () => {
                 { name: "Figma", img: "https://artificial-amber-gp5uouqxoc.edgeone.app/figma%20icon.png" },
                 { name: "Canva", img: "https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" },
                 { name: "Inshot", img: "https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" },
+                { name: "Videography", icon: <Video size={20} />, color: "text-red-500", bg: "bg-red-50" },
+                { name: "Photography", icon: <Camera size={20} />, color: "text-sky-500", bg: "bg-sky-50" },
+                { name: "Video Shoot", icon: <Film size={20} />, color: "text-purple-500", bg: "bg-purple-50" },
                 { name: "Lightroom", img: "https://relevant-fuchsia-ztsw7kvcyc.edgeone.app/lightroom%20icon.png" },
                 { name: "Notion", icon: <FileText size={20} />, color: "text-slate-700", bg: "bg-slate-100" },
                 { name: "CapCut", img: "https://abstract-plum-kls1whh7.edgeone.app/Capcut-icon.png" },
@@ -1289,6 +1296,9 @@ const Services = () => {
                 { name: "Figma", img: "https://artificial-amber-gp5uouqxoc.edgeone.app/figma%20icon.png" },
                 { name: "Canva", img: "https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" },
                 { name: "Inshot", img: "https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" },
+                { name: "Videography", icon: <Video size={20} />, color: "text-red-500", bg: "bg-red-50" },
+                { name: "Photography", icon: <Camera size={20} />, color: "text-sky-500", bg: "bg-sky-50" },
+                { name: "Video Shoot", icon: <Film size={20} />, color: "text-purple-500", bg: "bg-purple-50" },
                 { name: "Lightroom", img: "https://relevant-fuchsia-ztsw7kvcyc.edgeone.app/lightroom%20icon.png" },
                 { name: "Notion", icon: <FileText size={20} />, color: "text-slate-700", bg: "bg-slate-100" },
                 { name: "CapCut", img: "https://abstract-plum-kls1whh7.edgeone.app/Capcut-icon.png" },
@@ -1297,6 +1307,9 @@ const Services = () => {
                 { name: "Figma", img: "https://artificial-amber-gp5uouqxoc.edgeone.app/figma%20icon.png" },
                 { name: "Canva", img: "https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" },
                 { name: "Inshot", img: "https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" },
+                { name: "Videography", icon: <Video size={20} />, color: "text-red-500", bg: "bg-red-50" },
+                { name: "Photography", icon: <Camera size={20} />, color: "text-sky-500", bg: "bg-sky-50" },
+                { name: "Video Shoot", icon: <Film size={20} />, color: "text-purple-500", bg: "bg-purple-50" },
                 { name: "Lightroom", img: "https://relevant-fuchsia-ztsw7kvcyc.edgeone.app/lightroom%20icon.png" },
                 { name: "Notion", icon: <FileText size={20} />, color: "text-slate-700", bg: "bg-slate-100" },
                 { name: "CapCut", img: "https://abstract-plum-kls1whh7.edgeone.app/Capcut-icon.png" },
@@ -1600,26 +1613,28 @@ const Services = () => {
                   <Video size={32} />
                 </div>
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-navy">Video Editing</h3>
-                  <p className="text-primary font-bold text-sm uppercase tracking-widest">Impactful Video Content</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-navy">Videography & Video Editing</h3>
+                  <p className="text-primary font-bold text-sm uppercase tracking-widest">Complete Video Production</p>
                 </div>
               </div>
 
               <div className="space-y-8">
                 <div className="space-y-4 text-slate-600 leading-relaxed">
-                  <p>I create high-impact video content tailored for social media platforms like Instagram, YouTube Shorts, and more. From reels to promotional videos, I focus on editing styles that are engaging, trend-driven, and optimized for maximum reach.</p>
+                  <p>I produce and edit high-impact video content tailored for social media, corporate branding, and promotional campaigns. In addition to high-end post-editing, I handle independent on-site camera shoots, professional videography, and staging photography to bring projects to life from ground up.</p>
                 </div>
 
                 <div>
                   <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🚀 What I Do</h4>
                   <ul className="grid sm:grid-cols-2 gap-3">
                     {[
+                      "Independent Video Shoots",
+                      "Professional Videography",
+                      "Creative Photography",
                       "Reels & Shorts Editing",
                       "Promotional Videos",
-                      "Real Estate Video Editing",
+                      "Real Estate Video Production",
                       "Business & Brand Videos",
-                      "Trend-Based Editing",
-                      "Sound Design & Effects"
+                      "Sound Design & Trends"
                     ].map((item) => (
                       <li key={item} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
                         <CheckCircle2 size={16} className="text-green-500 shrink-0" />
@@ -1834,17 +1849,17 @@ const Experience = () => {
   const experiences = [
     {
       company: "Apollo Dental Clinic",
-      role: "Social Media Manager and Digital Designer",
+      role: "Social Media Manager, Videographer & Digital Designer",
       location: "RS Puram, Coimbatore, Tamil Nadu",
       duration: "Nov 2024 - Present",
       description: [
-        "Managing complete social media handling including daily posts, reels, etc.",
-        "Designing posters, banners, branding creatives aligned with brand identity.",
-        "Created all brand works including logo and digital branding activities.",
-        "Designing and managing PDFs, certificates, and internal digital documents.",
-        "Ensuring regular posting content quality and professional visual standards."
+        "Independently shooting professional medical videos, campaign shots, and clinician photography directly on-site.",
+        "Editing and producing high-converting creative video reels and patient narrative features from scratch.",
+        "Managing complete social media handling, content scheduling, and corporate engagement campaigns.",
+        "Designing polished banners, clinic posters, certificates, and strategic branding creatives.",
+        "Created core brand works including logo suite and internal digital structures."
       ],
-      result: "Built a strong and professional digital presence from scratch, handling all creative and social media aspects.",
+      result: "Self-produced major video campaigns, photography assets, and premium social media reels completely in-house.",
       color: "from-blue-600/20 to-blue-500/5",
       borderColor: "group-hover:border-blue-500/30",
       accentColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
@@ -1852,7 +1867,7 @@ const Experience = () => {
       link: "https://www.instagram.com/apolloacademy_cosmetology?igsh=OGg3MGpzazF6OGVr"
     },
     {
-      company: "RK Homes and Developers",
+      company: "ARK Homes and Developers",
       role: "Freelance Video Editor & Designer",
       location: "Malumichampatti",
       duration: "February 2025 - December 2025",
@@ -2003,164 +2018,248 @@ const Experience = () => {
   );
 };
 
-// --- Video Simulated Player Component ---
-const VideoPlayerModal = ({ project }: { project: { name: string; img: string; link?: string; type?: string } }) => {
+// --- Video Player Component ---
+const VideoPlayerModal = ({ project }: { project: { name: string; img: string; link?: string; type?: string; videoUrl?: string } }) => {
   const [isPlaying, setIsPlaying] = useState(true);
-  const [progress, setProgress] = useState(35);
-  const [currentTime, setCurrentTime] = useState("0:11");
+  const [progress, setProgress] = useState(0);
+  const [currentTime, setCurrentTime] = useState("0:00");
+  const [duration, setDuration] = useState("0:30");
+  const [isMuted, setIsMuted] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let timer: any;
-    if (isPlaying) {
-      timer = setInterval(() => {
-        setProgress((prev) => {
-          const next = (prev + 1) % 100;
-          const seconds = Math.floor((next / 100) * 30);
-          setCurrentTime(`0:${seconds < 10 ? "0" : ""}${seconds}`);
-          return next;
-        });
-      }, 300);
+    if (project.videoUrl) {
+      const video = videoRef.current;
+      if (video) {
+        if (isPlaying) {
+          video.play().catch(err => console.log("Video auto playback prevented or paused:", err));
+        } else {
+          video.pause();
+        }
+      }
+    } else {
+      let timer: any;
+      if (isPlaying) {
+        timer = setInterval(() => {
+          setProgress((prev) => {
+            const next = (prev + 1) % 100;
+            const seconds = Math.floor((next / 100) * 30);
+            setCurrentTime(`0:${seconds < 10 ? "0" : ""}${seconds}`);
+            return next;
+          });
+        }, 300);
+      }
+      return () => clearInterval(timer);
     }
-    return () => clearInterval(timer);
-  }, [isPlaying]);
+  }, [isPlaying, project.videoUrl]);
+
+  // Sync state if they load/switch projects
+  useEffect(() => {
+    setIsPlaying(true);
+    setProgress(0);
+    setCurrentTime("0:00");
+    setIsMuted(false);
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+    }
+  }, [project.videoUrl]);
+
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+    if (video) {
+      const current = video.currentTime;
+      const dur = video.duration || 30;
+      const currentMin = Math.floor(current / 60);
+      const currentSec = Math.floor(current % 60);
+      const totalMin = Math.floor(dur / 60);
+      const totalSec = Math.floor(dur % 60);
+      
+      setCurrentTime(`${currentMin}:${currentSec < 10 ? "0" : ""}${currentSec}`);
+      setDuration(`${totalMin}:${totalSec < 10 ? "0" : ""}${totalSec}`);
+      setProgress((current / dur) * 100);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    const video = videoRef.current;
+    if (video) {
+      const dur = video.duration || 30;
+      const totalMin = Math.floor(dur / 60);
+      const totalSec = Math.floor(dur % 60);
+      setDuration(`${totalMin}:${totalSec < 10 ? "0" : ""}${totalSec}`);
+    }
+  };
+
+  const handleSoundToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (project.videoUrl) {
+      const video = videoRef.current;
+      if (video) {
+        video.muted = !video.muted;
+        setIsMuted(video.muted);
+      }
+    } else {
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const handleFullscreen = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const container = playerContainerRef.current;
+    if (container) {
+      if (!document.fullscreenElement) {
+        container.requestFullscreen().catch((err) => {
+          console.error("Error attempting to enable fullscreen:", err);
+        });
+      } else {
+        document.exitFullscreen().catch((err) => {
+          console.error("Error attempting to exit fullscreen:", err);
+        });
+      }
+    }
+  };
+
+  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
+    const newPercent = (clickX / width) * 100;
+    
+    if (project.videoUrl && videoRef.current) {
+      const dur = videoRef.current.duration || 30;
+      videoRef.current.currentTime = (newPercent / 100) * dur;
+    } else {
+      setProgress(newPercent);
+      const seconds = Math.floor((newPercent / 100) * 30);
+      setCurrentTime(`0:${seconds < 10 ? "0" : ""}${seconds}`);
+    }
+  };
 
   return (
-    <div className="flex flex-col lg:flex-row items-center gap-6 bg-[#0B0F19]/95 border border-white/10 p-6 rounded-[2.5rem] max-w-3xl w-full shadow-2xl relative overflow-hidden backdrop-blur-xl">
-      {/* Blurred background image for cinema glow */}
+    <div className="flex flex-col items-center justify-center bg-[#0B0F19]/90 border border-white/10 p-6 md:p-8 rounded-[2.5rem] max-w-md w-full shadow-2xl relative overflow-hidden backdrop-blur-2xl">
+      {/* Cinematic Blur Accent Background Glow */}
       <div 
-        className="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-25 scale-110 pointer-events-none -z-10"
+        className="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-20 scale-110 pointer-events-none -z-10"
         style={{ backgroundImage: `url(${project.img})` }}
       />
-      
-      {/* Vertical Player Box resembling a beautiful vertical smartphone/reel display */}
-      <div className="w-full sm:w-[260px] aspect-[9/16] bg-black rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl relative group shrink-0 flex flex-col justify-between mx-auto">
-        {/* Phone Notch */}
-        <div className="absolute top-0 inset-x-0 h-8 bg-gradient-to-b from-black/80 to-transparent flex items-center justify-between px-6 z-20 text-[10px] text-white/60 font-mono">
-          <span>9:41</span>
-          <div className="w-16 h-4 bg-black/40 rounded-full border border-white/5 flex items-center justify-center">
-            <span className="w-2 h-0.5 bg-white/50 rounded-full mr-1" />
-            <span className="w-4 h-1 bg-primary rounded-full animate-pulse" />
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span>5G</span>
-            <span className="text-[9px]">🔋</span>
-          </div>
-        </div>
 
-        {/* Video Canvas screen indicator */}
-        <div className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden">
-          <motion.img 
-            animate={isPlaying ? { scale: [1.02, 1.06, 1.02] } : { scale: 1.02 }}
-            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-            src={project.img} 
-            alt={project.name} 
-            className="w-full h-full object-cover filter brightness-[0.8] select-none"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" />
+      <div className="w-full flex items-center justify-between mb-4 pb-3 border-b border-white/10 select-none">
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
+          <h4 className="text-sm font-semibold tracking-wider text-slate-450 uppercase font-mono">
+            {project.type || "Creative"} • Video Player
+          </h4>
         </div>
-
-        {/* Pulsing Play Button */}
-        <div className="absolute inset-0 z-30 flex items-center justify-center">
-          <button 
-            onClick={() => setIsPlaying(!isPlaying)}
-            className="w-14 h-14 rounded-full bg-primary/95 text-white flex items-center justify-center shadow-lg shadow-primary/30 transition-all hover:scale-110 focus:outline-none cursor-pointer"
-          >
-            {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} className="translate-x-0.5" fill="currentColor" />}
-          </button>
-          {isPlaying && (
-            <span className="absolute w-16 h-16 rounded-full border border-primary/40 animate-ping pointer-events-none" />
-          )}
-        </div>
-
-        {/* Overlay Likes & Share */}
-        <div className="absolute bottom-20 right-3 z-20 flex flex-col gap-3.5 text-white items-center">
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/10 hover:bg-white/20 transition-all cursor-pointer">
-              ❤️
-            </div>
-            <span className="text-[8px] font-bold mt-1 text-slate-100 shadow-sm">1.8k</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/10 hover:bg-white/20 transition-all cursor-pointer">
-              💬
-            </div>
-            <span className="text-[8px] font-bold mt-1 text-slate-100 shadow-sm">242</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/10 hover:bg-white/20 transition-all cursor-pointer">
-              ✈️
-            </div>
-            <span className="text-[8px] font-bold mt-1 text-slate-100 shadow-sm">Share</span>
-          </div>
-        </div>
-
-        {/* Bottom Panel */}
-        <div className="absolute bottom-0 inset-x-0 p-4 pt-10 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-20 flex flex-col gap-1.5 text-left">
-          <div className="flex items-center gap-2 text-white">
-            <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-[8px] font-bold">N</div>
-            <div>
-              <p className="text-[9px] font-bold leading-none">@naveenraja</p>
-              <p className="text-[7px] text-white/50 leading-none mt-0.5">Brand Creator</p>
-            </div>
-          </div>
-          <p className="text-[9px] text-slate-200 line-clamp-1 font-medium">Elevating visual experiences through engaging reels.</p>
-          
-          {/* Timeline progress slider */}
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-[8px] font-mono text-white/70">{currentTime}</span>
-            <div className="flex-1 h-0.5 bg-white/20 rounded-full relative overflow-hidden">
-              <div className="h-full bg-primary" style={{ width: `${progress}%` }} />
-            </div>
-            <span className="text-[8px] font-mono text-white/50">0:30</span>
-          </div>
+        <div className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-white/5 border border-white/10 text-white">
+          Active Mode
         </div>
       </div>
 
-      {/* Right Column Details */}
-      <div className="flex-1 flex flex-col justify-between py-2 text-left">
-        <div className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-[9px] font-mono font-bold uppercase tracking-widest bg-primary/15 text-primary border border-primary/20 mb-3 select-none">
-            🎬 {project.type || "Short Form"} Video
-          </span>
-          <h3 className="text-xl md:text-2xl font-display font-black text-white leading-tight mb-3">
-            {project.name}
-          </h3>
-          <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-normal mb-6">
-            This digital video asset is fully optimized for maximum social media exposure and visual interest. Developed with consistent frame transitions, custom color enhancements, and professional timing metrics.
-          </p>
+      {/* Main Video Screen Container - Guaranteed perfect 9:16 aspect ratio without squishing */}
+      <div 
+        ref={playerContainerRef}
+        className="w-full max-w-[280px] sm:max-w-[310px] aspect-[9/16] bg-black rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative group flex flex-col justify-end mx-auto"
+      >
+        {/* Video Canvas screen */}
+        <div 
+          className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden cursor-pointer"
+          onClick={() => setIsPlaying(!isPlaying)}
+        >
+          {project.videoUrl ? (
+            <video
+              ref={videoRef}
+              src={project.videoUrl}
+              poster={project.img}
+              loop
+              playsInline
+              muted={isMuted}
+              autoPlay
+              className="w-full h-full object-contain bg-black select-none"
+              onTimeUpdate={handleTimeUpdate}
+              onLoadedMetadata={handleLoadedMetadata}
+            />
+          ) : (
+            <motion.img 
+              animate={isPlaying ? { scale: [1, 1.05, 1] } : { scale: 1 }}
+              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+              src={project.img} 
+              alt={project.name} 
+              className="w-full h-full object-contain bg-black filter brightness-[0.7] select-none"
+              referrerPolicy="no-referrer"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/10 pointer-events-none" />
+        </div>
 
-          <div className="grid grid-cols-2 gap-4 bg-white/5 border border-white/5 px-4 py-3 rounded-2xl">
-            <div>
-              <span className="text-[8px] font-bold text-slate-400 block tracking-widest uppercase">Resolution</span>
-              <span className="text-xs text-white font-bold font-mono">1080p Full HD</span>
+        {/* Large Centered Play/Pause Button on Hover */}
+        <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
+          <button 
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsPlaying(!isPlaying);
+            }}
+            className="w-16 h-16 rounded-full bg-primary/95 hover:bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/30 transition-all scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100 focus:outline-none cursor-pointer pointer-events-auto shadow-xl"
+          >
+            {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} className="translate-x-0.5" fill="currentColor" />}
+          </button>
+        </div>
+
+        {/* Professional Elegant Bottom Controls overlay */}
+        <div className="relative z-30 p-4 bg-gradient-to-t from-black/95 to-transparent w-full flex flex-col gap-3 select-none">
+          
+          {/* Interactive duration timeline progress bar (extremely accurate response) */}
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] font-mono text-slate-300">{currentTime}</span>
+            <div 
+              onClick={handleProgressClick}
+              className="flex-1 h-1 bg-white/20 hover:bg-white/30 rounded-full relative cursor-pointer group/bar transition-all"
+            >
+              <div className="h-full bg-primary rounded-full relative" style={{ width: `${progress}%` }}>
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white rounded-full border border-primary opacity-0 group-hover/bar:opacity-100 transition-opacity" />
+              </div>
             </div>
-            <div>
-              <span className="text-[8px] font-bold text-slate-400 block tracking-widest uppercase">Ratio</span>
-              <span className="text-xs text-white font-bold font-mono">9:16 Portrait HUD</span>
+            <span className="text-[10px] font-mono text-slate-400">{duration}</span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            {/* Play/Pause icon & name label */}
+            <div className="flex items-center gap-3">
+              <button 
+                type="button"
+                onClick={() => setIsPlaying(!isPlaying)}
+                className="text-white hover:text-primary transition-all duration-200 cursor-pointer focus:outline-none"
+              >
+                {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
+              </button>
+              
+              <p className="text-xs font-semibold text-slate-200 font-display line-clamp-1 truncate max-w-[200px]">
+                {project.name}
+              </p>
+            </div>
+
+            {/* Mute and Fullscreen Actions */}
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleSoundToggle}
+                className="text-white hover:text-primary transition-all duration-200 cursor-pointer focus:outline-none"
+              >
+                {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleFullscreen}
+                className="text-white hover:text-primary transition-all duration-200 cursor-pointer focus:outline-none"
+              >
+                <Maximize size={18} />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Action Elements */}
-        <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-white/10">
-          {project.link && (
-            <a 
-              href={project.link}
-              target="_blank"
-              rel="noreferrer"
-              className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#E1306C] hover:bg-[#E1306C]/90 text-white px-5 py-3 rounded-xl text-xs font-bold transition-all shadow-md select-none"
-            >
-              <Instagram size={13} /> Open Instagram Reel
-            </a>
-          )}
-          <button
-            onClick={() => setIsPlaying(!isPlaying)}
-            className="px-5 py-3 rounded-xl text-xs font-bold border border-white/10 text-white hover:bg-white/5 transition-all cursor-pointer select-none"
-          >
-            {isPlaying ? "Pause Player" : "Play Reel"}
-          </button>
-        </div>
       </div>
     </div>
   );
@@ -2261,49 +2360,62 @@ const Portfolio = () => {
       img: "https://image2url.com/r2/default/images/1775568553342-f176c522-0df3-492c-88c2-0ac80a9b3a94.png",
       link: "#"
     },
-    // Videos - RK Homes
-    { 
-      name: "RK Homes Real Estate Reel", 
-      category: "Videos", 
-      type: "Real Estate", 
-      img: "https://peculiar-aquamarine-yx6ys8abuq.edgeone.app/Untitled%20design%20(30).png",
-      link: "https://www.instagram.com/reel/DUs4jgnidOd/?igsh=MWtvNTBiajhlbGo2bw=="
-    },
-    { 
-      name: "Property Showcase Video", 
-      category: "Videos", 
-      type: "Real Estate", 
-      img: "https://peculiar-aquamarine-yx6ys8abuq.edgeone.app/Untitled%20design%20(30).png",
-      link: "https://www.instagram.com/reel/DUvbqL5iZKL/?igsh=MWRldXc2YjdlajRzeg=="
-    },
-    { 
-      name: "RK Homes Promotional Reel", 
-      category: "Videos", 
-      type: "Real Estate", 
-      img: "https://peculiar-aquamarine-yx6ys8abuq.edgeone.app/Untitled%20design%20(30).png",
-      link: "https://www.instagram.com/reel/DVTYbzEifft/?igsh=M3R6MnV0cmk3eDY2"
-    },
-    // Videos - Apollo Dental
-    { 
-      name: "Apollo Dental Academy Reel", 
-      category: "Videos", 
-      type: "Healthcare", 
-      img: "https://past-red-vgchojoaga.edgeone.app/Untitled%20design%20(31).png",
+    // Videos
+    {
+      name: "Apollo Dental Video",
+      category: "Videos",
+      type: "Healthcare",
+      img: "https://accessible-pink-edubkiwn.edgeone.app/cover%20image%20for%20dental.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781273468032-6c46b89d-a4fc-4e98-9ca7-8243d76a43a8.mp4",
       link: "https://www.instagram.com/reel/DWg_e8Jk1Zp/?igsh=YWxlcWZ0cnV0cnM3"
     },
-    { 
-      name: "Healthcare Branding Video", 
-      category: "Videos", 
-      type: "Healthcare", 
-      img: "https://past-red-vgchojoaga.edgeone.app/Untitled%20design%20(31).png",
-      link: "https://www.instagram.com/reel/DV8p-JQk8o5/?igsh=dXlxZHRyMzdyY3N5"
+    {
+      name: "ARK Homes and Developers Reel",
+      category: "Videos",
+      type: "Real Estate",
+      img: "https://comprehensive-copper-zawlr23e.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_40_27%20PM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781510907183-6e7ce03e-0e46-4f48-b62f-417a8be07f7e.mp4",
+      link: "#"
     },
-    { 
-      name: "Apollo Academy Highlights", 
-      category: "Videos", 
-      type: "Healthcare", 
-      img: "https://past-red-vgchojoaga.edgeone.app/Untitled%20design%20(31).png",
-      link: "https://www.instagram.com/reel/DTnQ8o5k0fu/?igsh=MWQxcDBvbXI5cTMycw=="
+    {
+      name: "ARK Homes Showcase Reel",
+      category: "Videos",
+      type: "Real Estate",
+      img: "https://miserable-jade-qzzur4dk.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_44_41%20PM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781511215436-0ca5ae6c-2706-46ab-a094-53a6b7b28cb4.mp4",
+      link: "#"
+    },
+    {
+      name: "ARK Homes Premium Tour Reel",
+      category: "Videos",
+      type: "Real Estate",
+      img: "https://husky-jade-vvnr9v9p.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_52_27%20PM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781511533457-cba80d0d-1f7b-4cf7-b922-30440c494aea.mp4",
+      link: "#"
+    },
+    {
+      name: "ARK Homes Luxury Property Reel",
+      category: "Videos",
+      type: "Real Estate",
+      img: "https://uneven-fuchsia-vjub3klc.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_56_44%20PM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781511855846-5d9b1daa-c202-4f4a-be64-86a94182eb8d.mp4",
+      link: "#"
+    },
+    {
+      name: "ARK Homes Development Reel",
+      category: "Videos",
+      type: "Real Estate",
+      img: "https://wily-pink-ex1hhhkf.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2002_01_04%20PM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781512197463-27a6e05c-128f-44ff-a001-13aed2799e99.mp4",
+      link: "#"
+    },
+    {
+      name: "Cosmetology Video",
+      category: "Videos",
+      type: "Cosmetology",
+      img: "https://eldest-black-4imrurbg.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2002_07_47%20PM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781512624578-c4b49d69-8701-4ad1-a753-c74a33a057ac.mp4",
+      link: "#"
     },
     // Websites
     { 
@@ -2398,7 +2510,8 @@ const Portfolio = () => {
                       name: project.name, 
                       category: project.category,
                       link: project.link,
-                      type: project.type
+                      type: project.type,
+                      videoUrl: (project as any).videoUrl
                     })}
                     className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 text-left w-full h-full cursor-pointer focus:outline-none"
                   >
@@ -2480,7 +2593,7 @@ const WhyChooseMe = () => {
   const points = [
     { 
       title: "Real Client Experience", 
-      desc: "2+ years of proven results with healthcare and real estate brands.",
+      desc: "1.5+ years of proven results with healthcare and real estate brands.",
       icon: <CheckCircle2 className="text-primary" size={24} />,
       color: "bg-blue-50"
     },
