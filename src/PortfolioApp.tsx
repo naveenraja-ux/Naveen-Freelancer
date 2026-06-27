@@ -1864,7 +1864,7 @@ const Experience = () => {
       borderColor: "group-hover:border-blue-500/30",
       accentColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
       logo: "https://image2url.com/r2/default/images/1775567270735-9f31738c-e14f-443e-bc63-25dc45697c09.png",
-      link: "https://www.instagram.com/apolloacademy_cosmetology?igsh=OGg3MGpzazF6OGVr"
+      link: "https://www.instagram.com/apollodental_cosmetologyclinic?igsh=OGg3MGpzazF6OGVr"
     },
     {
       company: "ARK Homes and Developers",
@@ -2415,6 +2415,30 @@ const Portfolio = () => {
       type: "Cosmetology",
       img: "https://eldest-black-4imrurbg.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2002_07_47%20PM.png",
       videoUrl: "https://www.image2url.com/r2/default/videos/1781512624578-c4b49d69-8701-4ad1-a753-c74a33a057ac.mp4",
+      link: "#"
+    },
+    {
+      name: "Take Action Early",
+      category: "Videos",
+      type: "Cosmetology",
+      img: "https://quintessential-olive-w0wvsa9h.edgeone.app/ChatGPT%20Image%20Jun%2027,%202026,%2010_30_05%20AM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1782536121021-d82286a5-0acf-4393-bdc5-45ffa15b4e13.mp4",
+      link: "#"
+    },
+    {
+      name: "Consult Doctor for the Right Treatment!",
+      category: "Videos",
+      type: "Cosmetology",
+      img: "https://social-violet-ljileecn.edgeone.app/ChatGPT%20Image%20Jun%2027,%202026,%2010_35_54%20AM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1782536688730-678f3b4f-a1f3-47ea-acb8-76d7f757f47c.mp4",
+      link: "#"
+    },
+    {
+      name: "Coffee Affects Your Sleep Cycle",
+      category: "Videos",
+      type: "Cosmetology",
+      img: "https://inquisitive-emerald-zetoehzk.edgeone.app/ChatGPT%20Image%20Jun%2027,%202026,%2010_43_04%20AM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1782537016091-df0acf48-6cbf-4bff-80e1-41917347a33b.mp4",
       link: "#"
     },
     // Websites
