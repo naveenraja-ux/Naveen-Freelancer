@@ -1864,7 +1864,19 @@ const Experience = () => {
       borderColor: "group-hover:border-blue-500/30",
       accentColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
       logo: "https://image2url.com/r2/default/images/1775567270735-9f31738c-e14f-443e-bc63-25dc45697c09.png",
-      link: "https://www.instagram.com/apollodental_cosmetologyclinic?igsh=OGg3MGpzazF6OGVr"
+      link: "https://www.instagram.com/apollodental_cosmetologyclinic?igsh=OGg3MGpzazF6OGVr",
+      platforms: [
+        {
+          name: "Instagram",
+          icon: "instagram",
+          url: "https://www.instagram.com/apollodental_cosmetologyclinic?igsh=OGg3MGpzazF6OGVr"
+        },
+        {
+          name: "Facebook",
+          icon: "facebook",
+          url: "https://www.facebook.com/apollodental_cosmetologyclinic"
+        }
+      ]
     },
     {
       company: "ARK Homes and Developers",
@@ -1883,7 +1895,14 @@ const Experience = () => {
       borderColor: "group-hover:border-emerald-500/30",
       accentColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
       logo: "https://image2url.com/r2/default/images/1775567375158-7f88bf1b-57de-4441-8238-8cd70decdc64.png",
-      link: "https://www.instagram.com/rkhomesdevelopers?igsh=MTk2eXllb2x1MmhrNQ=="
+      link: "https://www.instagram.com/rkhomesdevelopers?igsh=MTk2eXllb2x1MmhrNQ==",
+      platforms: [
+        {
+          name: "Instagram",
+          icon: "instagram",
+          url: "https://www.instagram.com/rkhomesdevelopers?igsh=MTk2eXllb2x1MmhrNQ=="
+        }
+      ]
     }
   ];
 
@@ -1956,6 +1975,31 @@ const Experience = () => {
                       <MapPin size={12} className="text-slate-500" /> {exp.location}
                     </div>
                   </div>
+
+                  {exp.platforms && (
+                    <div className="mb-6 bg-white/[0.03] border border-white/5 rounded-2xl p-4">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-3">
+                        Handling Platforms
+                      </span>
+                      <div className="flex flex-wrap gap-2.5">
+                        {exp.platforms.map((plat) => {
+                          const IconComp = plat.icon === "instagram" ? Instagram : Facebook;
+                          return (
+                            <a
+                              key={plat.name}
+                              href={plat.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 rounded-xl px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white transition-all duration-300 shadow-sm"
+                            >
+                              <IconComp size={14} className="text-primary shrink-0" />
+                              <span>{plat.name}</span>
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-4 pt-4 border-t border-white/10">
