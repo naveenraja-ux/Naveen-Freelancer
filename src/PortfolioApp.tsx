@@ -1851,7 +1851,7 @@ const Experience = () => {
       company: "Apollo Dental Clinic",
       role: "Social Media Manager, Videographer & Digital Designer",
       location: "RS Puram, Coimbatore, Tamil Nadu",
-      duration: "Nov 2024 - Present",
+      duration: "Nov 2024 - June 2026",
       description: [
         "Independently shooting professional medical videos, campaign shots, and clinician photography directly on-site.",
         "Editing and producing high-converting creative video reels and patient narrative features from scratch.",
