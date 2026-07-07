@@ -1877,32 +1877,6 @@ const Experience = () => {
           url: "https://www.facebook.com/apollodental_cosmetologyclinic"
         }
       ]
-    },
-    {
-      company: "ARK Homes and Developers",
-      role: "Freelance Video Editor & Designer",
-      location: "Malumichampatti",
-      duration: "February 2025 - December 2025",
-      description: [
-        "Handling complete social media management and digital branding activities.",
-        "Created all brand works including company logo and marketing materials.",
-        "Edited real estate promotional videos and designed posters/creatives.",
-        "Ensuring visual consistency across all digital platforms.",
-        "Designing invitation cards, business materials, and digital documents."
-      ],
-      result: "Delivered visually appealing content and established a consistent brand identity for real estate promotions.",
-      color: "from-emerald-600/20 to-emerald-500/5",
-      borderColor: "group-hover:border-emerald-500/30",
-      accentColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-      logo: "https://image2url.com/r2/default/images/1775567375158-7f88bf1b-57de-4441-8238-8cd70decdc64.png",
-      link: "https://www.instagram.com/rkhomesdevelopers?igsh=MTk2eXllb2x1MmhrNQ==",
-      platforms: [
-        {
-          name: "Instagram",
-          icon: "instagram",
-          url: "https://www.instagram.com/rkhomesdevelopers?igsh=MTk2eXllb2x1MmhrNQ=="
-        }
-      ]
     }
   ];
 
@@ -2358,6 +2332,13 @@ const Portfolio = () => {
       category: "Posters", 
       type: "Healthcare", 
       img: "https://near-olive-5hzpqymsvu.edgeone.app/Give%20your%20child%20a%20healthy%20and%20confident%20smile%20this%20summer!%20(2).png",
+      link: "#"
+    },
+    { 
+      name: "Summer Smile Makeover", 
+      category: "Posters", 
+      type: "Healthcare", 
+      img: "https://junior-lime-2fqyiqv0.edgeone.app/Summer%20Smile%20Makeover%20(1).png",
       link: "#"
     },
     { 
