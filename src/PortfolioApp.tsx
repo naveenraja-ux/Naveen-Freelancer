@@ -31,7 +31,10 @@ import {
   Pause,
   Maximize,
   Volume2,
-  VolumeX
+  VolumeX,
+  Check,
+  Briefcase,
+  Calendar
 } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 
@@ -105,85 +108,153 @@ const AnimatedCounter = ({ value, suffix = "", delay = 0, decimals = 0, colorCla
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const [activeSection, setActiveSection] = useState("Home");
 
   const navLinks = [
+    { name: "Home", href: "#hero" },
     { name: "About", href: "#about" },
     { name: "Services", href: "#services" },
-    { name: "Experience", href: "#experience" },
-    { name: "Work", href: "#work" },
+    { name: "My Experience", href: "#experience" },
+    { name: "Work Samples", href: "#work" },
     { name: "Contact", href: "#contact" },
   ];
 
-  return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white/90 backdrop-blur-md py-4 shadow-sm" : "bg-transparent py-6"}`}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 flex justify-between items-center">
-        <div className="w-10 h-10" />
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a key={link.name} href={link.href} className="text-sm font-medium hover:text-primary transition-colors">
-              {link.name}
-            </a>
-          ))}
-          <a 
-            href="https://drive.google.com/file/d/1kDpctx6LzftvoRItSdBWx3oabkkUyFlw/view?usp=sharing" 
-            target="_blank" 
-            rel="noreferrer"
-            className="text-sm font-semibold text-navy hover:text-primary transition-colors flex items-center gap-2"
-          >
-            <FileText size={18} /> Resume
-          </a>
-          <a href="#contact" className="bg-navy text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-navy/90 transition-all">
-            Let's Talk
-          </a>
+      const scrollPosition = window.scrollY + 250;
+
+      // Special case: near top of page -> Home is active
+      if (window.scrollY < 120) {
+        setActiveSection("Home");
+        return;
+      }
+
+      // Check sections
+      for (const link of navLinks) {
+        const id = link.href.substring(1);
+        const el = document.getElementById(id);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(link.name);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white/80 backdrop-blur-md py-2.5 shadow-sm border-b border-slate-100" : "bg-transparent py-5"}`}>
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 flex justify-between items-center">
+        {/* Desktop Nav Links on Left with Glass Styling */}
+        <div className="hidden md:flex items-center gap-1 bg-slate-100/50 hover:bg-slate-100/80 backdrop-blur-md p-1 rounded-full border border-slate-200/40 transition-colors duration-300">
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.name;
+            return (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                onClick={() => setActiveSection(link.name)}
+                className={`relative px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all duration-300 select-none ${
+                  isActive 
+                    ? "text-primary shadow-sm" 
+                    : "text-slate-600 hover:text-navy"
+                }`}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="activeNavBackground"
+                    className="absolute inset-0 bg-white shadow-sm border border-slate-200/20 rounded-full -z-10"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                {link.name}
+              </a>
+            );
+          })}
         </div>
 
-        {/* Mobile Toggle */}
-        <button className="md:hidden text-navy" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        {/* Desktop CTAs on Right / Mobile Menu Toggle */}
+        <div className="flex items-center gap-3 ml-auto md:ml-0">
+          <div className="hidden md:flex items-center gap-3">
+            <a 
+              href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing" 
+              target="_blank" 
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 bg-slate-50 border border-slate-200/80 hover:bg-slate-100 text-navy px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm"
+            >
+              <FileText size={14} /> Resume
+            </a>
+
+            <a 
+              href="#contact" 
+              className="bg-navy hover:bg-primary text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md shadow-navy/10 hover:shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0"
+            >
+              Let's Talk
+            </a>
+          </div>
+
+          {/* Mobile Toggle */}
+          <button className="md:hidden text-navy p-1" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
         <motion.div 
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute top-full left-0 w-full bg-white shadow-xl py-8 px-6 flex flex-col gap-6 md:hidden"
+          className="absolute top-full left-0 w-full bg-white shadow-xl py-6 px-6 flex flex-col gap-2 md:hidden border-t border-slate-100"
         >
-          {navLinks.map((link) => (
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.name;
+            return (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                className={`text-xs font-bold uppercase tracking-wider py-2.5 px-3 rounded-lg transition-colors flex justify-between items-center ${
+                  isActive 
+                    ? "bg-blue-50/70 text-primary border-l-4 border-primary" 
+                    : "text-navy hover:bg-slate-50"
+                }`}
+                onClick={() => {
+                  setActiveSection(link.name);
+                  setIsMenuOpen(false);
+                }}
+              >
+                <span>{link.name}</span>
+                {isActive && <span className="w-1.5 h-1.5 bg-primary rounded-full" />}
+              </a>
+            );
+          })}
+          <div className="flex flex-col gap-2.5 pt-4 border-t border-slate-100 mt-2">
             <a 
-              key={link.name} 
-              href={link.href} 
-              className="text-lg font-medium text-navy"
+              href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing" 
+              target="_blank" 
+              rel="noreferrer"
+              className="flex items-center justify-center gap-2 bg-slate-50 border border-slate-200 text-navy px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all"
               onClick={() => setIsMenuOpen(false)}
             >
-              {link.name}
+              <FileText size={15} /> View Resume
             </a>
-          ))}
-          <a 
-            href="https://drive.google.com/file/d/1kDpctx6LzftvoRItSdBWx3oabkkUyFlw/view?usp=sharing" 
-            target="_blank" 
-            rel="noreferrer"
-            className="text-lg font-semibold text-navy flex items-center gap-3"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <FileText size={22} /> View Resume
-          </a>
-          <a 
-            href="#contact" 
-            className="bg-navy text-white px-6 py-4 rounded-xl text-center font-semibold"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Let's Talk
-          </a>
+            <a 
+              href="#contact" 
+              className="bg-navy text-white text-center px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-primary transition-all shadow-md"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Let's Talk
+            </a>
+          </div>
         </motion.div>
       )}
     </nav>
@@ -193,7 +264,7 @@ const Navbar = () => {
 // --- Hero Section ---
 const Hero = () => {
   return (
-    <section className="relative pt-[60px] pb-16 md:pt-[80px] md:pb-24 overflow-hidden px-6 md:px-12 lg:px-24 bg-white">
+    <section id="hero" className="relative pt-[100px] pb-16 md:pt-[130px] md:pb-24 overflow-hidden px-6 md:px-12 lg:px-24 bg-white">
       {/* Grid Hero Container */}
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -206,27 +277,31 @@ const Hero = () => {
             className="lg:col-span-7 flex flex-col items-start text-left"
           >
             {/* Status Badge */}
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <div className="inline-flex items-center gap-2.5 bg-slate-50 hover:bg-blue-50/50 border border-slate-200/60 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-slate-600 transition-all duration-300 shadow-sm select-none mb-6">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              Available for Projects
+              <span>Available for Full-Time Opportunities</span>
             </div>
-
+ 
             {/* Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-[64px] font-display font-black leading-[1.15] mb-6 tracking-tighter text-navy text-left max-w-2xl">
-              Content That Connects.<br />
-              <span className="text-primary font-black">Brands That Grow.</span>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-display font-black leading-tight mb-4 tracking-tight text-navy text-left max-w-4xl">
+              Growing Brands Through <span className="text-primary font-black bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">Strategic Social Media.</span>
             </h1>
-
-            {/* Supporting Description text */}
-            <p className="text-base md:text-xl font-semibold text-slate-500 tracking-wider mb-8 text-left">
-              Social Media Manager • Digital Designer • Video Editor
+ 
+            {/* Subtitle */}
+            <p className="text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 text-left">
+              Social Media Manager • Content Strategist • Graphic Designer • Video Editor
             </p>
-
+ 
+            {/* Description */}
+            <p className="text-sm md:text-base text-slate-500 mb-8 text-left leading-relaxed max-w-xl">
+              I help businesses grow through strategic content planning, engaging social media campaigns, creative design, and short-form video content that builds audience engagement and strengthens brand presence.
+            </p>
+ 
             {/* CTA buttons with modern animations and styles */}
-            <div className="flex flex-wrap gap-4 mb-10 w-full sm:w-auto justify-start">
+            <div className="flex flex-wrap gap-4 w-full sm:w-auto justify-start">
               <motion.a 
                 href="#work" 
                 whileHover={{ y: -3, scale: 1.02 }}
@@ -236,7 +311,7 @@ const Hero = () => {
               >
                 {/* Micro-interactive radial glare overlay */}
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
-                View My Work 
+                View Portfolio 
                 <motion.span
                   animate={{ x: [0, 5, 0] }}
                   transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
@@ -245,7 +320,7 @@ const Hero = () => {
                 </motion.span>
               </motion.a>
               <motion.a 
-                href="https://drive.google.com/file/d/1kDpctx6LzftvoRItSdBWx3oabkkUyFlw/view?usp=sharing" 
+                href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing" 
                 target="_blank" 
                 rel="noreferrer"
                 whileHover={{ y: -3, scale: 1.02 }}
@@ -257,16 +332,6 @@ const Hero = () => {
                 <FileText size={20} className="text-slate-400 group-hover:text-primary transition-colors" /> 
                 Download Resume
               </motion.a>
-            </div>
-
-            {/* Inline Trust Partners & Proof under CTA */}
-            <div className="pt-6 border-t border-slate-100 w-full flex flex-col items-start justify-start">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 text-left">Key Impact</p>
-              <div className="flex flex-wrap items-center justify-start gap-4 text-sm text-slate-600 font-medium text-left">
-                <span><span className="text-primary font-bold">50+</span> Reels Created</span>
-                <span className="text-slate-300">•</span>
-                <span><span className="text-primary font-bold">250K+</span> Total Views</span>
-              </div>
             </div>
           </motion.div>
 
@@ -341,28 +406,28 @@ const Hero = () => {
             {/* Actual Stats Cards with Glass Styling & Micro-Scale Effects */}
             {[
               {
-                value: 1.5,
-                suffix: "+",
-                title: "Years of Experience",
+                value: 1.7,
+                suffix: "",
+                title: "Healthcare Marketing Experience",
                 colorClass: "text-primary",
-                desc: "Real-world client branding expertise",
+                desc: "Creating content for dental and healthcare brands.",
                 badge: "Proven Record"
               },
               {
                 value: 50,
                 suffix: "+",
-                title: "Reels Created",
+                title: "Social Media Creatives",
                 colorClass: "text-navy",
-                desc: "Engineered from hook to copy",
-                badge: "Viral Hook Setup"
+                desc: "Posts, Carousels & Reels Delivered.",
+                badge: "Delivered Assets"
               },
               {
-                value: 8,
-                suffix: "+",
-                title: "Websites Hosted Live",
+                value: 250,
+                suffix: "K+",
+                title: "Content Views",
                 colorClass: "text-primary",
-                desc: "High-performance responsive designs",
-                badge: "Web Launch"
+                desc: "Building audience reach through engaging content.",
+                badge: "Audience Reach"
               }
             ].map((item, idx) => (
               <motion.div
@@ -793,48 +858,39 @@ const About = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-left w-full max-w-5xl"
+          className="w-full"
         >
-          <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-5 bg-blue-50/80 px-4 py-1.5 rounded-full border border-blue-100 inline-block select-none shadow-sm/50">
-            Who I Am
-          </span>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10 items-start mb-12">
-            <div className="lg:col-span-6">
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-navy tracking-tight leading-none">
-                I’m Naveen, a
-              </h3>
-              
-              {/* Premium Standalone, Left-Aligned Spacious Animated Box */}
-              <div className="mt-4 w-full bg-gradient-to-r from-blue-50/80 to-indigo-50/30 border border-blue-100/60 p-4 md:p-5 rounded-2xl shadow-sm relative overflow-hidden flex items-center gap-4 group hover:border-primary/20 transition-all duration-300">
-                <div className="absolute top-0 right-0 p-2 opacity-20 group-hover:opacity-40 transition-opacity">
-                  <Sparkles size={16} className="text-primary animate-pulse" />
-                </div>
-                <div className="w-2 md:w-2.5 h-10 md:h-12 bg-primary rounded-full shrink-0 shadow-sm" />
-                
-                {/* Generous layout width to prevent any clipping/overflow of "Social Media Manager" */}
-                <div className="relative h-10 md:h-12 flex items-center min-w-[280px] sm:min-w-[340px] md:min-w-[450px] w-full">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={currentWordIndex}
-                      initial={{ x: -15, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      exit={{ x: 15, opacity: 0 }}
-                      transition={{ duration: 0.35, ease: "easeOut" }}
-                      className="absolute text-primary font-black text-xl sm:text-2xl md:text-3.5xl tracking-tight select-none text-left leading-none"
-                    >
-                      {words[currentWordIndex]}
-                    </motion.span>
-                  </AnimatePresence>
-                </div>
+          {/* Fully Centered Designer Header Layout */}
+          <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16 relative z-10">
+            <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-4 bg-blue-50/80 px-4 py-1.5 rounded-full border border-blue-100 inline-block select-none shadow-sm/50">
+              Who I Am
+            </span>
+            
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-navy tracking-tight leading-tight">
+              I’m Naveen Raja, a
+            </h3>
+            
+            {/* Premium Standalone Centered Dynamic Word Box */}
+            <div className="mt-4 w-full max-w-xl bg-gradient-to-r from-blue-50/80 to-indigo-50/30 border border-blue-100/60 p-4 md:p-5 rounded-2xl shadow-sm relative overflow-hidden flex items-center justify-center gap-4 group hover:border-primary/20 transition-all duration-300">
+              <div className="absolute top-0 right-0 p-2 opacity-20 group-hover:opacity-40 transition-opacity">
+                <Sparkles size={16} className="text-primary animate-pulse" />
               </div>
-            </div>
-
-            <div className="lg:col-span-6 lg:pt-2">
-              <div className="text-sm md:text-base text-slate-500 leading-relaxed font-semibold">
-                <p>
-                  I help brands grow through content creation, social media management, video editing, and creative design. From planning content calendars to creating engaging reels and building digital experiences, I focus on helping businesses stand out and connect with their audience.
-                </p>
+              <div className="w-2 md:w-2.5 h-10 md:h-12 bg-primary rounded-full shrink-0 shadow-sm" />
+              
+              {/* Width balanced container with centered alignment */}
+              <div className="relative h-10 md:h-12 flex items-center justify-center min-w-[240px] sm:min-w-[300px] md:min-w-[380px] w-full text-center">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={currentWordIndex}
+                    initial={{ y: -10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 10, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="absolute text-primary font-black text-xl sm:text-2xl md:text-3xl tracking-tight select-none text-center leading-none"
+                  >
+                    {words[currentWordIndex]}
+                  </motion.span>
+                </AnimatePresence>
               </div>
             </div>
           </div>
@@ -919,344 +975,169 @@ const Services = () => {
   );
 
   return (
-    <section id="services" className="py-16 bg-slate-50 px-6 md:px-12 lg:px-24 relative overflow-hidden">
+    <section id="services" className="py-20 md:py-28 bg-slate-50 px-6 md:px-12 lg:px-24 relative overflow-hidden">
       {/* Subtle modern alignment grids for UI designer motif */}
-      <div className="absolute top-0 left-1/4 w-[1px] h-full bg-slate-100 -z-10 pointer-events-none" />
-      <div className="absolute top-0 left-3/4 w-[1px] h-full bg-slate-100 -z-10 pointer-events-none" />
-      <div className="absolute top-1/4 left-0 right-0 h-[1px] bg-slate-100 -z-10 pointer-events-none" />
+      <div className="absolute top-0 left-1/4 w-[1px] h-full bg-slate-200/40 -z-10 pointer-events-none" />
+      <div className="absolute top-0 left-3/4 w-[1px] h-full bg-slate-200/40 -z-10 pointer-events-none" />
+      <div className="absolute top-1/4 left-0 right-0 h-[1px] bg-slate-200/40 -z-10 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto">
-
-        {/* Heading */}
-        <div className="text-center mb-12 max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="text-xs uppercase tracking-[0.2em] text-primary font-bold mb-3 inline-block bg-blue-50 px-3.5 py-1 rounded-full border border-blue-100">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          
+          {/* Left Side: Sticky Texts Column */}
+          <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
+            <span className="text-xs uppercase tracking-[0.2em] text-primary font-bold mb-3 inline-block bg-blue-50 px-3.5 py-1 rounded-full border border-blue-100 shadow-sm/30 select-none">
               What I Do
             </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-black text-navy mb-4 tracking-tight leading-tight">
-              Services That Help Brands Grow
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-navy tracking-tight leading-tight">
+              Helping Brands Build Their Digital Presence
             </h2>
-            <p className="text-slate-500 text-sm md:text-base max-w-2xl mx-auto font-medium leading-relaxed">
-              From content creation to digital experiences, helping brands build a strong and cohesive online presence.
+            <div className="h-1 w-16 bg-primary rounded-full" />
+            <p className="text-slate-500 text-sm md:text-base font-semibold leading-relaxed">
+              From dynamic content strategy and creative design to trend-focused reels editing and robust social media management, I help businesses craft highly engaging content that grows their reach and builds a consistent, trustworthy online identity.
             </p>
-          </motion.div>
-        </div>
-
-        {/* Grid - Symmetrical, vertically compact, highly responsive */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-
-          {/* Card 1: Social Media Management */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.05 }}
-            whileHover={{ y: -5 }}
-            className="bg-white hover:bg-white/95 border border-slate-100 hover:border-primary/25 p-6 rounded-[2rem] shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-default"
-          >
-            <div className="absolute top-3 left-3 text-[8px] text-slate-300 group-hover:text-primary transition-colors font-mono select-none font-bold">[01]</div>
-            <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-            {/* Hover Micro-Animation: Engagement Spike */}
-            <div className="absolute right-4 bottom-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 z-10">
-              <motion.div
-                animate={{ y: [0, -4, 0], rotate: [0, -2, 2, 0] }}
-                transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
-                className="bg-primary hover:bg-primary/95 text-white text-[9px] px-2 py-0.5 rounded-lg font-bold shadow-md flex items-center gap-1 font-mono tracking-wider"
-              >
-                <span>🔥 +148% Reach</span>
-              </motion.div>
+            <div className="hidden lg:block pt-6">
+              <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest block mb-2">Explore details below</span>
+              <div className="flex gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-400/40 inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-indigo-400/40 inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-purple-400/40 inline-block" />
+              </div>
             </div>
+          </div>
 
-            <div>
-              <div className="flex justify-between items-center mb-4">
+          {/* Right Side: 2x2 Grid Layout of engaging cards */}
+          <div className="lg:col-span-7">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
+              {[
+                {
+                  id: 1,
+                  badge: "📈 SOCIAL GROWTH",
+                  title: "Social Media Management",
+                  desc: "Plan, publish, and manage content that builds brand awareness and consistent audience growth.",
+                  services: ["Content Strategy", "Content Calendar", "Community Mgmt", "Caption Writing"],
+                  statValue: 50,
+                  statSuffix: "+",
+                  statLabel: "Campaigns & Content",
+                  statIcon: "📊",
+                  icon: <Smartphone size={20} />,
+                  badgeBg: "bg-blue-50 text-blue-600 border-blue-100",
+                  modalId: "Social Media Management"
+                },
+                {
+                  id: 2,
+                  badge: "🎥 SHORT-FORM CONTENT",
+                  title: "Reels & Video Editing",
+                  desc: "Create engaging short-form videos and Reels designed to capture attention and boost reach.",
+                  services: ["Reels Editing", "Video Storytelling", "Trend Content", "Mobile Video"],
+                  statValue: 60,
+                  statSuffix: "+",
+                  statLabel: "Videos Edited",
+                  statIcon: "🎬",
+                  icon: <Film size={20} />,
+                  badgeBg: "bg-rose-50 text-rose-600 border-rose-100",
+                  modalId: "Video Editing"
+                },
+                {
+                  id: 3,
+                  badge: "🎨 VISUAL BRANDING",
+                  title: "Creative Design",
+                  desc: "Design professional social media posts, promotional art, and consistent branded assets.",
+                  services: ["Social Creatives", "Posters & Brochures", "Brand Visuals", "Carousel Design"],
+                  statValue: 90,
+                  statSuffix: "+",
+                  statLabel: "Designs Created",
+                  statIcon: "🎨",
+                  icon: <Palette size={20} />,
+                  badgeBg: "bg-emerald-50 text-emerald-600 border-emerald-100",
+                  modalId: "Digital & Creative Design"
+                },
+                {
+                  id: 4,
+                  badge: "🌐 DIGITAL EXPERIENCE",
+                  title: "Landing Pages & Sites",
+                  desc: "Design responsive landing pages and portfolios that improve online presence and campaigns.",
+                  services: ["Responsive Design", "Portfolio Sites", "Landing Pages", "UI Prototypes"],
+                  statValue: 8,
+                  statSuffix: "+",
+                  statLabel: "Projects Delivered",
+                  statIcon: "🌐",
+                  icon: <Globe size={20} />,
+                  badgeBg: "bg-purple-50 text-purple-600 border-purple-100",
+                  modalId: "Website Design"
+                }
+              ].map((card) => (
                 <motion.div 
-                  whileHover={{ rotate: 12, scale: 1.1 }}
-                  className="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center text-primary shadow-sm border border-blue-100/50"
+                  key={card.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: card.id * 0.05 }}
+                  whileHover={{ y: -8, transition: { duration: 0.2, ease: "easeOut" } }}
+                  className="bg-white hover:bg-white/95 border border-slate-100 hover:border-primary/40 p-6 rounded-[2rem] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-default"
                 >
-                  <Smartphone size={20} />
+                  <div className="absolute top-3 left-3 text-[8px] text-slate-300 group-hover:text-primary transition-colors font-mono select-none font-bold">[{String(card.id).padStart(2, '0')}]</div>
+                  <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  <div>
+                    {/* Header Action Row */}
+                    <div className="flex justify-between items-center mb-4 mt-2">
+                      <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-600 border border-slate-100 group-hover:scale-110 group-hover:text-primary group-hover:bg-primary/5 group-hover:border-primary/20 transition-all duration-300">
+                        {card.icon}
+                      </div>
+                      
+                      <button 
+                        onClick={() => setOpenModalId(card.modalId)}
+                        className="text-[10px] font-bold text-slate-400 hover:text-primary hover:bg-primary/5 hover:border-primary/20 transition-all py-1 px-3 bg-slate-50/60 border border-slate-100 rounded-full cursor-pointer shadow-sm select-none"
+                      >
+                        Details
+                      </button>
+                    </div>
+
+                    {/* Badge Tag */}
+                    <div className="mb-3">
+                      <span className={`text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.75 rounded-full border ${card.badgeBg} inline-block`}>
+                        {card.badge}
+                      </span>
+                    </div>
+
+                    {/* Title & Desc */}
+                    <h3 className="text-base font-display font-black text-navy mb-1 tracking-tight">
+                      {card.title}
+                    </h3>
+                    <p className="text-slate-500 text-[11px] mb-4 font-semibold leading-relaxed min-h-[44px]">
+                      {card.desc}
+                    </p>
+
+                    {/* Rounded pills/tags instead of checklist */}
+                    <div className="flex flex-wrap gap-1 mb-6">
+                      {card.services.map((svc, idx) => (
+                        <span 
+                          key={idx} 
+                          className="text-[9px] font-bold text-slate-500 bg-slate-100/60 border border-slate-200/40 px-2 py-0.5 rounded-full hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all duration-200 select-none"
+                        >
+                          {svc}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Metric Footer */}
+                  <div className="border-t border-slate-100 pt-4 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 group-hover:scale-110 group-hover:bg-primary/5 group-hover:text-primary transition-all duration-300 shrink-0">
+                      <span className="text-xs">{card.statIcon}</span>
+                    </div>
+                    <div>
+                      <h4 className="text-base font-black font-mono tracking-tight text-navy leading-none">
+                        <AnimatedCounter value={card.statValue} suffix={card.statSuffix} colorClass="text-navy group-hover:text-primary transition-colors" />
+                      </h4>
+                      <p className="text-[9px] font-bold text-slate-400 mt-0.5">{card.statLabel}</p>
+                    </div>
+                  </div>
                 </motion.div>
-                
-                <button 
-                  onClick={() => setOpenModalId("Social Media Management")}
-                  className="text-[9px] font-bold text-slate-400 hover:text-primary transition-colors py-1 px-3 bg-slate-50 hover:bg-primary/5 border border-slate-100 rounded-full cursor-pointer shadow-sm select-none"
-                >
-                  Details
-                </button>
-              </div>
-
-              <h3 className="text-lg font-display font-black text-navy mb-1 tracking-tight">
-                Social Media
-              </h3>
-              <p className="text-slate-500 text-[12px] mb-4 font-medium leading-relaxed min-h-[36px]">
-                Plan, manage and grow brand presence across Instagram and Facebook with ads and campaigns.
-              </p>
-
-              <div className="space-y-1.5 mb-6 text-[11px] font-bold text-navy">
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>Content Planning</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>Reels Management</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>Meta Ads Support</span>
-                </div>
-              </div>
+              ))}
             </div>
-
-            {/* Metric Footer */}
-            <div className="border-t border-slate-100 pt-4 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-primary shrink-0 animate-pulse">
-                <TrendingUp size={14} />
-              </div>
-              <div>
-                <h4 className="text-lg font-black font-mono tracking-tight text-primary leading-none">
-                  <AnimatedCounter value={50} suffix="+" colorClass="text-primary" />
-                </h4>
-                <p className="text-[9px] font-bold text-slate-400 mt-0.5">Reels Created</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Card 2: Video Editing */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            whileHover={{ y: -5 }}
-            className="bg-white hover:bg-white/95 border border-slate-100 hover:border-red-500/25 p-6 rounded-[2rem] shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-default"
-          >
-            <div className="absolute top-3 left-3 text-[8px] text-slate-300 group-hover:text-red-500 transition-colors font-mono select-none font-bold">[02]</div>
-            <div className="absolute -top-10 -right-10 w-24 h-24 bg-red-500/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-            {/* Hover Micro-Animation: Timeline Sync */}
-            <div className="absolute right-4 bottom-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 z-10">
-              <motion.div
-                animate={{ y: [0, -3, 0], scale: [1, 1.04, 1] }}
-                transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-                className="bg-rose-500 text-white text-[9px] px-2 py-0.5 rounded-lg font-bold shadow-md flex items-center gap-1 font-mono tracking-wider"
-              >
-                <span>🎬 SYNCHRONIZED</span>
-              </motion.div>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <motion.div 
-                  whileHover={{ rotate: -12, scale: 1.1 }}
-                  className="w-11 h-11 rounded-xl bg-red-50 flex items-center justify-center text-red-500 shadow-sm border border-red-100/50"
-                >
-                  <Film size={20} />
-                </motion.div>
-                
-                <button 
-                  onClick={() => setOpenModalId("Video Editing")}
-                  className="text-[9px] font-bold text-slate-400 hover:text-red-500 transition-colors py-1 px-3 bg-slate-50 hover:bg-red-500/5 border border-slate-100 rounded-full cursor-pointer shadow-sm select-none"
-                >
-                  Details
-                </button>
-              </div>
-
-              <h3 className="text-lg font-display font-black text-navy mb-1 tracking-tight">
-                Videography & Video Editing
-              </h3>
-              <p className="text-slate-500 text-[12px] mb-4 font-medium leading-relaxed min-h-[36px]">
-                End-to-end video production, custom video shoots, and professional trend-driven video editing.
-              </p>
-
-              <div className="space-y-1.5 mb-6 text-[11px] font-bold text-navy">
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>Independent Video Shoots</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>Pro Videography & Photography</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>High-End Reels & Shorts Editing</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Metric Footer */}
-            <div className="border-t border-slate-100 pt-4 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-500 shrink-0">
-                🎬
-              </div>
-              <div>
-                <h4 className="text-lg font-black font-mono tracking-tight text-red-500 leading-none">
-                  <AnimatedCounter value={60} suffix="+" colorClass="text-red-500" />
-                </h4>
-                <p className="text-[9px] font-bold text-slate-400 mt-0.5">Videos Edited</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Card 3: Creative Design */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            whileHover={{ y: -5 }}
-            className="bg-white hover:bg-white/95 border border-slate-100 hover:border-emerald-500/25 p-6 rounded-[2rem] shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-default"
-          >
-            <div className="absolute top-3 left-3 text-[8px] text-slate-300 group-hover:text-emerald-500 transition-colors font-mono select-none font-bold">[03]</div>
-            <div className="absolute -top-10 -right-10 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-            {/* Hover Micro-Animation: Vector Splash */}
-            <div className="absolute right-4 bottom-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 z-10">
-              <motion.div
-                animate={{ y: [0, -4, 0], rotate: [0, 2, -2, 0] }}
-                transition={{ repeat: Infinity, duration: 2.4, ease: "easeInOut" }}
-                className="bg-emerald-500 text-white text-[9px] px-2 py-0.5 rounded-lg font-bold shadow-md flex items-center gap-1 font-mono tracking-wider"
-              >
-                <span>✨ BRAND ASSETS</span>
-              </motion.div>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <motion.div 
-                  whileHover={{ rotate: 12, scale: 1.1 }}
-                  className="w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500 shadow-sm border border-emerald-100/50"
-                >
-                  <Palette size={20} />
-                </motion.div>
-                
-                <button 
-                  onClick={() => setOpenModalId("Digital & Creative Design")}
-                  className="text-[9px] font-bold text-slate-400 hover:text-emerald-500 transition-colors py-1 px-3 bg-slate-50 hover:bg-emerald-500/5 border border-slate-100 rounded-full cursor-pointer shadow-sm select-none"
-                >
-                  Details
-                </button>
-              </div>
-
-              <h3 className="text-lg font-display font-black text-navy mb-1 tracking-tight">
-                Creative Design
-              </h3>
-              <p className="text-slate-500 text-[12px] mb-4 font-medium leading-relaxed min-h-[36px]">
-                Beautiful poster art, corporate assets, and visuals that build credibility and trust.
-              </p>
-
-              <div className="space-y-1.5 mb-6 text-[11px] font-bold text-navy">
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>Social Posts</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>Branding Assets</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>Graphics Kit</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Metric Footer */}
-            <div className="border-t border-slate-100 pt-4 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500 shrink-0">
-                🎨
-              </div>
-              <div>
-                <h4 className="text-lg font-black font-mono tracking-tight text-emerald-500 leading-none">
-                  <AnimatedCounter value={90} suffix="+" colorClass="text-emerald-500" />
-                </h4>
-                <p className="text-[9px] font-bold text-slate-400 mt-0.5">Posts Designed</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Card 4: Website Design */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            whileHover={{ y: -5 }}
-            className="bg-white hover:bg-white/95 border border-slate-100 hover:border-purple-600/25 p-6 rounded-[2rem] shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-default"
-          >
-            <div className="absolute top-3 left-3 text-[8px] text-slate-300 group-hover:text-purple-600 transition-colors font-mono select-none font-bold">[04]</div>
-            <div className="absolute -top-10 -right-10 w-24 h-24 bg-purple-600/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-            {/* Hover Micro-Animation: Platform Ingress */}
-            <div className="absolute right-4 bottom-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 z-10">
-              <motion.div
-                animate={{ y: [0, -3, 0], scale: [1, 1.03, 0.98, 1] }}
-                transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut" }}
-                className="bg-purple-600 text-white text-[9px] px-2 py-0.5 rounded-lg font-bold shadow-md flex items-center gap-1 font-mono tracking-wider"
-              >
-                <span>⚡ DEPLOYED 0.2s</span>
-              </motion.div>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <motion.div 
-                  whileHover={{ rotate: 12, scale: 1.1 }}
-                  className="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600 shadow-sm border border-purple-100/50"
-                >
-                  <Globe size={20} />
-                </motion.div>
-                
-                <button 
-                  onClick={() => setOpenModalId("Website Design")}
-                  className="text-[9px] font-bold text-slate-400 hover:text-purple-600 transition-colors py-1 px-3 bg-slate-50 hover:bg-purple-5050 border border-slate-100 rounded-full cursor-pointer shadow-sm select-none"
-                >
-                  Details
-                </button>
-              </div>
-
-              <h3 className="text-lg font-display font-black text-navy mb-1 tracking-tight">
-                Website Design
-              </h3>
-              <p className="text-slate-500 text-[12px] mb-4 font-medium leading-relaxed min-h-[36px]">
-                High-performance custom UI/UX responsive layouts fully launched with live domains.
-              </p>
-
-              <div className="space-y-1.5 mb-6 text-[11px] font-bold text-navy">
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>UI/UX Wireframes</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>Responsive Web</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {checkMark}
-                  <span>React Deployment</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Metric Footer */}
-            <div className="border-t border-slate-100 pt-4 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 shrink-0">
-                🌐
-              </div>
-              <div>
-                <h4 className="text-lg font-black font-mono tracking-tight text-purple-600 leading-none">
-                  <AnimatedCounter value={8} suffix="+" colorClass="text-purple-600" />
-                </h4>
-                <p className="text-[9px] font-bold text-slate-400 mt-0.5">Websites Launched</p>
-              </div>
-            </div>
-          </motion.div>
+          </div>
 
         </div>
 
@@ -1846,191 +1727,229 @@ const Services = () => {
 
 // --- Experience Section ---
 const Experience = () => {
-  const experiences = [
-    {
-      company: "Apollo Dental Clinic",
-      role: "Social Media Manager, Videographer & Digital Designer",
-      location: "RS Puram, Coimbatore, Tamil Nadu",
-      duration: "Nov 2024 - June 2026",
-      description: [
-        "Independently shooting professional medical videos, campaign shots, and clinician photography directly on-site.",
-        "Editing and producing high-converting creative video reels and patient narrative features from scratch.",
-        "Managing complete social media handling, content scheduling, and corporate engagement campaigns.",
-        "Designing polished banners, clinic posters, certificates, and strategic branding creatives.",
-        "Created core brand works including logo suite and internal digital structures."
-      ],
-      result: "Self-produced major video campaigns, photography assets, and premium social media reels completely in-house.",
-      color: "from-blue-600/20 to-blue-500/5",
-      borderColor: "group-hover:border-blue-500/30",
-      accentColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-      logo: "https://image2url.com/r2/default/images/1775567270735-9f31738c-e14f-443e-bc63-25dc45697c09.png",
-      link: "https://www.instagram.com/apollodental_cosmetologyclinic?igsh=OGg3MGpzazF6OGVr",
-      platforms: [
-        {
-          name: "Instagram",
-          icon: "instagram",
-          url: "https://www.instagram.com/apollodental_cosmetologyclinic?igsh=OGg3MGpzazF6OGVr"
-        },
-        {
-          name: "Facebook",
-          icon: "facebook",
-          url: "https://www.facebook.com/apollodental_cosmetologyclinic"
-        }
-      ]
-    }
+  const tools = [
+    "Canva",
+    "Meta Business Suite",
+    "CapCut",
+    "ChatGPT",
+    "Instagram",
+    "Facebook",
+    "Google Workspace"
+  ];
+
+  const responsibilities = [
+    "Planned and managed monthly content calendars aligned with marketing campaigns and business goals.",
+    "Created social media posts, promotional creatives, brochures, carousels, and branded marketing materials while maintaining visual consistency.",
+    "Developed content ideas, wrote engaging captions, and managed Instagram and Facebook through consistent publishing and audience engagement.",
+    "Created and edited Instagram Reels and short-form videos to improve engagement and strengthen brand presence.",
+    "Supported digital marketing by monitoring Meta Business Suite insights, reviewing content performance, and assisting campaign execution.",
+    "Collaborated on promotional campaigns, seasonal content, and awareness initiatives across social media platforms."
   ];
 
   return (
-    <section id="experience" className="py-20 md:py-28 px-6 md:px-12 lg:px-24 bg-navy text-white overflow-hidden relative">
-      {/* Background radial highlights */}
-      <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(#ffffff03_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none" />
+    <section id="experience" className="py-16 md:py-20 px-6 md:px-12 lg:px-24 bg-white text-slate-800 overflow-hidden relative border-t border-slate-100">
+      {/* Subtle blue radial gradients for modern high-end look */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-100/30 rounded-full blur-[130px] pointer-events-none -z-10" />
+      <div className="absolute bottom-1/4 right-10 w-[500px] h-[500px] bg-indigo-50/40 rounded-full blur-[120px] pointer-events-none -z-10" />
+      <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         
-        {/* Revamped High-End Premium Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
+        {/* Section Header */}
+        <div className="text-center max-w-4xl mx-auto mb-12 md:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="space-y-3.5"
           >
-            <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-4 inline-block bg-white/5 border border-white/10 px-4 py-1.5 rounded-full">
-              PROVEN WORK HISTORY
+            <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold bg-blue-50 px-4 py-1.5 rounded-full border border-blue-100 inline-block shadow-sm/50">
+              MY EXPERIENCE
             </span>
-            <h2 className="text-3xl md:text-5xl font-display font-black text-white mb-6 tracking-tight leading-[1.12]">
-              Real Client Collaborations
-              <span className="text-primary block mt-2 text-2xl md:text-4xl font-medium tracking-normal text-slate-300">
-                & Industry Impact
-              </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black text-navy tracking-tight leading-tight md:whitespace-nowrap">
+              Real Client Experience & Brand Growth
             </h2>
-            <p className="text-slate-400 text-sm md:text-base font-normal max-w-2xl mx-auto leading-relaxed">
-              Managing end-to-end digital branding, creative assets, and social media presence to deliver measurable growth.
+            <p className="text-slate-500 text-sm md:text-base font-semibold max-w-2xl mx-auto leading-relaxed">
+              Helping healthcare brands strengthen their digital presence through strategic content planning, creative design, and consistent social media management.
             </p>
           </motion.div>
         </div>
 
-        {/* Upgraded Modern UI Cards */}
-        <div className="space-y-12 md:space-y-16">
-          {experiences.map((exp, idx) => (
-            <motion.div
-              key={exp.company}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.1 }}
-              className="group flex flex-col lg:flex-row gap-6 md:gap-8 items-stretch"
-            >
-              {/* Left Brand Showcase Card */}
-              <div className={`lg:w-1/3 p-6 md:p-8 rounded-[2rem] bg-gradient-to-br ${exp.color} border border-white/5 ${exp.borderColor} flex flex-col justify-between shadow-2xl transition-all duration-300 relative`}>
-                <div className="absolute top-4 right-4 text-[10px] font-mono font-bold tracking-widest text-white/20">
-                  PROJECT 0{idx + 1}
+        {/* Case Study Container */}
+        <div className="space-y-6">
+          
+          {/* Main Case Study Bento Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-white/80 backdrop-blur-md border border-slate-200/60 p-5 md:p-6 lg:p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1"
+          >
+            {/* Header Area of the Case Study */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center overflow-hidden p-2 shadow-sm">
+                  <img 
+                    src="https://image2url.com/r2/default/images/1775567270735-9f31738c-e14f-443e-bc63-25dc45697c09.png" 
+                    alt="Apollo Dental Clinic" 
+                    className="w-full h-full object-contain" 
+                    referrerPolicy="no-referrer" 
+                  />
                 </div>
-                
                 <div>
-                  <motion.div 
-                    whileHover={{ scale: 1.05 }}
-                    className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 overflow-hidden p-2.5 shadow-xl shadow-black/20"
-                  >
-                    <img src={exp.logo} alt={exp.company} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
-                  </motion.div>
-                  
-                  <h4 className="text-xl md:text-2xl font-display font-black text-white mb-2 leading-tight">
-                    {exp.company}
-                  </h4>
-                  
-                  <div className="flex flex-col gap-1.5 mb-6">
-                    <p className="text-primary font-bold text-xs uppercase tracking-widest leading-none">
-                      {exp.role}
-                    </p>
-                    <div className="flex items-center gap-1.5 text-slate-400 text-[11px] font-medium">
-                      <MapPin size={12} className="text-slate-500" /> {exp.location}
-                    </div>
-                  </div>
-
-                  {exp.platforms && (
-                    <div className="mb-6 bg-white/[0.03] border border-white/5 rounded-2xl p-4">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-3">
-                        Handling Platforms
-                      </span>
-                      <div className="flex flex-wrap gap-2.5">
-                        {exp.platforms.map((plat) => {
-                          const IconComp = plat.icon === "instagram" ? Instagram : Facebook;
-                          return (
-                            <a
-                              key={plat.name}
-                              href={plat.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 rounded-xl px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white transition-all duration-300 shadow-sm"
-                            >
-                              <IconComp size={14} className="text-primary shrink-0" />
-                              <span>{plat.name}</span>
-                            </a>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex flex-col gap-4 pt-4 border-t border-white/10">
-                  <div className="flex justify-between items-end gap-2">
-                    <div>
-                      <span className="text-[9px] font-bold uppercase tracking-widest opacity-40 block mb-1">Duration</span>
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${exp.accentColor}`}>
-                        {exp.duration}
-                      </span>
-                    </div>
-                    <a 
-                      href="#work" 
-                      className="inline-flex items-center gap-1.5 bg-white text-navy px-3.5 py-1.5 rounded-full font-bold text-[10px] hover:bg-primary hover:text-white transition-all shadow-md select-none"
-                    >
-                      My Works <ArrowRight size={12} />
-                    </a>
-                  </div>
-                  
-                  <a 
-                    href={exp.link} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white text-white hover:text-navy px-4 py-2.5 rounded-xl text-xs font-bold transition-all w-full shadow-lg select-none"
-                  >
-                    View Official Instagram <Instagram size={14} />
-                  </a>
+                  <span className="text-[9px] font-mono font-bold text-primary uppercase tracking-wider bg-blue-50 border border-blue-100/50 px-2.5 py-0.5 rounded-full">
+                    Active Client Partner
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-display font-black text-navy mt-0.5 tracking-tight">
+                    Apollo Dental Clinic
+                  </h3>
                 </div>
               </div>
+
+              {/* Recruitment Meta Information */}
+              <div className="flex flex-wrap items-center gap-3 text-[11px]">
+                <div className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                  <Briefcase size={12} className="text-primary" />
+                  <div>
+                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Role</p>
+                    <p className="font-bold text-navy mt-0.5">Social Media Manager & Content Creator</p>
+                  </div>
+                </div>
+                
+                <div className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                  <Globe size={12} className="text-emerald-500" />
+                  <div>
+                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Type</p>
+                    <p className="font-bold text-navy mt-0.5">Remote</p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                  <Calendar size={12} className="text-purple-500" />
+                  <div>
+                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Duration</p>
+                    <p className="font-bold text-navy mt-0.5">Nov 2024 – Jun 2026</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Grid for Storytelling: Overview, Platforms, Responsibilities, Impact */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 pt-5">
               
-              {/* Right Key Responsibilities & Outputs Card */}
-              <div className="lg:w-2/3 bg-white/[0.02] border border-white/5 hover:border-white/10 p-6 md:p-8 rounded-[2rem] flex flex-col justify-between transition-all duration-300">
-                <div className="mb-6">
-                  <h5 className="text-xs font-bold uppercase tracking-[0.15em] text-primary mb-4 flex items-center gap-2">
-                    <span>⚡ CODE OF ACTION & RESPONSIBILITIES</span>
-                  </h5>
-                  <ul className="space-y-3.5">
-                    {exp.description.map((item, i) => (
-                      <li key={i} className="flex gap-3 text-slate-300 text-xs md:text-sm leading-relaxed">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary/70 mt-1.5 shrink-0" />
-                        <span>{item}</span>
+              {/* Left Column (Meta & Overview & Tools) */}
+              <div className="lg:col-span-5 space-y-5">
+                
+                {/* Overview Section */}
+                <div className="space-y-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+                    Overview
+                  </h4>
+                  <p className="text-slate-600 text-xs md:text-[13px] font-semibold leading-relaxed">
+                    Apollo Dental Clinic is a premium dental care provider. In my role as Social Media Manager and Content Creator, I present their clinical expertise through professional visual designs, educational reels, and interactive digital campaigns on social media.
+                  </p>
+                </div>
+
+                {/* Platforms Managed */}
+                <div className="space-y-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+                    Platforms Managed
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    <a
+                      href="https://www.instagram.com/apollodental_cosmetologyclinic?igsh=OGg3MGpzazF6OGVr"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-1.5 bg-pink-50 hover:bg-pink-100/60 border border-pink-100 hover:border-pink-200 rounded-lg px-2.5 py-1 text-[11px] font-bold text-pink-600 transition-all duration-300"
+                    >
+                      <Instagram size={12} className="shrink-0 text-pink-600" />
+                      <span>Instagram</span>
+                      <ExternalLink size={8} className="opacity-60" />
+                    </a>
+                    
+                    <a
+                      href="https://www.facebook.com/apollodental_cosmetologyclinic"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-1.5 bg-blue-50 hover:bg-blue-100/60 border border-blue-100 hover:border-blue-200 rounded-lg px-2.5 py-1 text-[11px] font-bold text-blue-600 transition-all duration-300"
+                    >
+                      <Facebook size={12} className="shrink-0 text-blue-600" />
+                      <span>Facebook</span>
+                      <ExternalLink size={8} className="opacity-60" />
+                    </a>
+                  </div>
+                </div>
+
+                {/* Tools Used Section */}
+                <div className="space-y-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+                    Tools Used
+                  </h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {tools.map((tool) => (
+                      <span
+                        key={tool}
+                        className="text-slate-600 bg-slate-50 border border-slate-200/50 px-2.5 py-0.5 rounded-full text-[11px] font-bold hover:bg-slate-100/80 hover:border-slate-300 hover:text-slate-900 transition-all cursor-default select-none"
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Right Column (Responsibilities) */}
+              <div className="lg:col-span-7">
+                
+                {/* Responsibilities Section */}
+                <div className="space-y-2.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+                    Responsibilities
+                  </h4>
+                  <ul className="space-y-1.5">
+                    {responsibilities.map((resp, i) => (
+                      <li key={i} className="flex items-start gap-2 text-slate-600 text-xs md:text-[13px] leading-relaxed font-semibold">
+                        <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
+                          <Check size={9} strokeWidth={3} />
+                        </div>
+                        <span>{resp}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                
-                <div className="pt-5 border-t border-white/5">
-                  <div className="bg-primary/5 border-l-4 border-primary px-4 py-3.5 rounded-r-xl">
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#2eacf6]/80 block mb-1">CLIENT OUTCOME</span>
-                    <p className="text-slate-200 font-medium italic text-xs md:text-[13px] leading-relaxed">
-                      "{exp.result}"
-                    </p>
-                  </div>
-                </div>
+
               </div>
-            </motion.div>
-          ))}
+
+            </div>
+
+            {/* Project Impact full-width highlighted quote block */}
+            <div className="mt-6 bg-gradient-to-br from-blue-50 to-indigo-50/60 border border-blue-100/60 p-5 rounded-2xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-3 opacity-10">
+                <Sparkles size={20} className="text-primary animate-pulse" />
+              </div>
+              
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className="w-1 h-5 bg-primary rounded-full" />
+                <h5 className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.15em] text-primary">
+                  Project Impact
+                </h5>
+              </div>
+              
+              <p className="text-slate-700 text-xs sm:text-[13px] md:text-sm font-semibold leading-relaxed">
+                Contributed to strengthening Apollo Dental Clinic's digital presence through strategic content planning, creative design, engaging social media campaigns, and consistent brand communication across Instagram and Facebook.
+              </p>
+            </div>
+          </motion.div>
+
         </div>
+
       </div>
     </section>
   );
@@ -2513,7 +2432,7 @@ const Portfolio = () => {
           <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-4 inline-block bg-blue-50 border border-blue-100 px-4 py-1.5 rounded-full select-none">
             EXPLORE PORTFOLIO
           </span>
-          <h3 className="text-3xl md:text-5xl font-display font-black text-navy mb-8 tracking-tight">Creative Showcases</h3>
+          <h3 className="text-3xl md:text-5xl font-display font-black text-navy mb-8 tracking-tight">Work Samples</h3>
           
           {/* Beautiful Segmented Modern Minimalist Pill Menu bar */}
           <div className="flex flex-wrap justify-center gap-1.5 md:gap-2 bg-slate-50 p-1.5 rounded-2xl md:rounded-full max-w-4xl mx-auto border border-slate-100 shadow-inner select-none mb-10">
@@ -2642,7 +2561,7 @@ const WhyChooseMe = () => {
   const points = [
     { 
       title: "Real Client Experience", 
-      desc: "1.5+ years of proven results with healthcare and real estate brands.",
+      desc: "1.7 years of proven results with healthcare and real estate brands.",
       icon: <CheckCircle2 className="text-primary" size={24} />,
       color: "bg-blue-50"
     },
@@ -2680,19 +2599,6 @@ const WhyChooseMe = () => {
             <p className="text-lg text-slate-600 mb-10 leading-relaxed">
               I combine creative expertise with a deep understanding of business needs to deliver results that actually matter.
             </p>
-            <div className="flex items-center gap-6">
-              <div className="flex -space-x-3">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="w-12 h-12 rounded-full border-4 border-white bg-slate-200 overflow-hidden">
-                    <img src={`https://picsum.photos/seed/user${i}/100/100`} alt="User" referrerPolicy="no-referrer" />
-                  </div>
-                ))}
-              </div>
-              <div>
-                <p className="text-navy font-bold">Trusted by 10+ Brands</p>
-                <p className="text-slate-500 text-sm">Consistent quality delivery</p>
-              </div>
-            </div>
           </motion.div>
 
           <div className="grid sm:grid-cols-2 gap-6">
@@ -2721,12 +2627,69 @@ const WhyChooseMe = () => {
 
 // --- Process Section ---
 const Process = () => {
+  const [activeStep, setActiveStep] = useState(0);
+
   const steps = [
-    { title: "Understand", desc: "Deep dive into your brand goals.", icon: <MessageSquare size={24} />, color: "bg-blue-500" },
-    { title: "Strategy", desc: "Planning for maximum impact.", icon: <Layout size={24} />, color: "bg-indigo-500" },
-    { title: "Drafting", desc: "Creating the first set of visuals.", icon: <Palette size={24} />, color: "bg-purple-500" },
-    { title: "Refining", desc: "Perfecting based on your feedback.", icon: <CheckCircle2 size={24} />, color: "bg-pink-500" },
-    { title: "Delivery", desc: "High-quality final files ready to post.", icon: <ExternalLink size={24} />, color: "bg-emerald-500" }
+    { 
+      title: "Understand", 
+      desc: "Deep dive into your brand goals.", 
+      icon: <MessageSquare size={20} />, 
+      color: "bg-blue-500", 
+      borderColor: "border-blue-200", 
+      textColor: "text-blue-600",
+      lightBg: "bg-blue-50/50",
+      details: "Understanding your current baseline, target audience, and business goals to outline your brand message.",
+      actions: ["Brand Audit & Assessment", "Competitor & Trend Analysis", "1-on-1 Discovery Sync Session"],
+      deliverable: "Strategic Brand Positioning Map"
+    },
+    { 
+      title: "Strategy", 
+      desc: "Planning for maximum impact.", 
+      icon: <Layout size={20} />, 
+      color: "bg-indigo-500", 
+      borderColor: "border-indigo-200", 
+      textColor: "text-indigo-600",
+      lightBg: "bg-indigo-50/50",
+      details: "Translating discovery findings into a robust content strategy with clear timelines and messaging pillars.",
+      actions: ["Monthly Content Calendar Setup", "Creative Moodboard Selection", "Vibe & Style Direction Guidelines"],
+      deliverable: "Aesthetic Direction & Content Plan"
+    },
+    { 
+      title: "Drafting", 
+      desc: "Creating the first set of visuals.", 
+      icon: <Palette size={20} />, 
+      color: "bg-purple-500", 
+      borderColor: "border-purple-200", 
+      textColor: "text-purple-600",
+      lightBg: "bg-purple-50/50",
+      details: "Bringing concepts to life using Canva, CapCut, and advanced design principles. High-fidelity first drafts.",
+      actions: ["High-End Social Media Creatives", "Reels & Shorts Video Editing", "Engaging Captions & Hook Writing"],
+      deliverable: "First Batch of Video & Graphic Drafts"
+    },
+    { 
+      title: "Refining", 
+      desc: "Perfecting based on your feedback.", 
+      icon: <CheckCircle2 size={20} />, 
+      color: "bg-pink-500", 
+      borderColor: "border-pink-200", 
+      textColor: "text-pink-600",
+      lightBg: "bg-pink-50/50",
+      details: "Reviewing the drafts together, adjusting tone, captions, visual pacing, and formatting.",
+      actions: ["Structured Revision Rounds", "Micro-adjusting Typography & Sound", "Visual Alignment Checks"],
+      deliverable: "Final Approved & Polished Assets"
+    },
+    { 
+      title: "Delivery", 
+      desc: "High-quality final files ready to post.", 
+      icon: <ExternalLink size={20} />, 
+      color: "bg-emerald-500", 
+      borderColor: "border-emerald-200", 
+      textColor: "text-emerald-600",
+      lightBg: "bg-emerald-50/50",
+      details: "Exporting high-resolution final content and publishing seamlessly via Meta Business Suite scheduler.",
+      actions: ["Seamless Meta Business Suite Scheduling", "Optimized Hashtags & SEO Tags", "Delivery of High-Res Google Drive files"],
+      deliverable: "Publish-Ready Scheduled Content"
+    }
   ];
 
   return (
@@ -2735,7 +2698,7 @@ const Process = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="max-w-2xl">
             <h2 className="text-sm uppercase tracking-widest text-primary font-bold mb-4">How I Work</h2>
-            <h3 className="text-4xl md:text-5xl mb-0">A simple, transparent process to elevate your brand</h3>
+            <h3 className="text-4xl md:text-5xl mb-0 font-display font-black text-navy leading-tight">A simple, transparent process to elevate your brand</h3>
           </div>
           <div className="hidden md:block">
             <div className="w-24 h-24 rounded-full border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400 animate-spin-slow">
@@ -2744,32 +2707,202 @@ const Process = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-5 gap-4">
-          {steps.map((step, idx) => (
-            <motion.div
-              key={step.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="relative group bg-white p-8 rounded-[2.5rem] border border-slate-100 md:hover:shadow-xl md:hover:shadow-slate-200/50 transition-all duration-500"
-            >
-              <div className={`w-12 h-12 ${step.color} text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg md:group-hover:scale-110 transition-transform duration-300`}>
-                {step.icon}
-              </div>
-              <div className="absolute top-8 right-8 text-4xl font-display font-black text-slate-50 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
-                0{idx + 1}
-              </div>
-              <h4 className="text-xl font-bold mb-3">{step.title}</h4>
-              <p className="text-slate-500 text-sm leading-relaxed">{step.desc}</p>
+        {/* Process Flow Chart Interactive UI */}
+        <div className="space-y-12">
+          
+          {/* Connector Flow Line & Stepper Nodes */}
+          <div className="relative pb-4">
+            
+            {/* Horizontal Line for Desktop */}
+            <div className="absolute top-10 left-[10%] right-[10%] h-[3px] bg-slate-200/60 rounded-full hidden md:block">
+              <motion.div 
+                className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-500 rounded-full shadow-lg"
+                animate={{ width: `${(activeStep / 4) * 100}%` }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              />
+            </div>
+
+            {/* Stepper Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-4 relative z-10">
+              {steps.map((step, idx) => {
+                const isActive = activeStep === idx;
+                const isCompleted = activeStep > idx;
+                
+                return (
+                  <button
+                    key={step.title}
+                    onClick={() => setActiveStep(idx)}
+                    className="flex md:flex-col items-start md:items-center text-left md:text-center p-4 rounded-2xl md:bg-transparent bg-white border md:border-transparent border-slate-200/50 hover:border-slate-300 md:hover:border-transparent transition-all duration-300 group focus:outline-none w-full cursor-pointer"
+                  >
+                    {/* Circle Node */}
+                    <div className="relative mb-0 md:mb-5 mr-4 md:mr-0 shrink-0">
+                      <motion.div
+                        className={`w-12 h-12 rounded-full flex items-center justify-center border-4 ${
+                          isActive 
+                            ? "bg-white shadow-xl scale-110 z-20" 
+                            : isCompleted 
+                              ? `${step.color} text-white border-white shadow-md z-10` 
+                              : "bg-slate-100 text-slate-400 border-slate-200 z-0"
+                        } transition-all duration-300`}
+                        animate={{
+                          borderColor: isActive ? "rgba(59, 130, 246, 1)" : isCompleted ? "#ffffff" : "rgba(226, 232, 240, 1)",
+                          boxShadow: isActive ? "0px 10px 25px -5px rgba(59, 130, 246, 0.3)" : "none"
+                        }}
+                      >
+                        <span className={isActive ? step.textColor : isCompleted ? "text-white" : "text-slate-400"}>
+                          {step.icon}
+                        </span>
+                      </motion.div>
+                      
+                      {/* Floating Step Tag */}
+                      <span className="absolute -top-3 -right-3 bg-slate-900 text-white font-mono font-black text-[9px] rounded-full w-5 h-5 flex items-center justify-center border border-white">
+                        0{idx + 1}
+                      </span>
+                    </div>
+
+                    {/* Step Texts */}
+                    <div>
+                      <h4 className={`text-base font-bold transition-colors duration-300 ${isActive ? "text-primary font-black" : "text-navy"}`}>
+                        {step.title}
+                      </h4>
+                      <p className="text-slate-500 text-xs mt-0.5 font-semibold leading-relaxed hidden md:block max-w-[150px] mx-auto">
+                        {step.desc}
+                      </p>
+                      <p className="text-slate-500 text-[11px] mt-0.5 font-semibold leading-relaxed md:hidden">
+                        {step.desc}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Active Step Panel / Dashboard */}
+          <motion.div
+            key={activeStep}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="bg-white border border-slate-200/60 rounded-[2.5rem] p-6 md:p-10 shadow-xl relative overflow-hidden"
+          >
+            {/* Diagonal Vibe Accent */}
+            <div className={`absolute top-0 left-0 w-3 h-full ${steps[activeStep].color}`} />
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               
-              {idx < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 translate-y-[-50%] z-10 text-slate-200">
-                  <ChevronRight size={24} />
+              {/* Left Column: Stage Detail & Deliverables */}
+              <div className="lg:col-span-7 space-y-6">
+                <div>
+                  <span className={`text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full ${steps[activeStep].textColor} ${steps[activeStep].lightBg} border ${steps[activeStep].borderColor}`}>
+                    STAGE 0{activeStep + 1} • {steps[activeStep].title.toUpperCase()}
+                  </span>
+                  <h3 className="text-2xl md:text-3xl font-display font-black text-navy mt-3 tracking-tight">
+                    {steps[activeStep].title} Phase
+                  </h3>
+                  <p className="text-slate-600 text-sm md:text-base font-semibold mt-2 leading-relaxed">
+                    {steps[activeStep].details}
+                  </p>
                 </div>
-              )}
-            </motion.div>
-          ))}
+
+                {/* Key Action items checklist */}
+                <div className="space-y-3">
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                    Key Activities & Workflows
+                  </h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {steps[activeStep].actions.map((action, i) => (
+                      <div key={i} className="flex items-center gap-3 bg-slate-50/60 border border-slate-100 p-3 rounded-xl">
+                        <div className={`w-5 h-5 rounded-full ${steps[activeStep].textColor} ${steps[activeStep].lightBg} flex items-center justify-center shrink-0`}>
+                          <Check size={11} strokeWidth={3} />
+                        </div>
+                        <span className="text-slate-700 text-xs font-semibold">{action}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Major Deliverable Pin */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                    Primary Deliverable:
+                  </span>
+                  <span className={`text-xs font-bold px-3.5 py-1.5 rounded-xl border ${steps[activeStep].textColor} ${steps[activeStep].lightBg} ${steps[activeStep].borderColor} flex items-center gap-2`}>
+                    <Sparkles size={12} />
+                    {steps[activeStep].deliverable}
+                  </span>
+                </div>
+              </div>
+
+              {/* Right Column: Visual Flowchart Simulator Card */}
+              <div className="lg:col-span-5 bg-slate-50 border border-slate-100 rounded-3xl p-6 relative overflow-hidden self-stretch flex flex-col justify-between group">
+                <div className="absolute top-3 right-3 text-[10px] font-mono font-bold text-slate-300">
+                  FLOW DIAGRAM
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-slate-400 uppercase">Process Progress</span>
+                    <span className={`text-xs font-black font-mono ${steps[activeStep].textColor}`}>
+                      {Math.round(((activeStep + 1) / 5) * 100)}% Complete
+                    </span>
+                  </div>
+                  
+                  {/* Progress bar inside panel */}
+                  <div className="w-full h-2.5 bg-slate-200/60 rounded-full overflow-hidden">
+                    <motion.div 
+                      className={`h-full ${steps[activeStep].color}`}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${((activeStep + 1) / 5) * 100}%` }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </div>
+                </div>
+
+                {/* Simulated visual flow nodes */}
+                <div className="my-8 flex justify-center items-center gap-3">
+                  {[0, 1, 2, 3, 4].map((nodeIdx) => {
+                    const isNodeActive = nodeIdx === activeStep;
+                    const isNodePast = nodeIdx < activeStep;
+                    return (
+                      <React.Fragment key={nodeIdx}>
+                        <div 
+                          className={`w-7 h-7 rounded-full flex items-center justify-center font-mono text-xs font-black transition-all duration-300 ${
+                            isNodeActive 
+                              ? `${steps[activeStep].color} text-white ring-4 ring-offset-2 ring-primary/40 scale-110` 
+                              : isNodePast 
+                                ? "bg-slate-300 text-slate-600" 
+                                : "bg-slate-200 text-slate-400"
+                          }`}
+                        >
+                          {nodeIdx + 1}
+                        </div>
+                        {nodeIdx < 4 && (
+                          <div className={`h-0.5 w-6 transition-all duration-300 ${nodeIdx < activeStep ? "bg-slate-300" : "bg-slate-200"}`} />
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
+
+                {/* Interactive controller button */}
+                <div className="flex justify-between items-center gap-4 pt-4 border-t border-slate-200/40">
+                  <span className="text-[11px] font-medium text-slate-400">
+                    Click steps above or use navigation:
+                  </span>
+                  <button
+                    onClick={() => setActiveStep((prev) => (prev + 1) % 5)}
+                    className="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold py-1.5 px-3 rounded-full shadow-sm hover:shadow transition-all cursor-pointer select-none"
+                  >
+                    Next Stage <ArrowRight size={12} />
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -2830,7 +2963,7 @@ const Contact = () => {
                 </div>
               </a>
               <a 
-                href="mailto:naveenrajafreelancer@gmail.com"
+                href="mailto:naveenraja3663@gmail.com"
                 className="flex items-start gap-4 bg-white p-4 rounded-2xl border border-slate-100 hover:border-primary transition-all group shadow-sm/50"
               >
                 <div className="w-10 h-10 bg-primary/5 rounded-xl flex items-center justify-center text-primary shrink-0 mt-0.5 group-hover:bg-primary group-hover:text-white transition-all">
@@ -2838,7 +2971,7 @@ const Contact = () => {
                 </div>
                 <div className="min-w-0">
                   <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Email</p>
-                  <p className="text-xs md:text-sm font-bold text-navy break-all leading-tight">naveenrajafreelancer@gmail.com</p>
+                  <p className="text-xs md:text-sm font-bold text-navy break-all leading-tight">naveenraja3663@gmail.com</p>
                 </div>
               </a>
             </div>
@@ -2853,7 +2986,7 @@ const Contact = () => {
                 <MessageSquare size={18} /> WhatsApp Live Chat
               </a>
               <a 
-                href="https://drive.google.com/file/d/1kDpctx6LzftvoRItSdBWx3oabkkUyFlw/view?usp=sharing" 
+                href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing" 
                 target="_blank" 
                 rel="noreferrer"
                 className="inline-flex items-center gap-2.5 bg-navy text-white px-8 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-navy/10 transition-all text-sm select-none"
