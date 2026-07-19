@@ -98,10 +98,24 @@ const AnimatedCounter = ({ value, suffix = "", delay = 0, decimals = 0, colorCla
   }, [value, delay]);
 
   const displayVal = decimals > 0 ? count.toFixed(decimals) : Math.floor(count);
+  const isWordSuffix = suffix.trim().toLowerCase() === "years";
 
   return (
-    <span ref={elementRef} className={`block text-3xl md:text-5xl font-extrabold ${colorClass} font-mono tracking-tight transition-all duration-300`}>
-      {displayVal}{suffix}
+    <span ref={elementRef} className="block transition-all duration-300 text-right">
+      {isWordSuffix ? (
+        <>
+          <span className={`block text-3xl md:text-5xl font-extrabold ${colorClass} font-mono tracking-tight leading-none`}>
+            {displayVal}
+          </span>
+          <span className="block text-[10px] md:text-xs font-black text-slate-400 mt-1 uppercase tracking-widest leading-none text-right font-sans">
+            {suffix.trim()}
+          </span>
+        </>
+      ) : (
+        <span className={`block text-3xl md:text-5xl font-extrabold ${colorClass} font-mono tracking-tight`}>
+          {displayVal}{suffix}
+        </span>
+      )}
     </span>
   );
 };
@@ -299,7 +313,7 @@ const Hero = () => {
  
             {/* Description */}
             <p className="text-sm md:text-base text-slate-500 mb-8 text-left leading-relaxed max-w-xl">
-              I help businesses grow through strategic content planning, engaging social media campaigns, creative design, and short-form video content that builds audience engagement and strengthens brand presence.
+              With over 1.7 years of expertise, I help businesses grow through strategic content planning, engaging social media campaigns, creative design, and short-form video content that builds audience engagement and strengthens brand presence.
             </p>
  
             {/* CTA buttons with modern animations and styles */}
@@ -409,7 +423,7 @@ const Hero = () => {
             {[
               {
                 value: 1.7,
-                suffix: "",
+                suffix: " YEARS",
                 title: "Healthcare Marketing Experience",
                 colorClass: "text-primary",
                 desc: "Creating content for dental and healthcare brands.",
