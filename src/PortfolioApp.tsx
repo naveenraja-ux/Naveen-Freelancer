@@ -2228,6 +2228,20 @@ const Portfolio = () => {
   const projects = [
     // Posters
     { 
+      name: "Creative Brand Graphic Design", 
+      category: "Posters", 
+      type: "Creative Graphics", 
+      img: "https://yearling-red-qqyifvdg.edgeone.dev/file.png",
+      link: "#"
+    },
+    { 
+      name: "Brand Carousel Slide Design", 
+      category: "Posters", 
+      type: "Branding", 
+      img: "https://querulous-green-l3kivch9.edgeone.dev/SLIDE%203%20(1).png",
+      link: "#"
+    },
+    { 
       name: "Free Mental Health Counseling", 
       category: "Posters", 
       type: "Healthcare", 
