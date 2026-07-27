@@ -1877,7 +1877,7 @@ const Experience = () => {
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     <a
-                      href="https://www.instagram.com/apollodental_cosmetologyclinic?igsh=OGg3MGpzazF6OGVr"
+                      href="https://www.instagram.com/apollodental_cosmetologyclinic/"
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center gap-1.5 bg-pink-50 hover:bg-pink-100/60 border border-pink-100 hover:border-pink-200 rounded-lg px-2.5 py-1 text-[11px] font-bold text-pink-600 transition-all duration-300"
@@ -1888,7 +1888,7 @@ const Experience = () => {
                     </a>
                     
                     <a
-                      href="https://www.facebook.com/apollodental_cosmetologyclinic"
+                      href="https://www.facebook.com/profile.php?id=61589839547578&sk=reels_tab"
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center gap-1.5 bg-blue-50 hover:bg-blue-100/60 border border-blue-100 hover:border-blue-200 rounded-lg px-2.5 py-1 text-[11px] font-bold text-blue-600 transition-all duration-300"
