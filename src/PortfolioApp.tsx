@@ -6,6 +6,8 @@ import {
   FileText, 
   CheckCircle2, 
   ArrowRight, 
+  ArrowLeft,
+  ChevronLeft,
   Phone, 
   Mail, 
   MapPin, 
@@ -30,6 +32,10 @@ import {
   Play,
   Pause,
   Maximize,
+  Maximize2,
+  Minimize2,
+  RotateCcw,
+  RotateCw,
   Volume2,
   VolumeX,
   Check,
@@ -1971,22 +1977,62 @@ const Experience = () => {
   );
 };
 
-// --- Video Player Component ---
-const VideoPlayerModal = ({ project }: { project: { name: string; img: string; link?: string; type?: string; videoUrl?: string } }) => {
+// --- Video Player Component with True Browser Fullscreen & 9:16 Aspect Preservation ---
+interface VideoPlayerModalProps {
+  project: {
+    name: string;
+    img: string;
+    link?: string;
+    type?: string;
+    videoUrl?: string;
+    category?: string;
+  };
+  onClose?: () => void;
+  autoFullscreen?: boolean;
+}
+
+const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ 
+  project, 
+  onClose,
+  autoFullscreen = false 
+}) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState("0:00");
   const [duration, setDuration] = useState("0:30");
   const [isMuted, setIsMuted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showControls, setShowControls] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
+  const idleTimerRef = useRef<any>(null);
 
+  // Sync state when project changes
+  useEffect(() => {
+    setIsPlaying(true);
+    setProgress(0);
+    setCurrentTime("0:00");
+    setIsMuted(false);
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.currentTime = 0;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+    }
+  }, [project.videoUrl, project.name]);
+
+  // Video playback management
   useEffect(() => {
     if (project.videoUrl) {
       const video = videoRef.current;
       if (video) {
         if (isPlaying) {
-          video.play().catch(err => console.log("Video auto playback prevented or paused:", err));
+          const promise = video.play();
+          if (promise !== undefined) {
+            promise.catch((err) => console.log("Video playback handled:", err));
+          }
         } else {
           video.pause();
         }
@@ -2007,16 +2053,167 @@ const VideoPlayerModal = ({ project }: { project: { name: string; img: string; l
     }
   }, [isPlaying, project.videoUrl]);
 
-  // Sync state if they load/switch projects
-  useEffect(() => {
-    setIsPlaying(true);
-    setProgress(0);
-    setCurrentTime("0:00");
-    setIsMuted(false);
-    if (videoRef.current) {
-      videoRef.current.muted = false;
+  // Auto-hide controls when playing and idle
+  const handleUserActivity = () => {
+    setShowControls(true);
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    if (isPlaying) {
+      idleTimerRef.current = setTimeout(() => {
+        setShowControls(false);
+      }, 2500);
     }
-  }, [project.videoUrl]);
+  };
+
+  useEffect(() => {
+    if (!isPlaying) {
+      setShowControls(true);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    } else {
+      handleUserActivity();
+    }
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, [isPlaying]);
+
+  // Synchronize fullscreen state across all standard and vendor-prefixed browser APIs
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const container = playerContainerRef.current;
+      const doc = document as any;
+      const fsElement = 
+        doc.fullscreenElement || 
+        doc.webkitFullscreenElement || 
+        doc.mozFullScreenElement || 
+        doc.msFullscreenElement;
+      
+      const isFs = !!(container && (fsElement === container || container.contains(fsElement)));
+      setIsFullscreen(isFs);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    document.addEventListener("mozfullscreenchange", handleFullscreenChange);
+    document.addEventListener("MSFullscreenChange", handleFullscreenChange);
+
+    const video = videoRef.current;
+    const handleWebkitBegin = () => setIsFullscreen(true);
+    const handleWebkitEnd = () => setIsFullscreen(false);
+
+    if (video) {
+      video.addEventListener("webkitbeginfullscreen", handleWebkitBegin);
+      video.addEventListener("webkitendfullscreen", handleWebkitEnd);
+    }
+
+    if (autoFullscreen && playerContainerRef.current) {
+      toggleFullscreen();
+    }
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
+      document.removeEventListener("mozfullscreenchange", handleFullscreenChange);
+      document.removeEventListener("MSFullscreenChange", handleFullscreenChange);
+
+      if (video) {
+        video.removeEventListener("webkitbeginfullscreen", handleWebkitBegin);
+        video.removeEventListener("webkitendfullscreen", handleWebkitEnd);
+      }
+    };
+  }, [autoFullscreen]);
+
+  // Cross-browser Fullscreen toggling
+  const toggleFullscreen = async (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const container = playerContainerRef.current;
+    const video = videoRef.current;
+    if (!container) return;
+
+    const doc = document as any;
+    const isFs = !!(
+      doc.fullscreenElement || 
+      doc.webkitFullscreenElement || 
+      doc.mozFullScreenElement || 
+      doc.msFullscreenElement
+    );
+
+    if (!isFs) {
+      try {
+        const c = container as any;
+        if (c.requestFullscreen) {
+          await c.requestFullscreen();
+        } else if (c.webkitRequestFullscreen) {
+          await c.webkitRequestFullscreen();
+        } else if (c.mozRequestFullScreen) {
+          await c.mozRequestFullScreen();
+        } else if (c.msRequestFullscreen) {
+          await c.msRequestFullscreen();
+        } else if (video && (video as any).webkitEnterFullscreen) {
+          (video as any).webkitEnterFullscreen();
+        }
+      } catch (err) {
+        console.error("Error attempting to enable fullscreen:", err);
+      }
+    } else {
+      try {
+        if (doc.exitFullscreen) {
+          await doc.exitFullscreen();
+        } else if (doc.webkitExitFullscreen) {
+          await doc.webkitExitFullscreen();
+        } else if (doc.mozCancelFullScreen) {
+          await doc.mozCancelFullScreen();
+        } else if (doc.msExitFullscreen) {
+          await doc.msExitFullscreen();
+        }
+      } catch (err) {
+        console.error("Error attempting to exit fullscreen:", err);
+      }
+    }
+  };
+
+  // Keyboard controls (Space: Play/Pause, F: Fullscreen, M: Mute, Arrows: Seek)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (["INPUT", "TEXTAREA"].includes((e.target as HTMLElement)?.tagName)) return;
+
+      if (e.key === " " || e.key === "k" || e.key === "K") {
+        e.preventDefault();
+        setIsPlaying((prev) => !prev);
+      } else if (e.key === "f" || e.key === "F") {
+        e.preventDefault();
+        toggleFullscreen();
+      } else if (e.key === "m" || e.key === "M") {
+        e.preventDefault();
+        setIsMuted((prev) => {
+          const next = !prev;
+          if (videoRef.current) videoRef.current.muted = next;
+          return next;
+        });
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        seekByAmount(-5);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        seekByAmount(5);
+      } else if (e.key === "Escape" && isFullscreen) {
+        e.preventDefault();
+        toggleFullscreen();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isFullscreen]);
+
+  const seekByAmount = (seconds: number) => {
+    if (videoRef.current) {
+      const dur = videoRef.current.duration || 30;
+      const target = Math.max(0, Math.min(dur, videoRef.current.currentTime + seconds));
+      videoRef.current.currentTime = target;
+      setProgress((target / dur) * 100);
+      handleUserActivity();
+    }
+  };
 
   const handleTimeUpdate = () => {
     const video = videoRef.current;
@@ -2055,29 +2252,15 @@ const VideoPlayerModal = ({ project }: { project: { name: string; img: string; l
     } else {
       setIsMuted(!isMuted);
     }
-  };
-
-  const handleFullscreen = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const container = playerContainerRef.current;
-    if (container) {
-      if (!document.fullscreenElement) {
-        container.requestFullscreen().catch((err) => {
-          console.error("Error attempting to enable fullscreen:", err);
-        });
-      } else {
-        document.exitFullscreen().catch((err) => {
-          console.error("Error attempting to exit fullscreen:", err);
-        });
-      }
-    }
+    handleUserActivity();
   };
 
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const width = rect.width;
-    const newPercent = (clickX / width) * 100;
+    const newPercent = Math.max(0, Math.min(100, (clickX / width) * 100));
     
     if (project.videoUrl && videoRef.current) {
       const dur = videoRef.current.duration || 30;
@@ -2087,36 +2270,94 @@ const VideoPlayerModal = ({ project }: { project: { name: string; img: string; l
       const seconds = Math.floor((newPercent / 100) * 30);
       setCurrentTime(`0:${seconds < 10 ? "0" : ""}${seconds}`);
     }
+    handleUserActivity();
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-[#0B0F19]/90 border border-white/10 p-6 md:p-8 rounded-[2.5rem] max-w-md w-full shadow-2xl relative overflow-hidden backdrop-blur-2xl">
+    <div
+      ref={playerContainerRef}
+      onMouseMove={handleUserActivity}
+      onTouchStart={handleUserActivity}
+      className={`relative select-none flex flex-col items-center justify-center transition-all duration-300 ${
+        isFullscreen
+          ? "fixed inset-0 w-screen h-screen max-w-none max-h-none z-[999999] bg-black p-0 m-0"
+          : "bg-[#0B0F19]/95 border border-white/10 p-3 sm:p-4 rounded-[2rem] max-w-[340px] sm:max-w-[360px] w-full max-h-[70vh] shadow-2xl backdrop-blur-2xl overflow-hidden"
+      }`}
+    >
       {/* Cinematic Blur Accent Background Glow */}
       <div 
-        className="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-20 scale-110 pointer-events-none -z-10"
+        className="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-20 scale-125 pointer-events-none -z-10"
         style={{ backgroundImage: `url(${project.img})` }}
       />
 
-      <div className="w-full flex items-center justify-between mb-4 pb-3 border-b border-white/10 select-none">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
-          <h4 className="text-sm font-semibold tracking-wider text-slate-450 uppercase font-mono">
-            {project.type || "Creative"} • Video Player
-          </h4>
+      {/* Top Header Bar (when not fullscreen) */}
+      {!isFullscreen && (
+        <div className="w-full flex items-center justify-between mb-2.5 pb-2 border-b border-white/10 select-none px-1">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <h4 className="text-[11px] font-semibold tracking-wider text-slate-300 uppercase font-mono truncate max-w-[170px]">
+              {project.type || "Reel"} • Video Player
+            </h4>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              aria-label="Enter fullscreen"
+              className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-white/10 hover:bg-primary text-white transition-colors cursor-pointer border border-white/10 flex items-center gap-1"
+            >
+              <Maximize2 size={10} />
+              <span>Fullscreen</span>
+            </button>
+          </div>
         </div>
-        <div className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-white/5 border border-white/10 text-white">
-          Active Mode
-        </div>
-      </div>
+      )}
 
-      {/* Main Video Screen Container - Guaranteed perfect 9:16 aspect ratio without squishing */}
-      <div 
-        ref={playerContainerRef}
-        className="w-full max-w-[280px] sm:max-w-[310px] aspect-[9/16] bg-black rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative group flex flex-col justify-end mx-auto"
-      >
-        {/* Video Canvas screen */}
+      {/* Fullscreen Floating Top Navigation */}
+      {isFullscreen && (
         <div 
-          className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden cursor-pointer"
+          className={`absolute top-0 inset-x-0 z-40 p-4 sm:p-6 bg-gradient-to-b from-black/90 via-black/50 to-transparent flex items-center justify-between transition-opacity duration-300 ${
+            showControls ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <span className="px-3 py-1 text-xs font-mono font-bold text-white bg-white/10 backdrop-blur-md rounded-full border border-white/20">
+              {project.type || "9:16 Vertical Reel"}
+            </span>
+            <h3 className="text-white font-bold text-sm sm:text-base font-display drop-shadow-md truncate max-w-[240px] sm:max-w-md">
+              {project.name}
+            </h3>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              aria-label="Exit fullscreen"
+              className="flex items-center gap-1.5 bg-white/15 hover:bg-white/30 text-white px-3.5 py-1.5 rounded-full text-xs font-bold backdrop-blur-md transition-all cursor-pointer border border-white/20 shadow-lg"
+            >
+              <Minimize2 size={14} />
+              <span className="hidden sm:inline">Exit Fullscreen</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Video Stage - STRICT 9:16 PRESERVATION IN BOTH FULLSCREEN & MODAL VIEW */}
+      <div 
+        className={`relative overflow-hidden flex items-center justify-center ${
+          isFullscreen 
+            ? "w-full h-full max-h-screen flex-1 my-auto" 
+            : "w-full aspect-[9/16] max-h-[58vh] bg-black rounded-2xl border border-white/10 shadow-2xl"
+        }`}
+      >
+        {/* Aspect-Ratio Centered Canvas Frame (Never stretches on 16:9 / ultrawide displays) */}
+        <div 
+          className={`relative flex items-center justify-center bg-black cursor-pointer overflow-hidden ${
+            isFullscreen 
+              ? "h-full max-h-screen aspect-[9/16] w-auto max-w-full mx-auto my-auto shadow-2xl" 
+              : "w-full h-full"
+          }`}
           onClick={() => setIsPlaying(!isPlaying)}
         >
           {project.videoUrl ? (
@@ -2127,7 +2368,7 @@ const VideoPlayerModal = ({ project }: { project: { name: string; img: string; l
               loop
               playsInline
               muted={isMuted}
-              autoPlay
+              preload="metadata"
               className="w-full h-full object-contain bg-black select-none"
               onTimeUpdate={handleTimeUpdate}
               onLoadedMetadata={handleLoadedMetadata}
@@ -2138,81 +2379,457 @@ const VideoPlayerModal = ({ project }: { project: { name: string; img: string; l
               transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
               src={project.img} 
               alt={project.name} 
-              className="w-full h-full object-contain bg-black filter brightness-[0.7] select-none"
+              className="w-full h-full object-contain bg-black filter brightness-[0.75] select-none"
               referrerPolicy="no-referrer"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/10 pointer-events-none" />
-        </div>
 
-        {/* Large Centered Play/Pause Button on Hover */}
-        <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
-          <button 
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsPlaying(!isPlaying);
-            }}
-            className="w-16 h-16 rounded-full bg-primary/95 hover:bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/30 transition-all scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100 focus:outline-none cursor-pointer pointer-events-auto shadow-xl"
-          >
-            {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} className="translate-x-0.5" fill="currentColor" />}
-          </button>
-        </div>
+          {/* Ambient Video Vignette */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
 
-        {/* Professional Elegant Bottom Controls overlay */}
-        <div className="relative z-30 p-4 bg-gradient-to-t from-black/95 to-transparent w-full flex flex-col gap-3 select-none">
+          {/* Centered Large Play/Pause Action Indicator */}
+          <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
+            <button 
+              type="button"
+              aria-label={isPlaying ? "Pause video" : "Play video"}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsPlaying(!isPlaying);
+                handleUserActivity();
+              }}
+              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-primary/95 hover:bg-primary text-white flex items-center justify-center shadow-2xl shadow-primary/40 transition-all cursor-pointer pointer-events-auto ${
+                isPlaying 
+                  ? `${showControls ? "opacity-0 hover:opacity-90" : "opacity-0"} scale-95` 
+                  : "opacity-100 scale-100"
+              }`}
+            >
+              {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} className="translate-x-0.5" fill="currentColor" />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating Bottom Controls Overlay */}
+      <div 
+        className={`w-full select-none transition-opacity duration-300 z-40 ${
+          isFullscreen 
+            ? `absolute bottom-0 inset-x-0 p-4 sm:p-6 bg-gradient-to-t from-black/95 via-black/70 to-transparent ${
+                showControls ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+              }`
+            : "mt-2 pt-2 border-t border-white/10 w-full flex flex-col gap-2"
+        }`}
+      >
+        <div className={`${isFullscreen ? "max-w-xl mx-auto w-full flex flex-col gap-2.5" : "w-full flex flex-col gap-2"}`}>
           
-          {/* Interactive duration timeline progress bar (extremely accurate response) */}
-          <div className="flex items-center gap-3">
-            <span className="text-[10px] font-mono text-slate-300">{currentTime}</span>
+          {/* Interactive duration timeline progress scrubber */}
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] sm:text-xs font-mono font-medium text-slate-300 w-9 text-right shrink-0">
+              {currentTime}
+            </span>
             <div 
               onClick={handleProgressClick}
-              className="flex-1 h-1 bg-white/20 hover:bg-white/30 rounded-full relative cursor-pointer group/bar transition-all"
+              className="flex-1 h-1.5 sm:h-2 bg-white/20 hover:bg-white/30 rounded-full relative cursor-pointer group/bar transition-all"
             >
               <div className="h-full bg-primary rounded-full relative" style={{ width: `${progress}%` }}>
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white rounded-full border border-primary opacity-0 group-hover/bar:opacity-100 transition-opacity" />
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-2 border-primary shadow-md opacity-90 group-hover/bar:scale-125 transition-transform" />
               </div>
             </div>
-            <span className="text-[10px] font-mono text-slate-400">{duration}</span>
+            <span className="text-[10px] sm:text-xs font-mono font-medium text-slate-400 w-9 text-left shrink-0">
+              {duration}
+            </span>
           </div>
 
+          {/* Control Buttons Row */}
           <div className="flex items-center justify-between">
-            {/* Play/Pause icon & name label */}
-            <div className="flex items-center gap-3">
+            {/* Play/Pause, Rewind, Fast-Forward */}
+            <div className="flex items-center gap-2 sm:gap-3">
               <button 
                 type="button"
-                onClick={() => setIsPlaying(!isPlaying)}
-                className="text-white hover:text-primary transition-all duration-200 cursor-pointer focus:outline-none"
+                onClick={() => {
+                  setIsPlaying(!isPlaying);
+                  handleUserActivity();
+                }}
+                aria-label={isPlaying ? "Pause video" : "Play video"}
+                className="text-white hover:text-primary transition-colors cursor-pointer p-1 focus:outline-none"
               >
                 {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
               </button>
-              
-              <p className="text-xs font-semibold text-slate-200 font-display line-clamp-1 truncate max-w-[200px]">
+
+              <button
+                type="button"
+                onClick={() => seekByAmount(-5)}
+                aria-label="Rewind 5 seconds"
+                title="Rewind 5s"
+                className="text-slate-300 hover:text-white transition-colors cursor-pointer p-1"
+              >
+                <RotateCcw size={15} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => seekByAmount(5)}
+                aria-label="Forward 5 seconds"
+                title="Forward 5s"
+                className="text-slate-300 hover:text-white transition-colors cursor-pointer p-1"
+              >
+                <RotateCw size={15} />
+              </button>
+
+              <p className="text-xs font-semibold text-slate-200 font-display truncate max-w-[140px] sm:max-w-[200px] hidden sm:inline ml-1">
                 {project.name}
               </p>
             </div>
 
             {/* Mute and Fullscreen Actions */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={handleSoundToggle}
-                className="text-white hover:text-primary transition-all duration-200 cursor-pointer focus:outline-none"
+                aria-label={isMuted ? "Unmute audio" : "Mute audio"}
+                className="text-white hover:text-primary transition-colors cursor-pointer p-1 focus:outline-none"
+                title={isMuted ? "Unmute (M)" : "Mute (M)"}
               >
                 {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
               </button>
 
               <button
                 type="button"
-                onClick={handleFullscreen}
-                className="text-white hover:text-primary transition-all duration-200 cursor-pointer focus:outline-none"
+                onClick={toggleFullscreen}
+                aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                className="text-white hover:text-primary transition-colors cursor-pointer p-1 focus:outline-none"
+                title={isFullscreen ? "Exit Fullscreen (F / Esc)" : "Fullscreen (F)"}
               >
-                <Maximize size={18} />
+                {isFullscreen ? <Minimize2 size={18} /> : <Maximize size={18} />}
               </button>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
 
+// --- Interactive Compact Reel Player Card Component ---
+interface InteractiveReelCardProps {
+  key?: React.Key;
+  project: {
+    name: string;
+    type?: string;
+    img: string;
+    videoUrl?: string;
+    link?: string;
+    category?: string;
+  };
+  isActive: boolean;
+  onPlayToggle: () => void;
+  isMuted: boolean;
+  onMuteToggle: () => void;
+  onExpandFullscreen?: () => void;
+}
+
+const InteractiveReelCard: React.FC<InteractiveReelCardProps> = ({
+  project,
+  isActive,
+  onPlayToggle,
+  isMuted,
+  onMuteToggle,
+  onExpandFullscreen
+}) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [progress, setProgress] = useState(0);
+  const [currentTime, setCurrentTime] = useState("0:00");
+  const [duration, setDuration] = useState("0:30");
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isActive) {
+      video.muted = isMuted;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.log("Video playback handled:", err);
+        });
+      }
+    } else {
+      video.pause();
+    }
+  }, [isActive, isMuted]);
+
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+    if (video) {
+      const cur = video.currentTime;
+      const dur = video.duration || 30;
+      const curMin = Math.floor(cur / 60);
+      const curSec = Math.floor(cur % 60);
+      const durMin = Math.floor(dur / 60);
+      const durSec = Math.floor(dur % 60);
+
+      setCurrentTime(`${curMin}:${curSec < 10 ? "0" : ""}${curSec}`);
+      setDuration(`${durMin}:${durSec < 10 ? "0" : ""}${durSec}`);
+      setProgress((cur / dur) * 100);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    const video = videoRef.current;
+    if (video) {
+      const dur = video.duration || 30;
+      const durMin = Math.floor(dur / 60);
+      const durSec = Math.floor(dur % 60);
+      setDuration(`${durMin}:${durSec < 10 ? "0" : ""}${durSec}`);
+    }
+  };
+
+  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
+    const newPercent = Math.max(0, Math.min(100, (clickX / width) * 100));
+
+    if (videoRef.current) {
+      const dur = videoRef.current.duration || 30;
+      videoRef.current.currentTime = (newPercent / 100) * dur;
+    }
+    setProgress(newPercent);
+  };
+
+  const handleFullscreenClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onExpandFullscreen) {
+      onExpandFullscreen();
+    }
+  };
+
+  return (
+    <div
+      className={`group relative w-[210px] sm:w-[230px] md:w-[240px] h-[360px] sm:h-[380px] bg-slate-950 rounded-2xl overflow-hidden border ${
+        isActive
+          ? "border-primary shadow-2xl shadow-primary/30 ring-2 ring-primary/40"
+          : "border-slate-800 hover:border-primary/50 shadow-xl"
+      } transition-all duration-300 flex flex-col justify-between select-none shrink-0`}
+    >
+      {/* Video Canvas Container */}
+      <div 
+        className="absolute inset-0 bg-black flex items-center justify-center cursor-pointer overflow-hidden"
+        onClick={onPlayToggle}
+      >
+        {project.videoUrl ? (
+          <video
+            ref={videoRef}
+            src={project.videoUrl}
+            poster={project.img}
+            loop
+            playsInline
+            preload="metadata"
+            muted={isMuted}
+            onTimeUpdate={handleTimeUpdate}
+            onLoadedMetadata={handleLoadedMetadata}
+            className="w-full h-full object-cover select-none"
+          />
+        ) : (
+          <img
+            src={project.img}
+            alt={project.name}
+            className="w-full h-full object-cover select-none"
+            referrerPolicy="no-referrer"
+          />
+        )}
+
+        {/* Ambient Dark Gradient Layer */}
+        <div className={`absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-black/40 transition-opacity duration-300 ${
+          isActive ? "opacity-30 group-hover:opacity-50" : "opacity-70 group-hover:opacity-85"
+        }`} />
+      </div>
+
+      {/* Top Header Tag */}
+      <div className="relative z-10 p-3 flex items-center justify-between w-full pointer-events-none">
+        <span className="px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white bg-black/60 backdrop-blur-md rounded-full border border-white/10 shadow-sm truncate max-w-[150px]">
+          {project.type || "Reel"}
+        </span>
+        {isActive && (
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-md shadow-primary" />
+        )}
+      </div>
+
+      {/* Centered Play Button (when not playing or on hover) */}
+      <div 
+        className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-200 ${
+          isActive ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+        }`}
+      >
+        <button
+          type="button"
+          aria-label={isActive ? "Pause video" : "Play video"}
+          onClick={(e) => {
+            e.stopPropagation();
+            onPlayToggle();
+          }}
+          className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl shadow-primary/40 group-hover:scale-110 group-hover:bg-primary/95 transition-all duration-300 cursor-pointer pointer-events-auto"
+        >
+          {isActive ? (
+            <Pause size={22} fill="currentColor" />
+          ) : (
+            <Play size={22} className="translate-x-0.5" fill="currentColor" />
+          )}
+        </button>
+      </div>
+
+      {/* Bottom Info & Controls Bar */}
+      <div className="relative z-20 p-3 bg-gradient-to-t from-slate-950 via-slate-950/95 to-transparent flex flex-col gap-1.5 w-full">
+        {/* Title */}
+        <div className="text-left pointer-events-none">
+          <p className="text-[9px] font-mono font-bold uppercase tracking-wider text-primary truncate">
+            {isActive ? "NOW PLAYING 🎬" : "VERTICAL REEL"}
+          </p>
+          <h4 className="text-xs font-bold text-white font-display leading-tight truncate">
+            {project.name}
+          </h4>
+        </div>
+
+        {/* Progress Bar (Clickable) */}
+        <div 
+          onClick={handleProgressClick}
+          className="w-full h-1 bg-white/20 hover:bg-white/30 rounded-full relative cursor-pointer group/bar transition-all"
+        >
+          <div 
+            className="h-full bg-primary rounded-full relative transition-all duration-100" 
+            style={{ width: `${progress}%` }}
+          >
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full border border-primary shadow-sm" />
+          </div>
+        </div>
+
+        {/* Action Controls */}
+        <div className="flex items-center justify-between pt-0.5">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label={isActive ? "Pause video" : "Play video"}
+              onClick={(e) => {
+                e.stopPropagation();
+                onPlayToggle();
+              }}
+              className="text-white hover:text-primary transition-colors cursor-pointer p-0.5"
+              title={isActive ? "Pause" : "Play"}
+            >
+              {isActive ? <Pause size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
+            </button>
+            <span className="text-[10px] font-mono text-slate-300">
+              {currentTime} / {duration}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              aria-label={isMuted ? "Unmute audio" : "Mute audio"}
+              onClick={(e) => {
+                e.stopPropagation();
+                onMuteToggle();
+              }}
+              className="text-white hover:text-primary transition-colors cursor-pointer p-0.5"
+              title={isMuted ? "Unmute" : "Mute"}
+            >
+              {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+            </button>
+
+            <button
+              type="button"
+              aria-label="Enter fullscreen"
+              onClick={handleFullscreenClick}
+              className="text-white hover:text-primary transition-colors cursor-pointer p-0.5"
+              title="Watch in Fullscreen"
+            >
+              <Maximize size={14} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- Horizontal Reel Carousel Component for multi-item categories ---
+const ReelCarousel = ({
+  projects,
+  activePlayingVideo,
+  onPlayToggle,
+  isMuted,
+  onMuteToggle,
+  onExpandFullscreen
+}: {
+  projects: any[];
+  activePlayingVideo: string | null;
+  onPlayToggle: (name: string) => void;
+  isMuted: boolean;
+  onMuteToggle: () => void;
+  onExpandFullscreen: (p: any) => void;
+}) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollByAmount = (amount: number) => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: amount, behavior: "smooth" });
+    }
+  };
+
+  return (
+    <div className="relative w-full flex flex-col items-center">
+      {/* Scroll navigation arrows */}
+      <div className="w-full flex items-center justify-between gap-3 mb-3 px-2">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+            {projects.length} Total Reels
+          </span>
+          <span className="text-xs text-slate-400 font-medium hidden sm:inline">
+            Use arrows or swipe horizontally to browse
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            aria-label="Previous reel"
+            onClick={() => scrollByAmount(-280)}
+            className="w-8 h-8 rounded-full bg-white hover:bg-slate-100 text-slate-700 hover:text-navy flex items-center justify-center border border-slate-200 transition-all cursor-pointer shadow-sm"
+            title="Previous"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            type="button"
+            aria-label="Next reel"
+            onClick={() => scrollByAmount(280)}
+            className="w-8 h-8 rounded-full bg-white hover:bg-slate-100 text-slate-700 hover:text-navy flex items-center justify-center border border-slate-200 transition-all cursor-pointer shadow-sm"
+            title="Next"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      </div>
+
+      {/* Horizontal Scroll Track */}
+      <div
+        ref={scrollContainerRef}
+        className="w-full flex items-center gap-5 overflow-x-auto py-2 px-1 scroll-smooth snap-x"
+        style={{ scrollbarWidth: "thin" }}
+      >
+        {projects.map((project) => (
+          <div key={project.name} className="snap-start shrink-0">
+            <InteractiveReelCard
+              project={project}
+              isActive={activePlayingVideo === project.name}
+              onPlayToggle={() => onPlayToggle(project.name)}
+              isMuted={isMuted}
+              onMuteToggle={onMuteToggle}
+              onExpandFullscreen={() => onExpandFullscreen(project)}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -2220,256 +2837,269 @@ const VideoPlayerModal = ({ project }: { project: { name: string; img: string; l
 
 // --- Portfolio Section ---
 const Portfolio = () => {
-  const [filter, setFilter] = useState("All");
-  const [lightboxProject, setLightboxProject] = useState<{ img: string; name: string; category: string; link?: string; type?: string } | null>(null);
+  const [filter, setFilter] = useState("Creatives");
+  const [selectedVideoCategory, setSelectedVideoCategory] = useState<string | null>(null);
+  const [activePlayingVideo, setActivePlayingVideo] = useState<string | null>(null);
+  const [isVideoMuted, setIsVideoMuted] = useState(false);
+  const [lightboxProject, setLightboxProject] = useState<{ img: string; name: string; category: string; link?: string; type?: string; videoUrl?: string } | null>(null);
   
-  const categories = ["All", "Websites", "Posters", "Videos", "Business Cards", "Certificates"];
+  const categories = ["Creatives", "Videos"];
+
+  const videoShowcaseCategories = [
+    {
+      id: "healthcare",
+      title: "Healthcare & Dental",
+      label: "Healthcare • Dental • Cosmetology",
+      cta: "View Work →",
+      videoNames: [
+        "Apollo Dental Video",
+        "Cosmetology Video"
+      ]
+    },
+    {
+      id: "industry",
+      title: "Industry & Real Estate",
+      label: "Industry • Real Estate • Brand Content",
+      cta: "View Work →",
+      videoNames: [
+        "RK Homes and Developers",
+        "ARK Homes and Developers Reel",
+        "RK Homes Showcase Reel",
+        "ARK Homes Showcase Reel",
+        "RK Homes Premium Tour Reel",
+        "ARK Homes Premium Tour Reel",
+        "RK Homes Luxury Property Reel",
+        "ARK Homes Luxury Property Reel",
+        "RK Homes Development Reel",
+        "ARK Homes Development Reel",
+        "Manufacturing Industry Intro Video"
+      ]
+    },
+    {
+      id: "ai",
+      title: "AI Video Creation",
+      label: "AI • Product Visuals • Creative Experiments",
+      cta: "View Work →",
+      videoNames: [
+        "Consult Doctor for the Right Treatment!",
+        "Take Action Early",
+        "Coffee Affects Your Sleep Cycle"
+      ]
+    }
+  ];
   
   const projects = [
-    // Posters
+    // Creatives
     { 
       name: "Creative Brand Graphic Design", 
-      category: "Posters", 
+      category: "Creatives", 
       type: "Creative Graphics", 
       img: "https://yearling-red-qqyifvdg.edgeone.dev/file.png",
       link: "#"
     },
     { 
       name: "Brand Carousel Slide Design", 
-      category: "Posters", 
+      category: "Creatives", 
       type: "Branding", 
       img: "https://querulous-green-l3kivch9.edgeone.dev/SLIDE%203%20(1).png",
       link: "#"
     },
     { 
       name: "Free Mental Health Counseling", 
-      category: "Posters", 
+      category: "Creatives", 
       type: "Healthcare", 
       img: "https://scary-azure-ggewvsbdlm.edgeone.app/Free%20Mental%20Health%20Counseling.png",
       link: "#"
     },
     { 
       name: "Summer Vacation Special Offer", 
-      category: "Posters", 
+      category: "Creatives", 
       type: "Promotion", 
       img: "https://compact-tomato-mi8bghykch.edgeone.app/Summer%20vacation%20special%20offer%20(2).png",
       link: "#"
     },
     { 
       name: "Chettinad Hospital & Research Institute", 
-      category: "Posters", 
+      category: "Creatives", 
       type: "Healthcare", 
       img: "https://equivalent-magenta-7znxjkz6qb.edgeone.app/Chettinad%20Hospital%20&%20Research%20Institute%20(3).png",
       link: "#"
     },
     { 
       name: "Professional Course Poster", 
-      category: "Posters", 
+      category: "Creatives", 
       type: "Education", 
       img: "https://image2url.com/r2/default/images/1775567911170-fce693e5-c9d3-4847-af80-aab5fac4ae7b.png",
       link: "#"
     },
     { 
       name: "Creative Academy Poster", 
-      category: "Posters", 
+      category: "Creatives", 
       type: "Education", 
       img: "https://image2url.com/r2/default/images/1775568052451-413ab29b-d318-4f66-8487-7c156222c620.png",
       link: "#"
     },
     { 
       name: "Healthy Smile Poster", 
-      category: "Posters", 
+      category: "Creatives", 
       type: "Healthcare", 
       img: "https://near-olive-5hzpqymsvu.edgeone.app/Give%20your%20child%20a%20healthy%20and%20confident%20smile%20this%20summer!%20(2).png",
       link: "#"
     },
     { 
       name: "Summer Smile Makeover", 
-      category: "Posters", 
+      category: "Creatives", 
       type: "Healthcare", 
       img: "https://junior-lime-2fqyiqv0.edgeone.app/Summer%20Smile%20Makeover%20(1).png",
       link: "#"
     },
     { 
       name: "Modern Design Poster", 
-      category: "Posters", 
+      category: "Creatives", 
       type: "Design", 
       img: "https://lively-lavender-zw35hvf4nf.edgeone.app/Untitled%20design%20(32).png",
       link: "#"
     },
-    // Business Cards
     { 
-      name: "Modern Business Card Design", 
-      category: "Business Cards", 
-      type: "Corporate", 
-      img: "https://image2url.com/r2/default/images/1775568268455-7723a81d-036a-4e45-b504-53efca63621b.jpeg",
-      link: "#"
-    },
-    { 
-      name: "Premium Branding Card", 
-      category: "Business Cards", 
-      type: "Branding", 
-      img: "https://image2url.com/r2/default/images/1775568312921-e33727cd-ebba-4c5a-acb4-3be0c62dcec5.jpeg",
-      link: "#"
-    },
-    { 
-      name: "Elegant Professional Card", 
-      category: "Business Cards", 
-      type: "Corporate", 
-      img: "https://image2url.com/r2/default/images/1775568352520-a19a43e1-3bdd-4f87-9695-f0c443f6ccbc.jpeg",
-      link: "#"
-    },
-    { 
-      name: "Minimalist Business Card", 
-      category: "Business Cards", 
-      type: "Personal", 
-      img: "https://image2url.com/r2/default/images/1775568381991-22af9ff7-2954-4391-b839-054cd550a551.jpeg",
-      link: "#"
-    },
-    // Certificates
-    { 
-      name: "Official Brand Certificate", 
-      category: "Certificates", 
-      type: "Recognition", 
-      img: "https://image2url.com/r2/default/images/1775568553342-f176c522-0df3-492c-88c2-0ac80a9b3a94.png",
+      name: "Manufacturing Industry Flyer Design", 
+      category: "Creatives", 
+      type: "Industrial & Manufacturing", 
+      img: "https://www.image2url.com/r2/default/images/1786200102636-0b10912a-af4a-43b7-989f-9734c9294975.png",
       link: "#"
     },
     // Videos
     {
       name: "Apollo Dental Video",
       category: "Videos",
-      type: "Healthcare",
+      videoCategory: "healthcare",
+      type: "Healthcare & Dental Care",
       img: "https://accessible-pink-edubkiwn.edgeone.app/cover%20image%20for%20dental.png",
       videoUrl: "https://www.image2url.com/r2/default/videos/1781273468032-6c46b89d-a4fc-4e98-9ca7-8243d76a43a8.mp4",
       link: "https://www.instagram.com/reel/DWg_e8Jk1Zp/?igsh=YWxlcWZ0cnV0cnM3"
     },
     {
-      name: "ARK Homes and Developers Reel",
-      category: "Videos",
-      type: "Real Estate",
-      img: "https://comprehensive-copper-zawlr23e.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_40_27%20PM.png",
-      videoUrl: "https://www.image2url.com/r2/default/videos/1781510907183-6e7ce03e-0e46-4f48-b62f-417a8be07f7e.mp4",
-      link: "#"
-    },
-    {
-      name: "ARK Homes Showcase Reel",
-      category: "Videos",
-      type: "Real Estate",
-      img: "https://miserable-jade-qzzur4dk.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_44_41%20PM.png",
-      videoUrl: "https://www.image2url.com/r2/default/videos/1781511215436-0ca5ae6c-2706-46ab-a094-53a6b7b28cb4.mp4",
-      link: "#"
-    },
-    {
-      name: "ARK Homes Premium Tour Reel",
-      category: "Videos",
-      type: "Real Estate",
-      img: "https://husky-jade-vvnr9v9p.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_52_27%20PM.png",
-      videoUrl: "https://www.image2url.com/r2/default/videos/1781511533457-cba80d0d-1f7b-4cf7-b922-30440c494aea.mp4",
-      link: "#"
-    },
-    {
-      name: "ARK Homes Luxury Property Reel",
-      category: "Videos",
-      type: "Real Estate",
-      img: "https://uneven-fuchsia-vjub3klc.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_56_44%20PM.png",
-      videoUrl: "https://www.image2url.com/r2/default/videos/1781511855846-5d9b1daa-c202-4f4a-be64-86a94182eb8d.mp4",
-      link: "#"
-    },
-    {
-      name: "ARK Homes Development Reel",
-      category: "Videos",
-      type: "Real Estate",
-      img: "https://wily-pink-ex1hhhkf.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2002_01_04%20PM.png",
-      videoUrl: "https://www.image2url.com/r2/default/videos/1781512197463-27a6e05c-128f-44ff-a001-13aed2799e99.mp4",
-      link: "#"
-    },
-    {
       name: "Cosmetology Video",
       category: "Videos",
-      type: "Cosmetology",
+      videoCategory: "healthcare",
+      type: "Cosmetology & Skin Care",
       img: "https://eldest-black-4imrurbg.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2002_07_47%20PM.png",
       videoUrl: "https://www.image2url.com/r2/default/videos/1781512624578-c4b49d69-8701-4ad1-a753-c74a33a057ac.mp4",
       link: "#"
     },
     {
-      name: "Take Action Early",
+      name: "RK Homes and Developers",
       category: "Videos",
-      type: "Cosmetology",
-      img: "https://quintessential-olive-w0wvsa9h.edgeone.app/ChatGPT%20Image%20Jun%2027,%202026,%2010_30_05%20AM.png",
-      videoUrl: "https://www.image2url.com/r2/default/videos/1782536121021-d82286a5-0acf-4393-bdc5-45ffa15b4e13.mp4",
+      videoCategory: "industry",
+      type: "Real Estate Reel",
+      img: "https://comprehensive-copper-zawlr23e.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_40_27%20PM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781510907183-6e7ce03e-0e46-4f48-b62f-417a8be07f7e.mp4",
       link: "#"
     },
     {
       name: "Consult Doctor for the Right Treatment!",
       category: "Videos",
-      type: "Cosmetology",
+      videoCategory: "ai",
+      type: "Healthcare & Clinic Care",
       img: "https://social-violet-ljileecn.edgeone.app/ChatGPT%20Image%20Jun%2027,%202026,%2010_35_54%20AM.png",
       videoUrl: "https://www.image2url.com/r2/default/videos/1782536688730-678f3b4f-a1f3-47ea-acb8-76d7f757f47c.mp4",
       link: "#"
     },
     {
+      name: "RK Homes Showcase Reel",
+      category: "Videos",
+      videoCategory: "industry",
+      type: "Property Showcase",
+      img: "https://miserable-jade-qzzur4dk.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_44_41%20PM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781511215436-0ca5ae6c-2706-46ab-a094-53a6b7b28cb4.mp4",
+      link: "#"
+    },
+    {
+      name: "Take Action Early",
+      category: "Videos",
+      videoCategory: "ai",
+      type: "Healthcare & Cosmetology",
+      img: "https://quintessential-olive-w0wvsa9h.edgeone.app/ChatGPT%20Image%20Jun%2027,%202026,%2010_30_05%20AM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1782536121021-d82286a5-0acf-4393-bdc5-45ffa15b4e13.mp4",
+      link: "#"
+    },
+    {
+      name: "RK Homes Premium Tour Reel",
+      category: "Videos",
+      videoCategory: "industry",
+      type: "Luxury Real Estate",
+      img: "https://husky-jade-vvnr9v9p.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_52_27%20PM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781511533457-cba80d0d-1f7b-4cf7-b922-30440c494aea.mp4",
+      link: "#"
+    },
+    {
       name: "Coffee Affects Your Sleep Cycle",
       category: "Videos",
-      type: "Cosmetology",
+      videoCategory: "ai",
+      type: "Wellness & Health Tips",
       img: "https://inquisitive-emerald-zetoehzk.edgeone.app/ChatGPT%20Image%20Jun%2027,%202026,%2010_43_04%20AM.png",
       videoUrl: "https://www.image2url.com/r2/default/videos/1782537016091-df0acf48-6cbf-4bff-80e1-41917347a33b.mp4",
       link: "#"
     },
-    // Websites
-    { 
-      name: "Apollo Dental Clinic", 
-      category: "Websites", 
-      type: "Healthcare", 
-      img: "https://sacred-beige-xci2dhqb5j.edgeone.app/1.png",
-      link: "https://apollodentalclinic.netlify.app/"
+    {
+      name: "RK Homes Luxury Property Reel",
+      category: "Videos",
+      videoCategory: "industry",
+      type: "Brand Campaign",
+      img: "https://uneven-fuchsia-vjub3klc.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2001_56_44%20PM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781511855846-5d9b1daa-c202-4f4a-be64-86a94182eb8d.mp4",
+      link: "#"
     },
-    { 
-      name: "Vel ADSS", 
-      category: "Websites", 
-      type: "Business", 
-      img: "https://spatial-bronze-dpcvfkivhg.edgeone.app/4.png",
-      link: "https://veladss.netlify.app/"
+    {
+      name: "RK Homes Development Reel",
+      category: "Videos",
+      videoCategory: "industry",
+      type: "Project Showcase Reel",
+      img: "https://wily-pink-ex1hhhkf.edgeone.app/ChatGPT%20Image%20Jun%2015,%202026,%2002_01_04%20PM.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1781512197463-27a6e05c-128f-44ff-a001-13aed2799e99.mp4",
+      link: "#"
     },
-    { 
-      name: "Sajal Tech Portfolio", 
-      category: "Websites", 
-      type: "Portfolio", 
-      img: "https://mass-gold-uzmy29scbn.edgeone.app/2.png",
-      link: "https://sajaltech-portfolio.netlify.app/"
-    },
-    { 
-      name: "HobbyMate", 
-      category: "Websites", 
-      type: "Community", 
-      img: "https://flaky-harlequin-cqssfghxdn.edgeone.app/3.png",
-      link: "https://hobbymate.in/"
-    },
-    { 
-      name: "Domain Markt", 
-      category: "Websites", 
-      type: "Marketplace", 
-      img: "https://well-fuchsia-anyg3pte2c.edgeone.app/5.png",
-      link: "https://dev.domainmarkt.io/"
-    },
+    {
+      name: "Manufacturing Industry Intro Video",
+      category: "Videos",
+      videoCategory: "industry",
+      type: "Manufacturing & Industrial",
+      img: "https://www.image2url.com/r2/default/images/1786199319027-b9fa5aa1-0f34-43fb-bc71-2cb2a9a4d08d.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1786199099580-ba3c91fa-be42-4f64-9e7c-5981889f3d8e.mp4",
+      link: "#"
+    }
   ];
 
-  const filteredProjects = filter === "All" ? projects : projects.filter(p => p.category === filter);
+  const filteredNonVideoProjects = projects.filter(p => p.category === filter && p.category !== "Videos");
+
+  const isVideoMode = filter === "Videos";
 
   return (
     <section id="work" className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-4 inline-block bg-blue-50 border border-blue-100 px-4 py-1.5 rounded-full select-none">
-            EXPLORE PORTFOLIO
+            {isVideoMode ? "VIDEO & REEL WORK" : "EXPLORE PORTFOLIO"}
           </span>
-          <h3 className="text-3xl md:text-5xl font-display font-black text-navy mb-8 tracking-tight">Work Samples</h3>
+          <h3 className="text-3xl md:text-5xl font-display font-black text-navy mb-4 tracking-tight">
+            {isVideoMode ? "Video & Reel Work" : "Work Samples"}
+          </h3>
           
-          {/* Beautiful Segmented Modern Minimalist Pill Menu bar */}
-          <div className="flex flex-wrap justify-center gap-1.5 md:gap-2 bg-slate-50 p-1.5 rounded-2xl md:rounded-full max-w-4xl mx-auto border border-slate-100 shadow-inner select-none mb-10">
+          {isVideoMode && (
+            <p className="text-slate-500 text-sm md:text-base font-medium max-w-2xl mx-auto mb-6 leading-relaxed">
+              Selected work across healthcare, industry, real estate and AI-powered content creation.
+            </p>
+          )}
+
+          {/* Segmented Pill Navigation Bar */}
+          <div className="flex flex-wrap justify-center gap-1.5 md:gap-2 bg-slate-50 p-1.5 rounded-2xl md:rounded-full max-w-4xl mx-auto border border-slate-100 shadow-inner select-none mb-6">
             {categories.map(cat => (
               <button
                 key={cat}
-                onClick={() => setFilter(cat)}
+                type="button"
+                onClick={() => {
+                  setFilter(cat);
+                  setSelectedVideoCategory(null);
+                }}
                 className={`px-4 md:px-6 py-2 rounded-xl md:rounded-full text-xs md:text-sm font-bold transition-all duration-300 cursor-pointer ${
                   filter === cat 
                     ? "bg-navy text-white shadow-md shadow-navy/20 scale-[1.03]" 
@@ -2482,61 +3112,295 @@ const Portfolio = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredProjects.map((project, idx) => (
-            <motion.div
-              key={project.name}
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: idx * 0.05 }}
-              className="group"
-            >
-              <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-4 card-shadow border border-slate-100 bg-[#f8fafc] flex items-center justify-center p-3">
-                <img 
-                  src={project.img} 
-                  alt={project.name} 
-                  className="max-w-full max-h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-500 shadow-sm"
-                  referrerPolicy="no-referrer"
-                />
-                
-                {project.category === "Videos" || project.link === "#" ? (
-                  <button 
-                    type="button"
-                    onClick={() => setLightboxProject({ 
-                      img: project.img, 
-                      name: project.name, 
-                      category: project.category,
-                      link: project.link,
-                      type: project.type,
-                      videoUrl: (project as any).videoUrl
-                    })}
-                    className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 text-left w-full h-full cursor-pointer focus:outline-none"
-                  >
-                    <p className="text-[10px] uppercase font-bold tracking-widest text-primary/80 mb-1">{project.category}</p>
-                    <h4 className="text-lg font-bold text-white leading-tight">{project.name}</h4>
-                    <span className="text-[11px] text-primary font-bold mt-2.5 flex items-center gap-1 border-t border-white/15 pt-2 w-full">
-                      {project.category === "Videos" ? "Play Widescreen Video 🎬" : "Expand Fullscreen Display 🔍"}
-                    </span>
-                  </button>
-                ) : (
-                  <a 
-                    href={project.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 text-left w-full h-full"
-                  >
-                    <p className="text-[10px] uppercase font-bold tracking-widest text-primary/80 mb-1">{project.category}</p>
-                    <h4 className="text-lg font-bold text-white leading-tight">{project.name}</h4>
-                    <span className="text-[11px] text-primary font-bold mt-2.5 flex items-center gap-1 border-t border-white/15 pt-2 w-full">
-                      Visit Live Link <ExternalLink size={12} className="inline ml-1" />
-                    </span>
-                  </a>
-                )}
+        {/* 3-CATEGORY VISUAL SHOWCASE / COMPACT REEL STUDIO (Only shown on Videos tab) */}
+        {isVideoMode && (
+          <div className="mb-12">
+            {!selectedVideoCategory ? (
+              /* 3-CATEGORY VISUAL SHOWCASE IN USUAL CLEAN BACKGROUND */
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto">
+                {videoShowcaseCategories.map((showcase) => {
+                  const categoryProjects = projects.filter(
+                    p => p.category === "Videos" && showcase.videoNames.includes(p.name)
+                  );
+
+                  return (
+                    <motion.div
+                      key={showcase.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4 }}
+                      onClick={() => {
+                        setSelectedVideoCategory(showcase.id);
+                        setActivePlayingVideo(null);
+                      }}
+                      className="group relative h-[360px] md:h-[380px] w-full bg-slate-50 hover:bg-white rounded-[2rem] overflow-hidden border border-slate-200/80 shadow-md hover:shadow-xl hover:border-primary/50 transition-all duration-400 cursor-pointer flex flex-col justify-between select-none"
+                    >
+                      {/* Top / Background Collage Showcase */}
+                      <div className="relative h-[240px] md:h-[250px] w-full overflow-hidden flex items-center justify-center p-4 bg-gradient-to-b from-slate-100/90 to-slate-200/50">
+                        {/* Collage Layout based on category */}
+                        {showcase.id === "healthcare" && (
+                          <div className="relative w-full h-full flex items-center justify-center">
+                            {categoryProjects[0] && (
+                              <div className="absolute w-[100px] sm:w-[115px] aspect-[9/16] -rotate-6 translate-x-3 translate-y-1 scale-95 opacity-90 rounded-xl overflow-hidden border-2 border-white shadow-xl transition-all duration-500 group-hover:-rotate-12 group-hover:scale-100 group-hover:translate-x-0">
+                                <img src={categoryProjects[0].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                                <div className="absolute inset-0 bg-black/10" />
+                              </div>
+                            )}
+                            {categoryProjects[1] && (
+                              <div className="absolute w-[100px] sm:w-[115px] aspect-[9/16] rotate-6 -translate-x-3 -translate-y-1 z-10 scale-100 rounded-xl overflow-hidden border-2 border-primary shadow-xl transition-all duration-500 group-hover:rotate-12 group-hover:scale-105 group-hover:-translate-x-0">
+                                <img src={categoryProjects[1].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {showcase.id === "industry" && (
+                          <div className="relative w-full h-full flex items-center justify-center">
+                            {categoryProjects[0] && (
+                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] -rotate-12 -translate-x-9 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-white shadow-lg transition-all duration-500 group-hover:-rotate-16 group-hover:-translate-x-11">
+                                <img src={categoryProjects[0].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                              </div>
+                            )}
+                            {categoryProjects[5] && (
+                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] rotate-12 translate-x-9 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-white shadow-lg transition-all duration-500 group-hover:rotate-16 group-hover:translate-x-11">
+                                <img src={categoryProjects[5].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                              </div>
+                            )}
+                            {categoryProjects[1] && (
+                              <div className="absolute w-[98px] sm:w-[112px] aspect-[9/16] rotate-0 z-10 translate-y-0 scale-100 rounded-xl overflow-hidden border-2 border-primary shadow-xl transition-all duration-500 group-hover:scale-105">
+                                <img src={categoryProjects[1].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {showcase.id === "ai" && (
+                          <div className="relative w-full h-full flex items-center justify-center">
+                            {categoryProjects[0] && (
+                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] -rotate-10 -translate-x-7 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-white shadow-lg transition-all duration-500 group-hover:-rotate-14 group-hover:-translate-x-9">
+                                <img src={categoryProjects[0].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                              </div>
+                            )}
+                            {categoryProjects[2] && (
+                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] rotate-10 translate-x-7 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-white shadow-lg transition-all duration-500 group-hover:rotate-14 group-hover:translate-x-9">
+                                <img src={categoryProjects[2].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                              </div>
+                            )}
+                            {categoryProjects[1] && (
+                              <div className="absolute w-[98px] sm:w-[112px] aspect-[9/16] rotate-0 z-10 translate-y-0 scale-100 rounded-xl overflow-hidden border-2 border-primary shadow-xl transition-all duration-500 group-hover:scale-105">
+                                <img src={categoryProjects[1].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Prominent Play Icon Badge */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-4 z-20 w-11 h-11 rounded-full bg-primary text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-primary/95 transition-all duration-300 pointer-events-none">
+                          <Play size={18} className="fill-white ml-0.5" />
+                        </div>
+                      </div>
+
+                      {/* Bottom Overlay Content */}
+                      <div className="absolute inset-x-0 bottom-0 pt-12 pb-5 px-5 bg-gradient-to-t from-white via-white/95 to-transparent z-20 flex flex-col justify-end text-left pointer-events-none">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1 font-mono">
+                          {showcase.label}
+                        </p>
+                        <h4 className="text-lg md:text-xl font-black text-navy font-display leading-tight mb-2 group-hover:text-primary transition-colors">
+                          {showcase.title}
+                        </h4>
+                        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-navy bg-slate-100 group-hover:bg-primary group-hover:text-white border border-slate-200 group-hover:border-primary px-3 py-1 rounded-full transition-all duration-300 w-fit pointer-events-auto shadow-sm">
+                          <span>{showcase.cta}</span>
+                          <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
-            </motion.div>
-          ))}
-        </div>
+            ) : (
+              /* COMPACT SINGLE-VIEW CATEGORY STUDIO IN USUAL CLEAN BACKGROUND */
+              <motion.div
+                key={selectedVideoCategory}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.3 }}
+                className="w-full max-w-7xl mx-auto bg-slate-50/80 rounded-[2.5rem] border border-slate-200 p-6 md:p-8 shadow-xl"
+              >
+                {/* Studio Navigation & Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-slate-200">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedVideoCategory(null);
+                      setActivePlayingVideo(null);
+                    }}
+                    className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-700 hover:text-navy bg-white hover:bg-slate-100 px-4 py-2.5 rounded-full border border-slate-200 hover:border-primary/40 transition-all cursor-pointer w-fit shadow-sm group"
+                  >
+                    <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" />
+                    <span>Back to Categories</span>
+                  </button>
+
+                  <div className="text-left sm:text-center">
+                    <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-primary">
+                      {videoShowcaseCategories.find(c => c.id === selectedVideoCategory)?.label}
+                    </p>
+                    <h3 className="text-xl md:text-2xl font-black text-navy font-display">
+                      {videoShowcaseCategories.find(c => c.id === selectedVideoCategory)?.title}
+                    </h3>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-3.5 py-1.5 rounded-full border border-primary/20">
+                      {projects.filter(p => p.category === "Videos" && (p as any).videoCategory === selectedVideoCategory).length} Reels Total
+                    </span>
+                  </div>
+                </div>
+
+                {/* Video Player Display Container */}
+                <div className="w-full flex items-center justify-center">
+                  {selectedVideoCategory === "healthcare" && (
+                    <div className="flex justify-center items-center gap-6 sm:gap-8 flex-wrap py-2">
+                      {projects
+                        .filter(p => p.category === "Videos" && (p as any).videoCategory === "healthcare")
+                        .map((project) => (
+                          <InteractiveReelCard
+                            key={project.name}
+                            project={project}
+                            isActive={activePlayingVideo === project.name}
+                            onPlayToggle={() => setActivePlayingVideo(activePlayingVideo === project.name ? null : project.name)}
+                            isMuted={isVideoMuted}
+                            onMuteToggle={() => setIsVideoMuted(!isVideoMuted)}
+                            onExpandFullscreen={() => {
+                              setActivePlayingVideo(null);
+                              setLightboxProject({
+                                img: project.img,
+                                name: project.name,
+                                category: project.category,
+                                link: project.link,
+                                type: project.type,
+                                videoUrl: (project as any).videoUrl
+                              });
+                            }}
+                          />
+                        ))}
+                    </div>
+                  )}
+
+                  {selectedVideoCategory === "ai" && (
+                    <div className="flex justify-center items-center gap-4 sm:gap-6 flex-wrap py-2">
+                      {projects
+                        .filter(p => p.category === "Videos" && (p as any).videoCategory === "ai")
+                        .map((project) => (
+                          <InteractiveReelCard
+                            key={project.name}
+                            project={project}
+                            isActive={activePlayingVideo === project.name}
+                            onPlayToggle={() => setActivePlayingVideo(activePlayingVideo === project.name ? null : project.name)}
+                            isMuted={isVideoMuted}
+                            onMuteToggle={() => setIsVideoMuted(!isVideoMuted)}
+                            onExpandFullscreen={() => {
+                              setActivePlayingVideo(null);
+                              setLightboxProject({
+                                img: project.img,
+                                name: project.name,
+                                category: project.category,
+                                link: project.link,
+                                type: project.type,
+                                videoUrl: (project as any).videoUrl
+                              });
+                            }}
+                          />
+                        ))}
+                    </div>
+                  )}
+
+                  {selectedVideoCategory === "industry" && (
+                    <ReelCarousel
+                      projects={projects.filter(p => p.category === "Videos" && (p as any).videoCategory === "industry")}
+                      activePlayingVideo={activePlayingVideo}
+                      onPlayToggle={(name) => setActivePlayingVideo(activePlayingVideo === name ? null : name)}
+                      isMuted={isVideoMuted}
+                      onMuteToggle={() => setIsVideoMuted(!isVideoMuted)}
+                      onExpandFullscreen={(project) => {
+                        setActivePlayingVideo(null);
+                        setLightboxProject({
+                          img: project.img,
+                          name: project.name,
+                          category: project.category,
+                          link: project.link,
+                          type: project.type,
+                          videoUrl: (project as any).videoUrl
+                        });
+                      }}
+                    />
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </div>
+        )}
+
+        {/* NON-VIDEO PROJECTS GRID */}
+        {!isVideoMode && filteredNonVideoProjects.length > 0 && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredNonVideoProjects.map((project, idx) => (
+              <motion.div
+                key={project.name}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
+                className="group"
+              >
+                <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-4 card-shadow border border-slate-100 bg-[#f8fafc] flex items-center justify-center p-3">
+                  <img 
+                    src={project.img} 
+                    alt={project.name} 
+                    className="max-w-full max-h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-500 shadow-sm"
+                    referrerPolicy="no-referrer"
+                  />
+                  
+                  {project.link === "#" ? (
+                    <button 
+                      type="button"
+                      aria-label={`Expand ${project.name}`}
+                      onClick={() => setLightboxProject({ 
+                        img: project.img, 
+                        name: project.name, 
+                        category: project.category,
+                        link: project.link,
+                        type: project.type,
+                        videoUrl: (project as any).videoUrl
+                      })}
+                      className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 text-left w-full h-full cursor-pointer focus:outline-none"
+                    >
+                      <p className="text-[10px] uppercase font-bold tracking-widest text-primary/80 mb-1">{project.category}</p>
+                      <h4 className="text-lg font-bold text-white leading-tight">{project.name}</h4>
+                      <span className="text-[11px] text-primary font-bold mt-2.5 flex items-center gap-1 border-t border-white/15 pt-2 w-full">
+                        Expand Fullscreen Display 🔍
+                      </span>
+                    </button>
+                  ) : (
+                    <a 
+                      href={project.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 text-left w-full h-full"
+                    >
+                      <p className="text-[10px] uppercase font-bold tracking-widest text-primary/80 mb-1">{project.category}</p>
+                      <h4 className="text-lg font-bold text-white leading-tight">{project.name}</h4>
+                      <span className="text-[11px] text-primary font-bold mt-2.5 flex items-center gap-1 border-t border-white/15 pt-2 w-full">
+                        Visit Live Link <ExternalLink size={12} className="inline ml-1" />
+                      </span>
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         {/* Lightbox / Full-Image Preview Modal */}
         {lightboxProject && (
@@ -2550,10 +3414,11 @@ const Portfolio = () => {
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="relative max-w-4xl max-h-[90vh] bg-transparent rounded-2xl overflow-hidden flex flex-col items-center justify-center z-10 w-full"
+              className="relative max-w-4xl max-h-[70vh] bg-transparent rounded-2xl overflow-visible flex flex-col items-center justify-center z-10 w-full"
             >
               <button 
                 type="button"
+                aria-label="Close modal"
                 onClick={() => setLightboxProject(null)}
                 className="absolute -top-3 -right-3 md:top-4 md:right-4 bg-white/20 hover:bg-white/30 text-white rounded-full p-2.5 backdrop-blur-md transition-colors z-[120] focus:outline-none cursor-pointer"
               >
@@ -2562,19 +3427,22 @@ const Portfolio = () => {
 
               {lightboxProject.category === "Videos" ? (
                 /* Cinematic simulated player */
-                <VideoPlayerModal project={lightboxProject} />
+                <VideoPlayerModal 
+                  project={lightboxProject} 
+                  onClose={() => setLightboxProject(null)} 
+                />
               ) : (
                 /* Poster high end display */
                 <div className="flex flex-col items-center">
                   <img 
                     src={lightboxProject.img} 
                     alt={lightboxProject.name} 
-                    className="max-h-[75vh] w-auto max-w-full object-contain rounded-[2rem] shadow-2xl border border-white/5 bg-[#172554]/20 p-2"
+                    className="max-h-[65vh] w-auto max-w-full object-contain rounded-[2rem] shadow-2xl border border-white/5 bg-[#172554]/20 p-2"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="mt-5 text-center px-6 py-3 bg-navy/80 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl max-w-sm">
+                  <div className="mt-4 text-center px-6 py-2.5 bg-navy/80 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl max-w-sm">
                     <span className="text-[9px] font-mono font-bold text-primary uppercase tracking-[0.2em]">{lightboxProject.category}</span>
-                    <h4 className="text-white text-base font-black tracking-tight mt-1">{lightboxProject.name}</h4>
+                    <h4 className="text-white text-base font-black tracking-tight mt-0.5">{lightboxProject.name}</h4>
                   </div>
                 </div>
               )}
