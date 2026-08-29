@@ -3809,11 +3809,6 @@ const Process = () => {
 
 // --- Contact Section ---
 const Contact = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [category, setCategory] = useState("Social Media");
-  const [message, setMessage] = useState("");
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const handleCopyEmail = () => {
@@ -3822,247 +3817,113 @@ const Contact = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name || !email || !message) {
-      return;
-    }
-
-    const text = `Hello Naveen,\n\nI just viewed your Portfolio and would like to get in touch!\n\n*Name:* ${name}\n*Email:* ${email}\n*Category:* ${category}\n*Message:* ${message}`;
-    const encodedText = encodeURIComponent(text);
-    const whatsappUrl = `https://wa.me/6385941180?text=${encodedText}`;
-
-    // Show the nice popup modal and redirect to WhatsApp
-    setShowSuccessModal(true);
-    window.open(whatsappUrl, "_blank");
-  };
-
   return (
-    <section id="contact" className="py-16 md:py-20 bg-slate-50 px-4 sm:px-6 md:px-12 lg:px-24 relative overflow-hidden">
+    <section id="contact" className="py-16 md:py-24 bg-slate-50 px-4 sm:px-6 md:px-12 lg:px-24 relative overflow-hidden">
       {/* Background soft styling details */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-50/50 rounded-full blur-[120px] pointer-events-none -z-10" />
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-3xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-white border border-slate-200/60 p-6 md:p-8 lg:p-10 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-500 relative"
+          className="bg-white border border-slate-200/60 p-6 sm:p-10 md:p-14 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-500 relative text-center"
         >
           {/* Subtle design gradient accent */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-50 to-transparent rounded-full blur-3xl pointer-events-none" />
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+          {/* Centered Main Content Container */}
+          <div className="max-w-xl mx-auto flex flex-col items-center">
             
-            {/* Left Column: Heading, Subtitle, Direct Buttons */}
-            <div className="lg:col-span-6 flex flex-col justify-between space-y-6 md:space-y-8">
-              <div>
-                <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3.5 inline-block bg-blue-50 border border-blue-100 px-4 py-1.5 rounded-full select-none">
-                  GET IN TOUCH
-                </span>
-                <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black leading-tight text-navy mb-4 tracking-tight">
-                  Let’s Build Something Great Together
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-semibold">
-                  Looking for someone reliable to handle your design, social page growth, or video edit plans? Send a message and let's discuss details directly on WhatsApp!
-                </p>
-              </div>
+            {/* Header Area */}
+            <div className="flex flex-col items-center mb-8">
+              <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3.5 inline-block bg-blue-50 border border-blue-100 px-4 py-1.5 rounded-full select-none">
+                GET IN TOUCH
+              </span>
+              <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black leading-tight text-navy mb-4 tracking-tight">
+                Let’s Build Something Great Together
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-semibold max-w-lg mx-auto">
+                Looking for someone reliable to handle your design, social page growth, or video edit plans? Send a message and let's discuss details directly on WhatsApp!
+              </p>
+            </div>
 
-              {/* Minimal Contact Pills with Copy Email Feature */}
-              <div className="grid grid-cols-1 gap-3.5">
-                {/* Direct Call Card */}
-                <a 
-                  href="tel:6385941180"
-                  className="flex items-center gap-4 bg-slate-50 hover:bg-slate-100/60 p-4 rounded-xl border border-slate-200/40 hover:border-primary/20 transition-all group shadow-sm"
-                >
-                  <div className="w-10 h-10 bg-primary/5 rounded-lg flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
-                    <Phone size={16} />
-                  </div>
-                  <div>
-                    <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider leading-none">Call Me</p>
-                    <p className="text-sm sm:text-base font-bold text-navy mt-1.5">6385941180</p>
-                  </div>
-                </a>
-
-                {/* Email Card with Quick Click-to-Copy */}
-                <div 
-                  onClick={handleCopyEmail}
-                  className="flex items-center justify-between gap-4 bg-slate-50 hover:bg-slate-100/60 p-4 rounded-xl border border-slate-200/40 hover:border-primary/20 transition-all group shadow-sm cursor-pointer relative"
-                  title="Click to copy email address"
-                >
-                  <div className="flex items-center gap-4 min-w-0">
-                    <div className="w-10 h-10 bg-primary/5 rounded-lg flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
-                      <Mail size={16} />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider leading-none">Email Me</p>
-                      <p className="text-sm sm:text-base font-bold text-navy mt-1.5 select-all leading-none font-sans block">
-                        naveenraja3663@gmail.com
-                      </p>
-                    </div>
-                  </div>
-
-                  <button 
-                    type="button"
-                    className="p-1.5 rounded-md hover:bg-slate-200/50 text-slate-400 hover:text-slate-600 transition-all shrink-0"
-                    aria-label="Copy email address"
-                  >
-                    {copied ? (
-                      <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded border border-emerald-100 flex items-center gap-1">
-                        <Check size={11} strokeWidth={3} /> Copied!
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-bold text-slate-400 group-hover:text-primary flex items-center gap-1.5 bg-white border border-slate-200 px-2 py-1 rounded-lg transition-colors">
-                        <Copy size={11} /> Copy
-                      </span>
-                    )}
-                  </button>
+            {/* Minimal Contact Pills with Copy Email Feature */}
+            <div className="w-full max-w-md mx-auto space-y-3.5 mb-6 text-left">
+              {/* Direct Call Card */}
+              <a 
+                href="tel:6385941180"
+                className="flex items-center gap-4 bg-slate-50 hover:bg-slate-100/60 p-4 rounded-xl border border-slate-200/40 hover:border-primary/20 transition-all group shadow-sm w-full"
+              >
+                <div className="w-10 h-10 bg-primary/5 rounded-lg flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
+                  <Phone size={16} />
                 </div>
-              </div>
+                <div>
+                  <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider leading-none">Call Me</p>
+                  <p className="text-sm sm:text-base font-bold text-navy mt-1.5">6385941180</p>
+                </div>
+              </a>
 
-              {/* Enhanced Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <a 
-                  href={`https://wa.me/6385941180?text=${encodeURIComponent("Hello Naveen, I'm reaching out from your Portfolio. Let's collaborate!")}`} 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-green-100 transition-all text-xs sm:text-sm select-none"
+              {/* Email Card with Quick Click-to-Copy */}
+              <div 
+                onClick={handleCopyEmail}
+                className="flex items-center justify-between gap-4 bg-slate-50 hover:bg-slate-100/60 p-4 rounded-xl border border-slate-200/40 hover:border-primary/20 transition-all group shadow-sm cursor-pointer relative w-full"
+                title="Click to copy email address"
+              >
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-10 h-10 bg-primary/5 rounded-lg flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
+                    <Mail size={16} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider leading-none">Email Me</p>
+                    <p className="text-sm sm:text-base font-bold text-navy mt-1.5 select-all leading-none font-sans block truncate">
+                      naveenraja3663@gmail.com
+                    </p>
+                  </div>
+                </div>
+
+                <button 
+                  type="button"
+                  className="p-1.5 rounded-md hover:bg-slate-200/50 text-slate-400 hover:text-slate-600 transition-all shrink-0"
+                  aria-label="Copy email address"
                 >
-                  <MessageSquare size={16} /> Chat on WhatsApp
-                </a>
-                <a 
-                  href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy/95 text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-navy/10 transition-all text-xs sm:text-sm select-none"
-                >
-                  <FileText size={16} /> View Resume
-                </a>
+                  {copied ? (
+                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded border border-emerald-100 flex items-center gap-1">
+                      <Check size={11} strokeWidth={3} /> Copied!
+                    </span>
+                  ) : (
+                    <span className="text-[10px] font-bold text-slate-400 group-hover:text-primary flex items-center gap-1.5 bg-white border border-slate-200 px-2 py-1 rounded-lg transition-colors">
+                      <Copy size={11} /> Copy
+                    </span>
+                  )}
+                </button>
               </div>
             </div>
 
-            {/* Right Column: Premium Form Card with all details visible */}
-            <div className="lg:col-span-6 bg-slate-50/50 border border-slate-100/80 p-5 md:p-6 rounded-2xl flex flex-col justify-center">
-              <form className="space-y-3.5 w-full" onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div>
-                    <label className="block text-[9px] uppercase font-bold tracking-wider text-slate-400 mb-1 ml-0.5">Your Name</label>
-                    <input 
-                      type="text" 
-                      required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="e.g. John Doe" 
-                      className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200/50 focus:border-primary focus:ring-1 focus:ring-primary transition-all text-xs outline-none font-semibold text-navy shadow-sm" 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[9px] uppercase font-bold tracking-wider text-slate-400 mb-1 ml-0.5">Your Email</label>
-                    <input 
-                      type="email" 
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="e.g. email@address.com" 
-                      className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200/50 focus:border-primary focus:ring-1 focus:ring-primary transition-all text-xs outline-none font-semibold text-navy shadow-sm" 
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[9px] uppercase font-bold tracking-wider text-slate-400 mb-1 ml-0.5">Interested Category</label>
-                  <div className="relative">
-                    <select 
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200/50 focus:border-primary focus:ring-1 focus:ring-primary transition-all text-xs outline-none font-semibold text-navy cursor-pointer appearance-none shadow-sm pr-10"
-                    >
-                      <option value="Social Media">Social Media (Growth, Reels, Strategy)</option>
-                      <option value="Poster Editing">Poster Editing (Creative Graphics, Branding)</option>
-                      <option value="Video Editing">Video Editing (Reels, Shorts, Video Ads)</option>
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
-                      <ChevronRight size={14} className="rotate-90" />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[9px] uppercase font-bold tracking-wider text-slate-400 mb-1 ml-0.5">Message Detail</label>
-                  <textarea 
-                    rows={2.5} 
-                    required
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Tell me briefly about your business goals and project needs..." 
-                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200/50 focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none text-xs outline-none font-semibold text-navy shadow-sm"
-                  />
-                </div>
-
-                {/* Ultimate CTA Button */}
-                <button 
-                  type="submit"
-                  className="w-full bg-navy hover:bg-navy/95 text-white py-3.5 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:shadow-navy/10 active:scale-[0.99] transition-all cursor-pointer select-none flex items-center justify-center gap-2"
-                >
-                  <Send size={14} /> Send Inquiry & Start Chat
-                </button>
-              </form>
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto">
+              <a 
+                href={`https://wa.me/6385941180?text=${encodeURIComponent("Hello Naveen, I'm reaching out from your Portfolio. Let's collaborate!")}`} 
+                target="_blank" 
+                rel="noreferrer"
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-green-100 transition-all text-xs sm:text-sm select-none"
+              >
+                <MessageSquare size={16} /> Chat on WhatsApp
+              </a>
+              <a 
+                href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing" 
+                target="_blank" 
+                rel="noreferrer"
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy/95 text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-navy/10 transition-all text-xs sm:text-sm select-none"
+              >
+                <FileText size={16} /> View Resume
+              </a>
             </div>
 
           </div>
         </motion.div>
       </div>
-
-      {/* Elegant Successful Confirmation Pop-up Modal */}
-      <AnimatePresence>
-        {showSuccessModal && (
-          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowSuccessModal(false)}
-              className="absolute inset-0 bg-navy/80 backdrop-blur-sm cursor-pointer"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="bg-white rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl relative z-10 text-center border border-slate-100"
-            >
-              <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-100 shadow-inner">
-                <CheckCircle2 size={32} />
-              </div>
-              <h4 className="text-2xl font-display font-black text-navy mb-2">Message Sent!</h4>
-              <p className="text-slate-500 text-sm mb-6 leading-relaxed font-normal">
-                Your message has been sent successfully. Click the green button below to start chat session directly on WhatsApp!
-              </p>
-              <div className="flex flex-col gap-2">
-                <a 
-                  href={`https://wa.me/6385941180?text=${encodeURIComponent(`Hello Naveen,\n\nI just viewed your Portfolio and would like to get in touch!\n\n*Name:* ${name}\n*Email:* ${email}\n*Category:* ${category}\n*Message:* ${message}`)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] text-white py-3.5 rounded-xl font-bold hover:bg-[#20ba5a] hover:shadow-md transition-all text-sm select-none"
-                >
-                  <MessageSquare size={15} /> Continue to WhatsApp Chat
-                </a>
-                <button 
-                  onClick={() => {
-                    setShowSuccessModal(false);
-                    setName("");
-                    setEmail("");
-                    setMessage("");
-                  }}
-                  className="w-full text-slate-400 hover:text-slate-600 font-bold text-xs py-2 cursor-pointer transition-colors mt-1"
-                >
-                  Close Window
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };
