@@ -42,7 +42,11 @@ import {
   Briefcase,
   Calendar,
   Copy,
-  Send
+  Send,
+  Printer,
+  Download,
+  Building2,
+  GraduationCap
 } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 
@@ -127,7 +131,7 @@ const AnimatedCounter = ({ value, suffix = "", delay = 0, decimals = 0, colorCla
 };
 
 // --- Navbar Component ---
-const Navbar = () => {
+const Navbar = ({ onOpenResume }: { onOpenResume?: () => void }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("Home");
@@ -207,14 +211,13 @@ const Navbar = () => {
         {/* Desktop CTAs on Right / Mobile Menu Toggle */}
         <div className="flex items-center gap-3 ml-auto md:ml-0">
           <div className="hidden md:flex items-center gap-3">
-            <a 
-              href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing" 
-              target="_blank" 
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-slate-50 border border-slate-200/80 hover:bg-slate-100 text-navy px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm"
+            <button 
+              type="button"
+              onClick={onOpenResume}
+              className="inline-flex items-center gap-2 bg-slate-50 border border-slate-200/80 hover:bg-slate-100 text-navy px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm cursor-pointer"
             >
-              <FileText size={14} /> Resume
-            </a>
+              <FileText size={14} className="text-primary" /> Resume
+            </button>
 
             <a 
               href="#contact" 
@@ -260,15 +263,16 @@ const Navbar = () => {
             );
           })}
           <div className="flex flex-col gap-2.5 pt-4 border-t border-slate-100 mt-2">
-            <a 
-              href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing" 
-              target="_blank" 
-              rel="noreferrer"
-              className="flex items-center justify-center gap-2 bg-slate-50 border border-slate-200 text-navy px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all"
-              onClick={() => setIsMenuOpen(false)}
+            <button 
+              type="button"
+              onClick={() => {
+                setIsMenuOpen(false);
+                onOpenResume?.();
+              }}
+              className="flex items-center justify-center gap-2 bg-slate-50 border border-slate-200 text-navy px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
             >
-              <FileText size={15} /> View Resume
-            </a>
+              <FileText size={15} className="text-primary" /> View Resume
+            </button>
             <a 
               href="#contact" 
               className="bg-navy text-white text-center px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-primary transition-all shadow-md"
@@ -284,7 +288,7 @@ const Navbar = () => {
 };
 
 // --- Hero Section ---
-const Hero = () => {
+const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
   return (
     <section id="hero" className="relative pt-[100px] pb-16 md:pt-[130px] md:pb-24 overflow-hidden px-6 md:px-12 lg:px-24 bg-white">
       {/* Grid Hero Container */}
@@ -319,7 +323,7 @@ const Hero = () => {
  
             {/* Description */}
             <p className="text-sm md:text-base text-slate-500 mb-8 text-left leading-relaxed max-w-xl">
-              With over 1.7 years of expertise, I help businesses grow through strategic content planning, engaging social media campaigns, creative design, and short-form video content that builds audience engagement and strengthens brand presence.
+              With over 2+ years of expertise managing 30+ client accounts and healthcare brands, I help businesses grow through strategic content planning, engaging social media campaigns, creative design, and short-form video content that builds audience engagement and strengthens brand presence.
             </p>
  
             {/* CTA buttons with modern animations and styles */}
@@ -341,10 +345,9 @@ const Hero = () => {
                   <ArrowRight size={20} />
                 </motion.span>
               </motion.a>
-              <motion.a 
-                href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing" 
-                target="_blank" 
-                rel="noreferrer"
+              <motion.button 
+                type="button"
+                onClick={onOpenResume}
                 whileHover={{ y: -3, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -352,8 +355,8 @@ const Hero = () => {
               >
                 <div className="absolute left-0 top-0 w-[4px] h-full bg-primary/0 group-hover:bg-primary transition-all duration-300" />
                 <FileText size={20} className="text-slate-400 group-hover:text-primary transition-colors" /> 
-                Download Resume
-              </motion.a>
+                View Resume
+              </motion.button>
             </div>
           </motion.div>
 
@@ -428,12 +431,12 @@ const Hero = () => {
             {/* Actual Stats Cards with Glass Styling & Micro-Scale Effects */}
             {[
               {
-                value: 1.7,
-                suffix: " YEARS",
-                title: "Healthcare Marketing Experience",
+                value: 30,
+                suffix: "+",
+                title: "Client Accounts Managed",
                 colorClass: "text-primary",
-                desc: "Creating content for dental and healthcare brands.",
-                badge: "Proven Record"
+                desc: "Active client portfolios & Meta operations at Remedo.",
+                badge: "Active Operations"
               },
               {
                 value: 50,
@@ -1748,28 +1751,9 @@ const Services = () => {
 };
 
 // --- Experience Section ---
-const Experience = () => {
-  const tools = [
-    "Canva",
-    "Meta Business Suite",
-    "CapCut",
-    "ChatGPT",
-    "Instagram",
-    "Facebook",
-    "Google Workspace"
-  ];
-
-  const responsibilities = [
-    "Planned and managed monthly content calendars aligned with marketing campaigns and business goals.",
-    "Created social media posts, promotional creatives, brochures, carousels, and branded marketing materials while maintaining visual consistency.",
-    "Developed content ideas, wrote engaging captions, and managed Instagram and Facebook through consistent publishing and audience engagement.",
-    "Created and edited Instagram Reels and short-form videos to improve engagement and strengthen brand presence.",
-    "Supported digital marketing by monitoring Meta Business Suite insights, reviewing content performance, and assisting campaign execution.",
-    "Collaborated on promotional campaigns, seasonal content, and awareness initiatives across social media platforms."
-  ];
-
+const Experience = ({ onOpenResume }: { onOpenResume?: () => void }) => {
   return (
-    <section id="experience" className="py-16 md:py-20 px-6 md:px-12 lg:px-24 bg-white text-slate-800 overflow-hidden relative border-t border-slate-100">
+    <section id="experience" className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white text-slate-800 overflow-hidden relative border-t border-slate-100">
       {/* Subtle blue radial gradients for modern high-end look */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-100/30 rounded-full blur-[130px] pointer-events-none -z-10" />
       <div className="absolute bottom-1/4 right-10 w-[500px] h-[500px] bg-indigo-50/40 rounded-full blur-[120px] pointer-events-none -z-10" />
@@ -1786,22 +1770,225 @@ const Experience = () => {
             transition={{ duration: 0.6 }}
             className="space-y-3.5"
           >
-            <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold bg-blue-50 px-4 py-1.5 rounded-full border border-blue-100 inline-block shadow-sm/50">
-              MY EXPERIENCE
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black text-navy tracking-tight leading-tight md:whitespace-nowrap">
+            <div className="inline-flex items-center gap-2">
+              <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold bg-blue-50 px-4 py-1.5 rounded-full border border-blue-100 inline-block shadow-sm/50">
+                MY EXPERIENCE
+              </span>
+            </div>
+            
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black text-navy tracking-tight leading-tight">
               Real Client Experience & Brand Growth
             </h2>
             <p className="text-slate-500 text-sm md:text-base font-semibold max-w-2xl mx-auto leading-relaxed">
-              Helping healthcare brands strengthen their digital presence through strategic content planning, creative design, and consistent social media management.
+              Managing social media operations for 30+ client accounts and healthcare brands through strategic content planning, creative design, and data-driven Meta performance.
             </p>
+
+            {onOpenResume && (
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={onOpenResume}
+                  className="inline-flex items-center gap-2 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 text-navy px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm cursor-pointer hover:border-primary/40 hover:-translate-y-0.5"
+                >
+                  <FileText size={14} className="text-primary" />
+                  <span>View Full Resume</span>
+                </button>
+              </div>
+            )}
           </motion.div>
         </div>
 
-        {/* Case Study Container */}
-        <div className="space-y-6">
+        {/* Experience Cards Container */}
+        <div className="space-y-8">
           
-          {/* Main Case Study Bento Card */}
+          {/* Card 1: Remedo Clinitech Private Ltd (Sep 2026 – Present) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-white/80 backdrop-blur-md border border-slate-200/60 p-5 md:p-6 lg:p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden"
+          >
+            {/* Top accent glow */}
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-blue-500 to-indigo-600" />
+
+            {/* Header Area */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 via-primary to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-md shadow-primary/20 shrink-0">
+                  <span className="font-display font-black text-lg tracking-wider">RC</span>
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      Current Position
+                    </span>
+                    <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-wider bg-blue-50 border border-blue-100 px-2.5 py-0.5 rounded-full">
+                      30+ Client Accounts
+                    </span>
+                  </div>
+                  <h3 className="text-xl md:text-2xl font-display font-black text-navy mt-1 tracking-tight">
+                    Remedo Clinitech Private Ltd
+                  </h3>
+                </div>
+              </div>
+
+              {/* Recruitment Meta Information */}
+              <div className="flex flex-wrap items-center gap-3 text-[11px]">
+                <div className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                  <Briefcase size={12} className="text-primary" />
+                  <div>
+                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Role</p>
+                    <p className="font-bold text-navy mt-0.5">Social Media Executive</p>
+                  </div>
+                </div>
+                
+                <div className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                  <Building2 size={12} className="text-emerald-500" />
+                  <div>
+                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Scale</p>
+                    <p className="font-bold text-navy mt-0.5">30+ Client Brands</p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                  <Calendar size={12} className="text-purple-500" />
+                  <div>
+                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Duration</p>
+                    <p className="font-bold text-navy mt-0.5">Sep 2026 – Present</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Grid for Storytelling: Overview, Tools, Responsibilities, Impact */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 pt-5">
+              
+              {/* Left Column (Overview & Tools) */}
+              <div className="lg:col-span-5 space-y-5">
+                
+                {/* Overview Section */}
+                <div className="space-y-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+                    Overview
+                  </h4>
+                  <p className="text-slate-600 text-xs md:text-[13px] font-semibold leading-relaxed">
+                    Remedo Clinitech is an innovative healthcare technology company empowering clinics and medical practitioners. In my role as Social Media Executive, I manage social media operations across 30+ client accounts, orchestrating high-velocity content delivery, client coordination, and Meta performance analytics.
+                  </p>
+                </div>
+
+                {/* Operations Focus */}
+                <div className="space-y-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+                    Key Focus Areas
+                  </h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {["Meta Business Suite", "30+ Client Accounts", "Content Scheduling", "Meta Insights & Analytics", "Creative Coordination", "Timely Follow-ups"].map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-primary bg-blue-50/80 border border-blue-100/70 px-2.5 py-0.5 rounded-full text-[11px] font-bold select-none"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Tools Used Section */}
+                <div className="space-y-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+                    Tools & Stack
+                  </h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {["Meta Business Suite", "Canva", "Figma", "Google Workspace", "ChatGPT", "Notion", "InShot"].map((tool) => (
+                      <span
+                        key={tool}
+                        className="text-slate-600 bg-slate-50 border border-slate-200/50 px-2.5 py-0.5 rounded-full text-[11px] font-bold hover:bg-slate-100/80 hover:border-slate-300 hover:text-slate-900 transition-all cursor-default select-none"
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Right Column (Responsibilities) */}
+              <div className="lg:col-span-7">
+                
+                {/* Responsibilities Section */}
+                <div className="space-y-2.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+                    Key Responsibilities
+                  </h4>
+                  <ul className="space-y-2.5">
+                    <li className="flex items-start gap-2.5 text-slate-700 text-xs md:text-[13px] leading-relaxed">
+                      <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
+                        <Check size={9} strokeWidth={3} />
+                      </div>
+                      <span>
+                        Manage social media activities for <strong>30+ client accounts</strong>, including content calendars, scheduling, publishing, and account management using Meta Business Suite.
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-slate-700 text-xs md:text-[13px] leading-relaxed">
+                      <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
+                        <Check size={9} strokeWidth={3} />
+                      </div>
+                      <span>
+                        Coordinate with <strong>Account Managers, creative teams, and clients</strong> to manage content requirements, designs, approvals, and timely follow-ups.
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-slate-700 text-xs md:text-[13px] leading-relaxed">
+                      <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
+                        <Check size={9} strokeWidth={3} />
+                      </div>
+                      <span>
+                        Monitor <strong>Meta Insights and social media analytics</strong> to track content performance, engagement, and reach (and maintain documentation for ongoing activities).
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-slate-700 text-xs md:text-[13px] leading-relaxed">
+                      <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
+                        <Check size={9} strokeWidth={3} />
+                      </div>
+                      <span>
+                        Manage day-to-day client communication and content workflows, ensuring requirements are coordinated and posts are delivered and published on schedule.
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Project Impact quote block */}
+            <div className="mt-6 bg-gradient-to-br from-blue-50 to-indigo-50/60 border border-blue-100/60 p-5 rounded-2xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-3 opacity-10">
+                <Sparkles size={20} className="text-primary animate-pulse" />
+              </div>
+              
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className="w-1 h-5 bg-primary rounded-full" />
+                <h5 className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.15em] text-primary">
+                  Role Impact & Operational Excellence
+                </h5>
+              </div>
+              
+              <p className="text-slate-700 text-xs sm:text-[13px] md:text-sm font-semibold leading-relaxed">
+                Orchestrating end-to-end social media operations across 30+ healthcare client accounts with 100% on-time publishing execution, data-driven Meta analytics optimization, and seamless multi-stakeholder coordination between account managers and creative production.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Card 2: Apollo Dental Clinic (Nov 2024 – Jun 2026) */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1809,10 +1996,10 @@ const Experience = () => {
             transition={{ duration: 0.6 }}
             className="bg-white/80 backdrop-blur-md border border-slate-200/60 p-5 md:p-6 lg:p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1"
           >
-            {/* Header Area of the Case Study */}
+            {/* Header Area */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center overflow-hidden p-2 shadow-sm">
+                <div className="w-14 h-14 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center overflow-hidden p-2 shadow-sm shrink-0">
                   <img 
                     src="https://image2url.com/r2/default/images/1775567270735-9f31738c-e14f-443e-bc63-25dc45697c09.png" 
                     alt="Apollo Dental Clinic" 
@@ -1821,10 +2008,15 @@ const Experience = () => {
                   />
                 </div>
                 <div>
-                  <span className="text-[9px] font-mono font-bold text-primary uppercase tracking-wider bg-blue-50 border border-blue-100/50 px-2.5 py-0.5 rounded-full">
-                    Active Client Partner
-                  </span>
-                  <h3 className="text-xl md:text-2xl font-display font-black text-navy mt-0.5 tracking-tight">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[9px] font-mono font-bold text-primary uppercase tracking-wider bg-blue-50 border border-blue-100/50 px-2.5 py-0.5 rounded-full">
+                      Client Partner
+                    </span>
+                    <span className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-wider bg-slate-100 border border-slate-200/60 px-2.5 py-0.5 rounded-full">
+                      Dental & Cosmetology
+                    </span>
+                  </div>
+                  <h3 className="text-xl md:text-2xl font-display font-black text-navy mt-1 tracking-tight">
                     Apollo Dental Clinic
                   </h3>
                 </div>
@@ -1836,7 +2028,7 @@ const Experience = () => {
                   <Briefcase size={12} className="text-primary" />
                   <div>
                     <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Role</p>
-                    <p className="font-bold text-navy mt-0.5">Social Media Manager & Content Creator</p>
+                    <p className="font-bold text-navy mt-0.5">Social Media Manager</p>
                   </div>
                 </div>
                 
@@ -1844,7 +2036,7 @@ const Experience = () => {
                   <Globe size={12} className="text-emerald-500" />
                   <div>
                     <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Type</p>
-                    <p className="font-bold text-navy mt-0.5">Remote</p>
+                    <p className="font-bold text-navy mt-0.5">Remote & Hybrid</p>
                   </div>
                 </div>
 
@@ -1871,7 +2063,7 @@ const Experience = () => {
                     Overview
                   </h4>
                   <p className="text-slate-600 text-xs md:text-[13px] font-semibold leading-relaxed">
-                    Apollo Dental Clinic is a premium dental care provider. In my role as Social Media Manager and Content Creator, I present their clinical expertise through professional visual designs, educational reels, and interactive digital campaigns on social media.
+                    Apollo Dental Clinic is a premier dental care and cosmetology provider. In my role as Social Media Manager, I managed complete brand profiles, produced educational reels and high-converting creative designs, and maintained consistent multi-page brand communication.
                   </p>
                 </div>
 
@@ -1913,7 +2105,7 @@ const Experience = () => {
                     Tools Used
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
-                    {tools.map((tool) => (
+                    {["Canva", "Meta Business Suite", "CapCut", "Adobe Express", "ChatGPT", "Instagram", "Facebook", "Google Workspace"].map((tool) => (
                       <span
                         key={tool}
                         className="text-slate-600 bg-slate-50 border border-slate-200/50 px-2.5 py-0.5 rounded-full text-[11px] font-bold hover:bg-slate-100/80 hover:border-slate-300 hover:text-slate-900 transition-all cursor-default select-none"
@@ -1933,17 +2125,41 @@ const Experience = () => {
                 <div className="space-y-2.5">
                   <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-                    Responsibilities
+                    Key Responsibilities
                   </h4>
-                  <ul className="space-y-1.5">
-                    {responsibilities.map((resp, i) => (
-                      <li key={i} className="flex items-start gap-2 text-slate-600 text-xs md:text-[13px] leading-relaxed font-semibold">
-                        <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
-                          <Check size={9} strokeWidth={3} />
-                        </div>
-                        <span>{resp}</span>
-                      </li>
-                    ))}
+                  <ul className="space-y-2.5">
+                    <li className="flex items-start gap-2.5 text-slate-700 text-xs md:text-[13px] leading-relaxed">
+                      <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
+                        <Check size={9} strokeWidth={3} />
+                      </div>
+                      <span>
+                        Managed social media profiles for <strong>dental, cosmetology, and education brands</strong>, including content planning, scheduling, publishing, and account management.
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-slate-700 text-xs md:text-[13px] leading-relaxed">
+                      <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
+                        <Check size={9} strokeWidth={3} />
+                      </div>
+                      <span>
+                        Created <strong>social media creatives, promotional posts, reels, and short-form videos</strong> aligned with brand guidelines and content requirements.
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-slate-700 text-xs md:text-[13px] leading-relaxed">
+                      <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
+                        <Check size={9} strokeWidth={3} />
+                      </div>
+                      <span>
+                        Developed and maintained <strong>monthly content calendars</strong> to ensure consistent and engaging social media communication.
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2.5 text-slate-700 text-xs md:text-[13px] leading-relaxed">
+                      <div className="w-4 h-4 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
+                        <Check size={9} strokeWidth={3} />
+                      </div>
+                      <span>
+                        Coordinated content requirements, creative development, approvals, and social media performance tracking across multiple business pages.
+                      </span>
+                    </li>
                   </ul>
                 </div>
 
@@ -1951,7 +2167,7 @@ const Experience = () => {
 
             </div>
 
-            {/* Project Impact full-width highlighted quote block */}
+            {/* Project Impact quote block */}
             <div className="mt-6 bg-gradient-to-br from-blue-50 to-indigo-50/60 border border-blue-100/60 p-5 rounded-2xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-3 opacity-10">
                 <Sparkles size={20} className="text-primary animate-pulse" />
@@ -3459,7 +3675,7 @@ const WhyChooseMe = () => {
   const points = [
     { 
       title: "Real Client Experience", 
-      desc: "1.7 years of proven results with healthcare and real estate brands.",
+      desc: "2+ years of proven results across 30+ client accounts and healthcare brands.",
       icon: <CheckCircle2 className="text-primary" size={24} />,
       color: "bg-blue-50"
     },
@@ -3808,7 +4024,7 @@ const Process = () => {
 };
 
 // --- Contact Section ---
-const Contact = () => {
+const Contact = ({ onOpenResume }: { onOpenResume?: () => void }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopyEmail = () => {
@@ -3911,14 +4127,13 @@ const Contact = () => {
               >
                 <MessageSquare size={16} /> Chat on WhatsApp
               </a>
-              <a 
-                href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing" 
-                target="_blank" 
-                rel="noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy/95 text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-navy/10 transition-all text-xs sm:text-sm select-none"
+              <button 
+                type="button"
+                onClick={onOpenResume}
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy/95 text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-navy/10 transition-all text-xs sm:text-sm select-none cursor-pointer"
               >
                 <FileText size={16} /> View Resume
-              </a>
+              </button>
             </div>
 
           </div>
@@ -4053,21 +4268,314 @@ const Footer = () => {
   );
 };
 
+// --- Resume Modal Component ---
+const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const [copiedEmail, setCopiedEmail] = useState(false);
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("naveenraja3663@gmail.com");
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen, onClose]);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[250] flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm cursor-pointer no-print"
+          />
+
+          {/* Modal Container */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ type: "spring", duration: 0.4 }}
+            className="relative z-10 w-full max-w-4xl bg-slate-100 rounded-3xl shadow-2xl border border-slate-200/80 my-auto flex flex-col max-h-[92vh] overflow-hidden"
+          >
+            {/* Top Toolbar (hidden in print) */}
+            <div className="no-print bg-white/95 backdrop-blur-md px-4 sm:px-6 py-3 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-blue-50 text-primary flex items-center justify-center font-bold shrink-0">
+                  <FileText size={18} />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-navy leading-none">Naveen Raja S — Resume</h3>
+                  <p className="text-[11px] text-slate-500 font-medium mt-1">Updated Sep 2026 • 2+ Years Experience • 30+ Accounts</p>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handlePrint}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
+                  title="Print or Save as PDF"
+                >
+                  <Printer size={14} />
+                  <span className="hidden sm:inline">Print / Save PDF</span>
+                </button>
+
+                <a
+                  href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-primary hover:bg-blue-600 transition-colors shadow-sm cursor-pointer"
+                  title="Open in Google Drive"
+                >
+                  <ExternalLink size={13} />
+                  <span>Google Drive</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors ml-1 cursor-pointer"
+                  aria-label="Close resume viewer"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+
+            {/* Scrollable Printable Document Container */}
+            <div className="flex-1 overflow-y-auto p-3 sm:p-6 md:p-8 custom-scrollbar">
+              <div 
+                id="printable-resume" 
+                className="bg-white text-slate-900 rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-10 max-w-3xl mx-auto font-sans leading-relaxed text-left"
+              >
+                {/* Header */}
+                <div className="text-center pb-5 border-b border-slate-200">
+                  <h1 className="text-2xl sm:text-3xl font-display font-black tracking-tight text-slate-900 uppercase">
+                    NAVEEN RAJA S
+                  </h1>
+                  <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs text-slate-700 font-medium">
+                    <span className="inline-flex items-center gap-1.5">
+                      <Phone size={13} className="text-primary" />
+                      <strong>Mobile Number:</strong> +91 6385941180
+                    </span>
+                    <span className="text-slate-300 hidden sm:inline">•</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Mail size={13} className="text-primary" />
+                      <strong>Email:</strong>
+                      <span className="cursor-pointer hover:underline" onClick={handleCopyEmail}>
+                        naveenraja3663@gmail.com
+                      </span>
+                      {copiedEmail && <span className="text-[10px] text-emerald-600 font-bold ml-1">(Copied)</span>}
+                    </span>
+                  </div>
+                  <div className="mt-1.5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs text-slate-700 font-medium">
+                    <span className="inline-flex items-center gap-1.5">
+                      <MapPin size={13} className="text-primary" />
+                      <strong>Location:</strong> Coimbatore, Tamil Nadu
+                    </span>
+                    <span className="text-slate-300 hidden sm:inline">•</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Globe size={13} className="text-primary" />
+                      <strong>Portfolio:</strong>
+                      <a href="https://naveenraja.netlify.app/" target="_blank" rel="noreferrer" className="text-primary hover:underline font-bold">
+                        https://naveenraja.netlify.app/
+                      </a>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Professional Summary */}
+                <div className="py-4 border-b border-slate-200">
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-slate-900 mb-2 font-display">
+                    PROFESSIONAL SUMMARY
+                  </h2>
+                  <p className="text-xs sm:text-[13px] text-slate-700 leading-relaxed font-normal">
+                    Computer Science Engineering graduate with experience in digital content, creative design, video editing, social media executive, website design. Skilled in content creation, project coordination, online platforms, and modern creative tools. Adaptable, detail-oriented, and interested in technology, digital operations, and creative problem-solving.
+                  </p>
+                </div>
+
+                {/* Work Experience */}
+                <div className="py-4 border-b border-slate-200">
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-slate-900 mb-4 font-display">
+                    WORK EXPERIENCE
+                  </h2>
+                  
+                  {/* Job 1: Remedo Clinitech Private Ltd */}
+                  <div className="mb-6">
+                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                      <h3 className="text-sm font-bold text-slate-900">
+                        Social Media Executive
+                      </h3>
+                      <span className="text-xs font-bold text-slate-800">
+                        Sep 2026 – Present
+                      </span>
+                    </div>
+                    <div className="text-xs font-bold text-primary mb-2 flex items-center gap-2">
+                      <span>Remedo Clinitech Private Ltd</span>
+                      <span className="text-[10px] font-mono bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">
+                        Current Position
+                      </span>
+                    </div>
+                    <ul className="list-disc list-outside pl-4 space-y-1.5 text-xs sm:text-[12.5px] text-slate-700">
+                      <li>
+                        Manage social media activities for <strong>30+ client accounts</strong>, including content calendars, scheduling, publishing, and account management using Meta Business Suite.
+                      </li>
+                      <li>
+                        Coordinate with <strong>Account Managers, creative teams, and clients</strong> to manage content requirements, designs, approvals, and timely follow-ups.
+                      </li>
+                      <li>
+                        Monitor <strong>Meta Insights and social media analytics</strong> to track content performance, engagement, and reach (and maintain documentation for ongoing social media activities).
+                      </li>
+                      <li>
+                        Manage day-to-day client communication and content workflows, ensuring requirements are coordinated and posts are delivered and published on schedule.
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Job 2: Apollo Dental Clinic */}
+                  <div>
+                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                      <h3 className="text-sm font-bold text-slate-900">
+                        Social Media Manager
+                      </h3>
+                      <span className="text-xs font-bold text-slate-800">
+                        Nov 2024 – Jun 2026
+                      </span>
+                    </div>
+                    <div className="text-xs font-bold text-primary mb-2 flex items-center gap-2">
+                      <span>Apollo Dental Clinic</span>
+                      <span className="text-[10px] font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200">
+                        1 Year 8 Months
+                      </span>
+                    </div>
+                    <ul className="list-disc list-outside pl-4 space-y-1.5 text-xs sm:text-[12.5px] text-slate-700">
+                      <li>
+                        Managed social media profiles for <strong>dental, cosmetology, and education brands</strong>, including content planning, scheduling, publishing, and account management.
+                      </li>
+                      <li>
+                        Created <strong>social media creatives, promotional posts, reels, and short-form videos</strong> aligned with brand guidelines and content requirements.
+                      </li>
+                      <li>
+                        Developed and maintained <strong>monthly content calendars</strong> to ensure consistent and engaging social media communication.
+                      </li>
+                      <li>
+                        Coordinated content requirements, creative development, approvals, and social media performance tracking across multiple business pages.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Skills */}
+                <div className="py-4 border-b border-slate-200">
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-slate-900 mb-3 font-display">
+                    SKILLS
+                  </h2>
+                  <div className="space-y-2.5 text-xs sm:text-[12.5px] text-slate-700">
+                    <div>
+                      <strong className="text-slate-900">Design & Creative Skills:</strong>
+                      <p className="mt-0.5 text-slate-700">Graphic Design • UI/UX Design • Visual Content Creation • Video Editing • Brand Design.</p>
+                    </div>
+                    <div>
+                      <strong className="text-slate-900">Content & Social Media Skills:</strong>
+                      <p className="mt-0.5 text-slate-700">Social Media Management • Content Creation • Content Strategy • Content Calendar Planning • Social Media Analytics • Brand Communication • Content Research.</p>
+                    </div>
+                    <div>
+                      <strong className="text-slate-900">Coordination & Professional Skills:</strong>
+                      <p className="mt-0.5 text-slate-700">Client Communication • Team Coordination • Project Coordination • Time Management • Documentation • Attention to Detail • Problem Solving.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tools */}
+                <div className="py-4 border-b border-slate-200">
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-slate-900 mb-3 font-display">
+                    TOOLS
+                  </h2>
+                  <div className="space-y-2.5 text-xs sm:text-[12.5px] text-slate-700">
+                    <div>
+                      <strong className="text-slate-900">Design & Creative:</strong>
+                      <p className="mt-0.5 text-slate-700">Canva • Figma • Lightroom • Snapseed • Adobe Express</p>
+                    </div>
+                    <div>
+                      <strong className="text-slate-900">Social Media & Video:</strong>
+                      <p className="mt-0.5 text-slate-700">Meta Business Suite • CapCut • InShot • Youtube Studio</p>
+                    </div>
+                    <div>
+                      <strong className="text-slate-900">Google Workspace:</strong>
+                      <p className="mt-0.5 text-slate-700">Google Docs • Google Sheets • Google Slides • Google Drive</p>
+                    </div>
+                    <div>
+                      <strong className="text-slate-900">AI & Productivity:</strong>
+                      <p className="mt-0.5 text-slate-700">ChatGPT • Claude • Google AI Studio • Notion</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Education */}
+                <div className="pt-4">
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-slate-900 mb-3 font-display">
+                    EDUCATION
+                  </h2>
+                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between text-xs sm:text-[12.5px]">
+                    <div>
+                      <h4 className="font-bold text-slate-900">Sri Eshwar College of Engineering, Coimbatore</h4>
+                      <p className="text-slate-700 mt-0.5">B.E. Computer Science Engineering</p>
+                    </div>
+                    <div className="sm:text-right mt-1 sm:mt-0 font-medium">
+                      <div className="font-bold text-slate-900">Jun 2020 – May 2024</div>
+                      <div className="text-slate-700 mt-0.5">CGPA: <strong>8.64</strong></div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 export default function PortfolioApp() {
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+
   return (
     <div className="antialiased">
-      <Navbar />
+      <Navbar onOpenResume={() => setIsResumeOpen(true)} />
       <main>
-        <Hero />
+        <Hero onOpenResume={() => setIsResumeOpen(true)} />
         <About />
         <Services />
-        <Experience />
+        <Experience onOpenResume={() => setIsResumeOpen(true)} />
         <Portfolio />
         <WhyChooseMe />
         <Process />
-        <Contact />
+        <Contact onOpenResume={() => setIsResumeOpen(true)} />
       </main>
       <Footer />
+      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </div>
   );
 }
