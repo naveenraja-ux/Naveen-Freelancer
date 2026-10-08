@@ -1815,8 +1815,22 @@ const Experience = ({ onOpenResume }: { onOpenResume?: () => void }) => {
             {/* Header Area */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 via-primary to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-md shadow-primary/20 shrink-0">
-                  <span className="font-display font-black text-lg tracking-wider">RC</span>
+                <div className="w-14 h-14 bg-white border border-slate-100 rounded-2xl flex items-center justify-center overflow-hidden p-2 shadow-sm shrink-0">
+                  <img 
+                    src="https://yummy-magenta-sal6j9cq.edgeone.dev/" 
+                    alt="Remedo Clinitech Private Ltd" 
+                    className="w-full h-full object-contain" 
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      // Fallback to stylized RC icon if image load fails
+                      const target = e.currentTarget;
+                      target.style.display = 'none';
+                      if (target.parentElement) {
+                        target.parentElement.className = "w-14 h-14 bg-gradient-to-br from-blue-500 via-primary to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-md shadow-primary/20 shrink-0";
+                        target.parentElement.innerHTML = '<span class="font-display font-black text-lg tracking-wider">RC</span>';
+                      }
+                    }}
+                  />
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
