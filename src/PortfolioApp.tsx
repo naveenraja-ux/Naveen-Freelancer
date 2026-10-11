@@ -4425,7 +4425,7 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                     PROFESSIONAL SUMMARY
                   </h2>
                   <p className="text-xs sm:text-[13px] text-slate-700 leading-relaxed font-normal">
-                    Computer Science Engineering graduate with experience in digital content, creative design, video editing, social media executive, website design. Skilled in content creation, project coordination, online platforms, and modern creative tools. Adaptable, detail-oriented, and interested in technology, digital operations, and creative problem-solving.
+                    Computer Science Engineering graduate experienced in creative design, content management, and performance tracking. Skilled in team coordination, communication, and problem-solving, with a strong interest in technology, innovation, professional growth, and continuous improvement.
                   </p>
                 </div>
 
@@ -4453,16 +4453,16 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                     </div>
                     <ul className="list-disc list-outside pl-4 space-y-1.5 text-xs sm:text-[12.5px] text-slate-700">
                       <li>
-                        Manage social media activities for <strong>30+ client accounts</strong>, including content calendars, scheduling, publishing, and account management using Meta Business Suite.
+                        Manage social media accounts for <strong>30+ clients</strong>, including content scheduling, publishing and daily account activities.
                       </li>
                       <li>
-                        Coordinate with <strong>Account Managers, creative teams, and clients</strong> to manage content requirements, designs, approvals, and timely follow-ups.
+                        Track account performance, analyze social media insights, prepare reports to measure results.
                       </li>
                       <li>
-                        Monitor <strong>Meta Insights and social media analytics</strong> to track content performance, engagement, and reach (and maintain documentation for ongoing social media activities).
+                        Design social media creatives that match client requirements and maintain brand consistency.
                       </li>
                       <li>
-                        Manage day-to-day client communication and content workflows, ensuring requirements are coordinated and posts are delivered and published on schedule.
+                        Handle client communication, coordinate with internal teams, manage approvals and ensure timely task completion.
                       </li>
                     </ul>
                   </div>
@@ -4480,68 +4480,41 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                     <div className="text-xs font-bold text-primary mb-2 flex items-center gap-2">
                       <span>Apollo Dental Clinic</span>
                       <span className="text-[10px] font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200">
-                        1 Year 8 Months
+                        Coimbatore, Tamil Nadu
                       </span>
                     </div>
                     <ul className="list-disc list-outside pl-4 space-y-1.5 text-xs sm:text-[12.5px] text-slate-700">
                       <li>
-                        Managed social media profiles for <strong>dental, cosmetology, and education brands</strong>, including content planning, scheduling, publishing, and account management.
+                        Managed social media accounts for <strong>dental clinics and beauty businesses</strong>, handling daily updates, content scheduling, and publishing.
                       </li>
                       <li>
-                        Created <strong>social media creatives, promotional posts, reels, and short-form videos</strong> aligned with brand guidelines and content requirements.
-                      </li>
-                      <li>
-                        Developed and maintained <strong>monthly content calendars</strong> to ensure consistent and engaging social media communication.
-                      </li>
-                      <li>
-                        Coordinated content requirements, creative development, approvals, and social media performance tracking across multiple business pages.
+                        Worked closely with doctors to create and publish reels, posters and promotional content while maintaining brand consistency and meeting business needs.
                       </li>
                     </ul>
                   </div>
                 </div>
 
-                {/* Skills */}
+                {/* Skills & Tools */}
                 <div className="py-4 border-b border-slate-200">
                   <h2 className="text-xs font-bold uppercase tracking-widest text-slate-900 mb-3 font-display">
-                    SKILLS
+                    SKILLS & TOOLS
                   </h2>
-                  <div className="space-y-2.5 text-xs sm:text-[12.5px] text-slate-700">
+                  <div className="space-y-2 text-xs sm:text-[12.5px] text-slate-700">
                     <div>
                       <strong className="text-slate-900">Design & Creative Skills:</strong>
-                      <p className="mt-0.5 text-slate-700">Graphic Design • UI/UX Design • Visual Content Creation • Video Editing • Brand Design.</p>
+                      <span className="text-slate-700 ml-1.5">Graphic Design, Content Creation, Video Editing, Brand Design</span>
                     </div>
                     <div>
-                      <strong className="text-slate-900">Content & Social Media Skills:</strong>
-                      <p className="mt-0.5 text-slate-700">Social Media Management • Content Creation • Content Strategy • Content Calendar Planning • Social Media Analytics • Brand Communication • Content Research.</p>
+                      <strong className="text-slate-900">Content & Analytics Skills:</strong>
+                      <span className="text-slate-700 ml-1.5">Social Media Management, Content Strategy, Content Planning, Social Media Analytics, Performance Tracking</span>
                     </div>
                     <div>
                       <strong className="text-slate-900">Coordination & Professional Skills:</strong>
-                      <p className="mt-0.5 text-slate-700">Client Communication • Team Coordination • Project Coordination • Time Management • Documentation • Attention to Detail • Problem Solving.</p>
+                      <span className="text-slate-700 ml-1.5">Client Communication, Team Coordination, Project Coordination, Time Management, Problem-Solving</span>
                     </div>
-                  </div>
-                </div>
-
-                {/* Tools */}
-                <div className="py-4 border-b border-slate-200">
-                  <h2 className="text-xs font-bold uppercase tracking-widest text-slate-900 mb-3 font-display">
-                    TOOLS
-                  </h2>
-                  <div className="space-y-2.5 text-xs sm:text-[12.5px] text-slate-700">
-                    <div>
-                      <strong className="text-slate-900">Design & Creative:</strong>
-                      <p className="mt-0.5 text-slate-700">Canva • Figma • Lightroom • Snapseed • Adobe Express</p>
-                    </div>
-                    <div>
-                      <strong className="text-slate-900">Social Media & Video:</strong>
-                      <p className="mt-0.5 text-slate-700">Meta Business Suite • CapCut • InShot • Youtube Studio</p>
-                    </div>
-                    <div>
-                      <strong className="text-slate-900">Google Workspace:</strong>
-                      <p className="mt-0.5 text-slate-700">Google Docs • Google Sheets • Google Slides • Google Drive</p>
-                    </div>
-                    <div>
-                      <strong className="text-slate-900">AI & Productivity:</strong>
-                      <p className="mt-0.5 text-slate-700">ChatGPT • Claude • Google AI Studio • Notion</p>
+                    <div className="pt-1">
+                      <strong className="text-slate-900">TOOLS:</strong>
+                      <span className="text-slate-700 ml-1.5">Canva, Figma, Adobe Express, Meta Business Suite, CapCut, InShot, YouTube Studio, Google Workspace, ChatGPT, Claude, Google AI Studio, Notion, Miro</span>
                     </div>
                   </div>
                 </div>
