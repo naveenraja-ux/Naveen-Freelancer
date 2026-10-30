@@ -1890,9 +1890,9 @@ const Experience = ({ onOpenResume }: { onOpenResume?: () => void }) => {
         {/* SECTION 2: REDUCE COMPANY HEADER SIZE (76x76 monogram, 29px/25px name, 13px status, 14px details, 17px icons) */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-3">
           {/* Left: Remedo logo (76px x 76px, rounded 16px) */}
-          <div className="w-[76px] h-[76px] rounded-[16px] bg-black p-2 flex items-center justify-center shrink-0 shadow-md shadow-blue-500/10 border border-[#26354C]/60 select-none overflow-hidden">
+          <div className="w-[76px] h-[76px] rounded-[16px] bg-white p-1.5 flex items-center justify-center shrink-0 shadow-md shadow-blue-500/10 border border-[#26354C]/40 select-none overflow-hidden">
             <img 
-              src="/assets/aistudio/image_59fc0abd.png" 
+              src="/assets/aistudio/image_c42daa93.png" 
               alt="Remedo Clinitech" 
               className="w-full h-full object-contain" 
             />
