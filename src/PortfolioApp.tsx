@@ -48,7 +48,14 @@ import {
   Building2,
   GraduationCap,
   Sun,
-  Moon
+  Moon,
+  Wifi,
+  FilePenLine,
+  CalendarCheck,
+  Users,
+  BarChart3,
+  FileBarChart,
+  Share2
 } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 
@@ -1850,429 +1857,652 @@ const Services = () => {
 // --- Experience Section ---
 const Experience = ({ onOpenResume }: { onOpenResume?: () => void }) => {
   return (
-    <section id="experience" className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white dark:bg-[#070b14] text-slate-800 dark:text-slate-200 overflow-hidden relative border-t border-slate-100 dark:border-white/5 transition-colors duration-300">
-      {/* Subtle blue radial gradients for modern high-end look */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-100/30 dark:bg-blue-950/20 rounded-full blur-[130px] pointer-events-none -z-10" />
-      <div className="absolute bottom-1/4 right-10 w-[500px] h-[500px] bg-indigo-50/40 dark:bg-indigo-950/20 rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] dark:bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none -z-10" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
+    <section 
+      id="experience" 
+      className="w-full bg-[#080E1B] text-[#F5F7FC] pt-3 pb-3 px-4 sm:px-6 xl:px-[40px] relative transition-colors duration-300"
+    >
+      <div className="max-w-[1500px] mx-auto">
         
-        {/* Section Header */}
-        <div className="text-center max-w-4xl mx-auto mb-12 md:mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-3.5"
-          >
-            <div className="inline-flex items-center gap-2">
-              <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold bg-blue-50 dark:bg-blue-950/40 px-4 py-1.5 rounded-full border border-blue-100 dark:border-blue-800/40 inline-block shadow-sm/50">
-                MY EXPERIENCE
-              </span>
-            </div>
-            
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black text-navy dark:text-white tracking-tight leading-tight">
-              Real Client Experience & Brand Growth
-            </h2>
-            <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base font-semibold max-w-2xl mx-auto leading-relaxed">
-              Managing social media operations for 30+ client accounts and healthcare brands through strategic content planning, creative design, and data-driven Meta performance.
-            </p>
+        {/* Top-left Section Number and Heading (12px top padding from nav, 14px bottom margin) */}
+        <div className="flex items-center justify-between h-6 mb-3.5">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <span className="text-[#3B82F6] font-medium text-[14px] sm:text-[15px] tracking-wider select-none">
+              01
+            </span>
+            <span className="w-10 sm:w-14 h-[1.5px] bg-[#3B82F6]" />
+            <span className="text-[#3B82F6] font-medium text-[14px] sm:text-[15px] uppercase tracking-[4px] select-none">
+              EXPERIENCE
+            </span>
+          </div>
 
-            {onOpenResume && (
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={onOpenResume}
-                  className="inline-flex items-center gap-2 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-white/10 text-navy dark:text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm cursor-pointer hover:border-primary/40 hover:-translate-y-0.5"
-                >
-                  <FileText size={14} className="text-primary" />
-                  <span>View Full Resume</span>
-                </button>
-              </div>
-            )}
-          </motion.div>
+          {onOpenResume && (
+            <button
+              type="button"
+              onClick={onOpenResume}
+              className="inline-flex items-center gap-1.5 bg-[#101A2A] hover:bg-[#152338] hover:border-[#3B82F6]/50 border border-[#26354C] text-[#E5EAF4] px-3 py-1 rounded-full text-[11px] font-medium uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-sm select-none h-6"
+            >
+              <FileText size={12} className="text-[#3B82F6]" />
+              <span>View Resume</span>
+            </button>
+          )}
         </div>
 
-        {/* Experience Cards Container */}
-        <div className="space-y-8">
+        {/* SECTION 2: REDUCE COMPANY HEADER SIZE (76x76 monogram, 29px/25px name, 13px status, 14px details, 17px icons) */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-3">
+          {/* Left: Remedo logo (76px x 76px, rounded 16px) */}
+          <div className="w-[76px] h-[76px] rounded-[16px] bg-black p-2 flex items-center justify-center shrink-0 shadow-md shadow-blue-500/10 border border-[#26354C]/60 select-none overflow-hidden">
+            <img 
+              src="/assets/aistudio/image_59fc0abd.png" 
+              alt="Remedo Clinitech" 
+              className="w-full h-full object-contain" 
+            />
+          </div>
+
+          {/* Right: Company details */}
+          <div className="flex-1 min-w-0 space-y-1">
+            {/* Status indicator (13px) */}
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#00D6A0] shrink-0" />
+              <span className="text-[#00D6A0] text-[13px] font-semibold tracking-wider uppercase select-none">
+                CURRENT POSITION
+              </span>
+            </div>
+
+            {/* Company Name (29px desktop, 25px laptop) */}
+            <h2 className="text-[22px] sm:text-[25px] xl:text-[29px] font-bold text-[#F5F7FC] tracking-tight leading-tight">
+              Remedo Clinitech Private Ltd
+            </h2>
+
+            {/* Employment details row (14px font, 17px icons, single horizontal row) */}
+            <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1 text-[#AAB6CC] text-[13px] sm:text-[14px] font-medium pt-0.5">
+              <div className="flex items-center gap-1.5">
+                <Briefcase size={17} className="text-[#3B82F6] shrink-0" />
+                <span>Social Media Executive</span>
+              </div>
+              <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
+              <div className="flex items-center gap-1.5">
+                <Calendar size={17} className="text-[#3B82F6] shrink-0" />
+                <span>Sep 2026 – Present</span>
+              </div>
+              <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
+              <div className="flex items-center gap-1.5">
+                <MapPin size={17} className="text-[#3B82F6] shrink-0" />
+                <span>Remote</span>
+              </div>
+              <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
+              <div className="flex items-center gap-1.5">
+                <Wifi size={17} className="text-[#3B82F6] shrink-0" />
+                <span>Full-time</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* SECTION 3: REDUCE OVERVIEW TEXT (15px desktop, line-height 1.5, max 2 lines, mt 12px, mb 14px) */}
+        <div className="mt-3 mb-3.5">
+          <p className="text-[#D0D9E8] text-[14px] sm:text-[15px] leading-[1.5] max-w-full font-normal">
+            Managing end-to-end social media operations for 30+ healthcare client accounts – from content creation and scheduling to client handling, performance tracking and monthly reporting using Meta Business Suite.
+          </p>
+        </div>
+
+        {/* Full-width horizontal divider (14px margin bottom to main content) */}
+        <div className="w-full h-[1px] bg-[#26354C] mb-3.5" />
+
+        {/* SECTION 4, 5, 6: MAIN CONTENT – PRESERVE 65% / 35% SPLIT */}
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,65fr)_1px_minmax(0,35fr)] gap-y-6 lg:gap-y-0 lg:gap-x-6 items-stretch">
           
-          {/* Card 1: Remedo Clinitech Private Ltd (Sep 2026 – Present) */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/60 dark:border-white/10 p-5 md:p-6 lg:p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden"
-          >
-            {/* Top accent glow */}
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-blue-500 to-indigo-600" />
+          {/* LEFT COLUMN: WHAT I DO (65% width) */}
+          <div className="flex flex-col">
+            <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[2px] mb-3 flex items-center gap-2 select-none">
+              <span>●</span> WHAT I DO
+            </h3>
 
-            {/* Header Area */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100 dark:border-white/10">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-white dark:bg-slate-800 border border-slate-100 dark:border-white/10 rounded-2xl flex items-center justify-center overflow-hidden p-2 shadow-sm shrink-0">
+            {/* Exactly 4 Responsibility Cards in a 2 x 2 grid (12px padding, 112px min-h, 12px gap, 12px rounded) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+              
+              {/* CARD 01 – CONTENT CREATION */}
+              <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
+                <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
+                  <FilePenLine size={26} className="text-[#3985FF]" strokeWidth={1.75} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
+                    01. CONTENT CREATION
+                  </h4>
+                  <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
+                    Create video scripts, static posts, blogs and creative content.
+                  </p>
+                </div>
+              </div>
+
+              {/* CARD 02 – SCHEDULING & PUBLISHING */}
+              <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
+                <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
+                  <CalendarCheck size={26} className="text-[#3985FF]" strokeWidth={1.75} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
+                    02. SCHEDULING & PUBLISHING
+                  </h4>
+                  <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
+                    Plan and schedule content across social media profiles and ensure timely publishing.
+                  </p>
+                </div>
+              </div>
+
+              {/* CARD 03 – CLIENT HANDLING */}
+              <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
+                <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
+                  <Users size={26} className="text-[#3985FF]" strokeWidth={1.75} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
+                    03. CLIENT HANDLING
+                  </h4>
+                  <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
+                    Coordinate with clients and manage content requirements, feedback and approvals.
+                  </p>
+                </div>
+              </div>
+
+              {/* CARD 04 – ANALYTICS & GROWTH */}
+              <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
+                <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
+                  <svg viewBox="0 0 24 24" className="w-[26px] h-[26px] text-[#3985FF]" fill="currentColor" aria-hidden="true">
+                    <rect x="2.5" y="14" width="3.4" height="7" rx="1.7" />
+                    <rect x="8.3" y="10" width="3.4" height="11" rx="1.7" />
+                    <rect x="14.1" y="6" width="3.4" height="15" rx="1.7" />
+                    <rect x="19.9" y="2" width="3.4" height="19" rx="1.7" />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
+                    04. ANALYTICS & GROWTH
+                  </h4>
+                  <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
+                    Track insights and metrics, identify improvements and optimise performance.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Vertical Divider Line between Left 65% and Right 35% on Desktop */}
+          <div className="hidden lg:block w-[1px] bg-[#26354C] self-stretch" />
+
+          {/* RIGHT COLUMN: TOOLS USED (35% width, 48px badge height, 25px icons, 13px text, 30px rounded) */}
+          <div className="flex flex-col">
+            <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[2px] mb-3 flex items-center gap-2 select-none">
+              <span>●</span> TOOLS USED
+            </h3>
+
+            {/* Exactly 8 Tools in a 2-column x 4-row grid (gap-x 10px, gap-y 12px) */}
+            <div className="grid grid-cols-2 gap-x-2.5 gap-y-3 flex-1 content-between">
+              
+              {/* ROW 1, COL 1: Meta Business Suite */}
+              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                  <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+                    <path d="M12.001 8.243c-1.394-2.106-3.197-3.243-5.086-3.243C3.09 5 0 8.01 0 12.288 0 16.566 3.09 19.576 6.915 19.576c2.518 0 4.492-1.353 5.086-3.243.594 1.89 2.568 3.243 5.086 3.243 3.825 0 6.915-3.01 6.915-7.288 0-4.278-3.09-7.288-6.915-7.288-1.889 0-3.692 1.137-5.086 3.243zm-4.71 8.814c-2.457 0-4.475-2.094-4.475-4.769 0-2.675 2.018-4.769 4.475-4.769 1.95 0 3.398 1.455 4.316 3.208-.94 1.841-2.39 6.33-4.316 6.33zm9.42 0c-1.926 0-3.376-4.489-4.316-6.33.918-1.753 2.366-3.208 4.316-3.208 2.457 0 4.475 2.094 4.475 4.769 0 2.675-2.018 4.769-4.475 4.769z" fill="#0081FB"/>
+                  </svg>
+                </div>
+                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                  Meta Business Suite
+                </span>
+              </div>
+
+              {/* ROW 1, COL 2: Canva */}
+              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                <div className="w-[25px] h-[25px] rounded-full overflow-hidden flex items-center justify-center shrink-0">
                   <img 
-                    src="https://yummy-magenta-sal6j9cq.edgeone.dev/" 
-                    alt="Remedo Clinitech Private Ltd" 
-                    className="w-full h-full object-contain" 
+                    src="https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" 
+                    alt="Canva" 
+                    className="w-full h-full object-cover" 
                     referrerPolicy="no-referrer"
-                    onError={(e) => {
-                      // Fallback to stylized RC icon if image load fails
-                      const target = e.currentTarget;
-                      target.style.display = 'none';
-                      if (target.parentElement) {
-                        target.parentElement.className = "w-14 h-14 bg-gradient-to-br from-blue-500 via-primary to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-md shadow-primary/20 shrink-0";
-                        target.parentElement.innerHTML = '<span class="font-display font-black text-lg tracking-wider">RC</span>';
-                      }
-                    }}
                   />
                 </div>
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 px-2.5 py-0.5 rounded-full">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                      </span>
-                      Current Position
-                    </span>
-                    <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-wider bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-800/40 px-2.5 py-0.5 rounded-full">
-                      30+ Client Accounts
-                    </span>
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-display font-black text-navy dark:text-white mt-1 tracking-tight">
-                    Remedo Clinitech Private Ltd
-                  </h3>
-                </div>
+                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                  Canva
+                </span>
               </div>
 
-              {/* Recruitment Meta Information */}
-              <div className="flex flex-wrap items-center gap-3 text-[11px]">
-                <div className="bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-white/10 rounded-xl px-3 py-1.5 flex items-center gap-2">
-                  <Briefcase size={12} className="text-primary" />
-                  <div>
-                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Role</p>
-                    <p className="font-bold text-navy dark:text-white mt-0.5">Social Media Executive</p>
-                  </div>
+              {/* ROW 2, COL 1: Google Docs */}
+              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                  <svg viewBox="0 0 48 48" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+                    <path d="M30 6H14C11.79 6 10 7.79 10 10V38C10 40.21 11.79 42 14 42H34C36.21 42 38 40.21 38 38V14L30 6Z" fill="#4285F4"/>
+                    <path d="M30 6V14H38L30 6Z" fill="#A1C2FA"/>
+                    <path d="M16 22H32M16 28H32M16 34H26" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                  </svg>
                 </div>
-                
-                <div className="bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-white/10 rounded-xl px-3 py-1.5 flex items-center gap-2">
-                  <Building2 size={12} className="text-emerald-500" />
-                  <div>
-                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Scale</p>
-                    <p className="font-bold text-navy dark:text-white mt-0.5">30+ Client Brands</p>
-                  </div>
-                </div>
-
-                <div className="bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-white/10 rounded-xl px-3 py-1.5 flex items-center gap-2">
-                  <Calendar size={12} className="text-purple-500" />
-                  <div>
-                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Duration</p>
-                    <p className="font-bold text-navy dark:text-white mt-0.5">Sep 2026 – Present</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Grid for Storytelling: Overview, Tools, Responsibilities, Impact */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 pt-5">
-              
-              {/* Left Column (Overview & Tools) */}
-              <div className="lg:col-span-5 space-y-5">
-                
-                {/* Overview Section */}
-                <div className="space-y-1.5">
-                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-                    Overview
-                  </h4>
-                  <p className="text-slate-600 dark:text-slate-300 text-xs md:text-[13px] font-semibold leading-relaxed">
-                    Remedo Clinitech is an innovative healthcare technology company empowering clinics and medical practitioners. In my role as Social Media Executive, I manage social media operations across 30+ client accounts, orchestrating high-velocity content delivery, client coordination, and Meta performance analytics.
-                  </p>
-                </div>
-
-                {/* Operations Focus */}
-                <div className="space-y-1.5">
-                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-                    Key Focus Areas
-                  </h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {["Meta Business Suite", "30+ Client Accounts", "Content Scheduling", "Meta Insights & Analytics", "Creative Coordination", "Timely Follow-ups"].map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-primary bg-blue-50/80 dark:bg-blue-950/40 border border-blue-100/70 dark:border-blue-800/40 px-2.5 py-0.5 rounded-full text-[11px] font-bold select-none"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Tools Used Section */}
-                <div className="space-y-1.5">
-                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-                    Tools & Stack
-                  </h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {["Meta Business Suite", "Canva", "Figma", "Google Workspace", "ChatGPT", "Notion", "InShot"].map((tool) => (
-                      <span
-                        key={tool}
-                        className="text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/80 border border-slate-200/50 dark:border-white/10 px-2.5 py-0.5 rounded-full text-[11px] font-bold hover:bg-slate-100/80 dark:hover:bg-slate-700 hover:border-slate-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-default select-none"
-                      >
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
+                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                  Google Docs
+                </span>
               </div>
 
-              {/* Right Column (Responsibilities) */}
-              <div className="lg:col-span-7">
-                
-                {/* Responsibilities Section */}
-                <div className="space-y-2.5">
-                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-                    Key Responsibilities
-                  </h4>
-                  <ul className="space-y-2.5">
-                    <li className="flex items-start gap-2.5 text-slate-700 dark:text-slate-300 text-xs md:text-[13px] leading-relaxed">
-                      <div className="w-4 h-4 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400">
-                        <Check size={9} strokeWidth={3} />
-                      </div>
-                      <span>
-                        Manage social media activities for <strong>30+ client accounts</strong>, including content calendars, scheduling, publishing, and account management using Meta Business Suite.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2.5 text-slate-700 dark:text-slate-300 text-xs md:text-[13px] leading-relaxed">
-                      <div className="w-4 h-4 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400">
-                        <Check size={9} strokeWidth={3} />
-                      </div>
-                      <span>
-                        Coordinate with <strong>Account Managers, creative teams, and clients</strong> to manage content requirements, designs, approvals, and timely follow-ups.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2.5 text-slate-700 dark:text-slate-300 text-xs md:text-[13px] leading-relaxed">
-                      <div className="w-4 h-4 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400">
-                        <Check size={9} strokeWidth={3} />
-                      </div>
-                      <span>
-                        Monitor <strong>Meta Insights and social media analytics</strong> to track content performance, engagement, and reach (and maintain documentation for ongoing activities).
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2.5 text-slate-700 dark:text-slate-300 text-xs md:text-[13px] leading-relaxed">
-                      <div className="w-4 h-4 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400">
-                        <Check size={9} strokeWidth={3} />
-                      </div>
-                      <span>
-                        Manage day-to-day client communication and content workflows, ensuring requirements are coordinated and posts are delivered and published on schedule.
-                      </span>
-                    </li>
-                  </ul>
+              {/* ROW 2, COL 2: Google Sheets */}
+              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                  <svg viewBox="0 0 48 48" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+                    <path d="M30 6H14C11.79 6 10 7.79 10 10V38C10 40.21 11.79 42 14 42H34C36.21 42 38 40.21 38 38V14L30 6Z" fill="#0F9D58"/>
+                    <path d="M30 6V14H38L30 6Z" fill="#87CEAC"/>
+                    <rect x="16" y="22" width="16" height="13" rx="1.5" stroke="white" strokeWidth="2.2" fill="none"/>
+                    <line x1="24" y1="22" x2="24" y2="35" stroke="white" strokeWidth="2"/>
+                    <line x1="16" y1="28.5" x2="32" y2="28.5" stroke="white" strokeWidth="2"/>
+                  </svg>
                 </div>
-
+                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                  Google Sheets
+                </span>
               </div>
 
-            </div>
-
-            {/* Project Impact quote block */}
-            <div className="mt-6 bg-gradient-to-br from-blue-50 to-indigo-50/60 dark:from-blue-950/40 dark:to-indigo-950/30 border border-blue-100/60 dark:border-blue-800/30 p-5 rounded-2xl relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-3 opacity-10">
-                <Sparkles size={20} className="text-primary animate-pulse" />
+              {/* ROW 3, COL 1: Google Slides */}
+              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                  <svg viewBox="0 0 48 48" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+                    <path d="M30 6H14C11.79 6 10 7.79 10 10V38C10 40.21 11.79 42 14 42H34C36.21 42 38 40.21 38 38V14L30 6Z" fill="#F4B400"/>
+                    <path d="M30 6V14H38L30 6Z" fill="#FCE293"/>
+                    <rect x="16" y="23" width="16" height="11" rx="1.5" stroke="white" strokeWidth="2.2" fill="none"/>
+                  </svg>
+                </div>
+                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                  Google Slides
+                </span>
               </div>
-              
-              <div className="flex items-center gap-2.5 mb-2">
-                <div className="w-1 h-5 bg-primary rounded-full" />
-                <h5 className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.15em] text-primary">
-                  Role Impact & Operational Excellence
-                </h5>
-              </div>
-              
-              <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-[13px] md:text-sm font-semibold leading-relaxed">
-                Orchestrating end-to-end social media operations across 30+ healthcare client accounts with 100% on-time publishing execution, data-driven Meta analytics optimization, and seamless multi-stakeholder coordination between account managers and creative production.
-              </p>
-            </div>
-          </motion.div>
 
-          {/* Card 2: Apollo Dental Clinic (Nov 2024 – Jun 2026) */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/60 dark:border-white/10 p-5 md:p-6 lg:p-8 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1"
-          >
-            {/* Header Area */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100 dark:border-white/10">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-white/10 rounded-2xl flex items-center justify-center overflow-hidden p-2 shadow-sm shrink-0">
+              {/* ROW 3, COL 2: ChatGPT */}
+              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                  <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="#FFFFFF" aria-hidden="true">
+                    <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.8956zm16.0993 3.8558L12.5973 8.3829l2.02-1.1638a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4022-.686zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L8.809 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.662zm-12.6401 4.135l-2.02-1.1639a.0804.0804 0 0 1-.038-.0567V6.0748a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.1979 5.4598a.7948.7948 0 0 0-.3928.6813v6.7369zm1.1495-2.0682l2.6115-1.5103 2.6115 1.5103v3.0206l-2.6115 1.5103-2.6115-1.5103z"/>
+                  </svg>
+                </div>
+                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                  ChatGPT
+                </span>
+              </div>
+
+              {/* ROW 4, COL 1: InShot */}
+              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                <div className="w-[25px] h-[25px] rounded-md overflow-hidden flex items-center justify-center shrink-0">
                   <img 
-                    src="https://image2url.com/r2/default/images/1775567270735-9f31738c-e14f-443e-bc63-25dc45697c09.png" 
-                    alt="Apollo Dental Clinic" 
-                    className="w-full h-full object-contain" 
-                    referrerPolicy="no-referrer" 
+                    src="https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" 
+                    alt="InShot" 
+                    className="w-full h-full object-cover" 
+                    referrerPolicy="no-referrer"
                   />
                 </div>
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[9px] font-mono font-bold text-primary uppercase tracking-wider bg-blue-50 dark:bg-blue-950/40 border border-blue-100/50 dark:border-blue-800/40 px-2.5 py-0.5 rounded-full">
-                      Client Partner
-                    </span>
-                    <span className="text-[9px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-white/10 px-2.5 py-0.5 rounded-full">
-                      Dental & Cosmetology
-                    </span>
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-display font-black text-navy dark:text-white mt-1 tracking-tight">
-                    Apollo Dental Clinic
-                  </h3>
-                </div>
+                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                  InShot
+                </span>
               </div>
 
-              {/* Recruitment Meta Information */}
-              <div className="flex flex-wrap items-center gap-3 text-[11px]">
-                <div className="bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-white/10 rounded-xl px-3 py-1.5 flex items-center gap-2">
-                  <Briefcase size={12} className="text-primary" />
-                  <div>
-                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Role</p>
-                    <p className="font-bold text-navy dark:text-white mt-0.5">Social Media Manager</p>
-                  </div>
+              {/* ROW 4, COL 2: Asana (Official 3-dot/circle mark in coral/orange/pink) */}
+              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                  <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+                    <circle cx="12" cy="6.2" r="3.9" fill="#FC636B"/>
+                    <circle cx="6.3" cy="16.5" r="3.9" fill="#FF7759"/>
+                    <circle cx="17.7" cy="16.5" r="3.9" fill="#F34079"/>
+                  </svg>
                 </div>
-                
-                <div className="bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-white/10 rounded-xl px-3 py-1.5 flex items-center gap-2">
-                  <Globe size={12} className="text-emerald-500" />
-                  <div>
-                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Type</p>
-                    <p className="font-bold text-navy dark:text-white mt-0.5">Remote & Hybrid</p>
-                  </div>
-                </div>
+                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                  Asana
+                </span>
+              </div>
 
-                <div className="bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-white/10 rounded-xl px-3 py-1.5 flex items-center gap-2">
-                  <Calendar size={12} className="text-purple-500" />
-                  <div>
-                    <p className="text-[8px] text-slate-400 font-bold uppercase leading-none">Duration</p>
-                    <p className="font-bold text-navy dark:text-white mt-0.5">Nov 2024 – Jun 2026</p>
-                  </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* SECTION 7: ROLE IMPACT BANNER (82px height, 48x48 icon container, 28px icon, 12px heading, 14px desc, 14px mt) */}
+        <div className="w-full mt-3.5 min-h-[70px] sm:h-[82px] rounded-[14px] bg-gradient-to-r from-[#0C1D3D] via-[#0D2248] to-[#0C1D3D] border border-[#1764D8] py-2.5 px-3.5 sm:py-3 sm:px-4 flex items-center gap-3.5 sm:gap-4">
+          {/* Left: Blue upward-trending analytics icon inside 48x48 square container */}
+          <div className="w-[48px] h-[48px] rounded-[12px] bg-[#102B57] flex items-center justify-center shrink-0 border border-[#1764D8]/30">
+            <svg viewBox="0 0 24 24" className="w-7 h-7 text-[#3985FF]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+              <path d="M3 9l6-6 4 4 8-4" />
+              <polyline points="17 3 21 3 21 7" />
+            </svg>
+          </div>
+
+          {/* Middle: Vertical divider line */}
+          <div className="w-[1px] h-8 bg-[#1C3454] hidden sm:block shrink-0" aria-hidden="true" />
+
+          {/* Right: Heading (12px) and impact statement (14px) */}
+          <div className="flex-1 min-w-0">
+            <span className="text-[#3B82F6] font-semibold text-[12px] tracking-[1.5px] uppercase block leading-tight mb-0.5 select-none">
+              ROLE IMPACT
+            </span>
+            <p className="text-[#F5F7FC] text-[13px] sm:text-[14px] font-normal sm:font-medium leading-snug">
+              Driving consistent content execution and performance growth across{" "}
+              <span className="text-[#3B82F6] font-semibold">30+ healthcare brands</span>{" "}
+              through strategic planning, creative content and data-driven social media management.
+            </p>
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* SEPARATOR BETWEEN EXPERIENCE 01 AND EXPERIENCE 02                         */}
+        {/* ========================================================================= */}
+        <div className="w-full h-[1px] bg-[#26354C]/70 my-8 sm:my-10" />
+
+        {/* ========================================================================= */}
+        {/* EXPERIENCE 02 – APOLLO DENTAL CLINIC                                      */}
+        {/* ========================================================================= */}
+        <div id="experience-02" className="pt-2">
+          
+          {/* Top-left Section Number and Heading */}
+          <div className="flex items-center justify-between h-6 mb-3.5">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <span className="text-[#3B82F6] font-medium text-[14px] sm:text-[15px] tracking-wider select-none">
+                02
+              </span>
+              <span className="w-10 sm:w-14 h-[1.5px] bg-[#3B82F6]" />
+              <span className="text-[#3B82F6] font-medium text-[14px] sm:text-[15px] uppercase tracking-[4px] select-none">
+                EXPERIENCE
+              </span>
+            </div>
+          </div>
+
+          {/* SECTION 3 & 4: COMPANY HEADER & EMPLOYMENT DETAILS */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-3">
+            {/* Left: Apollo Dental Clinic Logo (76px x 76px, rounded 16px) */}
+            <div className="w-[76px] h-[76px] rounded-[16px] bg-white p-1.5 flex items-center justify-center shrink-0 shadow-md shadow-purple-500/10 select-none overflow-hidden border border-[#26354C]/40">
+              <img 
+                src="/assets/aistudio/image_da995e50.png" 
+                alt="Apollo Dental Clinic" 
+                className="w-full h-full object-contain" 
+              />
+            </div>
+
+            {/* Right: Company details */}
+            <div className="flex-1 min-w-0 space-y-1">
+              {/* Labels above company name: CLIENT PARTNER & DENTAL & COSMETOLOGY */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-[#102B57] text-[#3B82F6] border border-[#1C3454] select-none">
+                  CLIENT PARTNER
+                </span>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium tracking-wider uppercase bg-[#0D192B] text-[#AAB6CC] border border-[#263C5B] select-none">
+                  DENTAL & COSMETOLOGY
+                </span>
+              </div>
+
+              {/* Company Name (29px desktop, bold, white) */}
+              <h2 className="text-[22px] sm:text-[25px] xl:text-[29px] font-bold text-[#F5F7FC] tracking-tight leading-tight">
+                Apollo Dental Clinic
+              </h2>
+
+              {/* Employment details row: Role, Type, Duration */}
+              <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1 text-[#AAB6CC] text-[13px] sm:text-[14px] font-medium pt-0.5">
+                <div className="flex items-center gap-1.5">
+                  <Briefcase size={17} className="text-[#3B82F6] shrink-0" />
+                  <span>Social Media Manager</span>
+                </div>
+                <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
+                <div className="flex items-center gap-1.5">
+                  <Globe size={17} className="text-[#00D6A0] shrink-0" />
+                  <span>Remote & Hybrid</span>
+                </div>
+                <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
+                <div className="flex items-center gap-1.5">
+                  <Calendar size={17} className="text-[#A78BFA] shrink-0" />
+                  <span>Nov 2024 – Jun 2026</span>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Grid for Storytelling: Overview, Platforms, Responsibilities, Impact */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 pt-5">
-              
-              {/* Left Column (Meta & Overview & Tools) */}
-              <div className="lg:col-span-5 space-y-5">
+          {/* SECTION 5: PROFESSIONAL OVERVIEW */}
+          <div className="mt-3 mb-3.5">
+            <p className="text-[#D0D9E8] text-[14px] sm:text-[15px] leading-[1.55] max-w-full font-normal">
+              Apollo Dental Clinic is a premier dental care and cosmetology provider. In my role as Social Media Manager, I managed complete brand profiles across Facebook and Instagram, produced educational reels and high-converting creative designs, and maintained consistent multi-page brand communication.
+            </p>
+          </div>
+
+          {/* Full-width horizontal divider */}
+          <div className="w-full h-[1px] bg-[#26354C] mb-3.5" />
+
+          {/* SECTION 6 & 7: MAIN CONTENT – 65% / 35% SPLIT */}
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,65fr)_1px_minmax(0,35fr)] gap-y-6 lg:gap-y-0 lg:gap-x-6 items-stretch">
+            
+            {/* LEFT COLUMN: WHAT I DO (65% width) */}
+            <div className="flex flex-col">
+              <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[2px] mb-3 flex items-center gap-2 select-none">
+                <span>●</span> WHAT I DO
+              </h3>
+
+              {/* Exactly 4 Responsibility Cards in a 2 x 2 grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
                 
-                {/* Overview Section */}
-                <div className="space-y-1.5">
-                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-                    Overview
-                  </h4>
-                  <p className="text-slate-600 dark:text-slate-300 text-xs md:text-[13px] font-semibold leading-relaxed">
-                    Apollo Dental Clinic is a premier dental care and cosmetology provider. In my role as Social Media Manager, I managed complete brand profiles across Facebook and Instagram, produced educational reels and high-converting creative designs, and maintained consistent multi-page brand communication.
-                  </p>
+                {/* CARD 01 – SOCIAL MEDIA MANAGEMENT */}
+                <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
+                  <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
+                    <Share2 size={26} className="text-[#3985FF]" strokeWidth={1.75} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
+                      01. SOCIAL MEDIA MANAGEMENT
+                    </h4>
+                    <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
+                      Managed social media profiles for dental, cosmetology and education brands, including content planning, scheduling and publishing.
+                    </p>
+                  </div>
                 </div>
 
-                {/* Managed Channels Mention */}
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center gap-2 bg-slate-50 dark:bg-slate-800 border border-slate-200/70 dark:border-white/10 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 select-none">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                    Facebook & Instagram managed
+                {/* CARD 02 – CREATIVE CONTENT CREATION */}
+                <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
+                  <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
+                    <FilePenLine size={26} className="text-[#3985FF]" strokeWidth={1.75} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
+                      02. CREATIVE CONTENT CREATION
+                    </h4>
+                    <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
+                      Created social media creatives, promotional posts, reels and short-form videos aligned with brand guidelines and content requirements.
+                    </p>
+                  </div>
+                </div>
+
+                {/* CARD 03 – CONTENT PLANNING & CALENDAR */}
+                <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
+                  <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
+                    <CalendarCheck size={26} className="text-[#3985FF]" strokeWidth={1.75} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
+                      03. CONTENT PLANNING & CALENDAR
+                    </h4>
+                    <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
+                      Developed and maintained monthly content calendars to ensure consistent and engaging social media communication.
+                    </p>
+                  </div>
+                </div>
+
+                {/* CARD 04 – CLIENT COORDINATION & REPORTING */}
+                <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
+                  <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
+                    <Users size={26} className="text-[#3985FF]" strokeWidth={1.75} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
+                      04. CLIENT COORDINATION & REPORTING
+                    </h4>
+                    <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
+                      Coordinated content requirements, creative development, approvals and social media performance tracking across multiple business pages.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Vertical Divider Line between Left 65% and Right 35% on Desktop */}
+            <div className="hidden lg:block w-[1px] bg-[#26354C] self-stretch" />
+
+            {/* RIGHT COLUMN: TOOLS USED (35% width, 8 tools in exact order) */}
+            <div className="flex flex-col">
+              <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[2px] mb-3 flex items-center gap-2 select-none">
+                <span>●</span> TOOLS USED
+              </h3>
+
+              {/* Exactly 8 Tools in a 2-column x 4-row grid */}
+              <div className="grid grid-cols-2 gap-x-2.5 gap-y-3 flex-1 content-between">
+                
+                {/* ROW 1, COL 1: Meta Business Suite */}
+                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+                      <path d="M12.001 8.243c-1.394-2.106-3.197-3.243-5.086-3.243C3.09 5 0 8.01 0 12.288 0 16.566 3.09 19.576 6.915 19.576c2.518 0 4.492-1.353 5.086-3.243.594 1.89 2.568 3.243 5.086 3.243 3.825 0 6.915-3.01 6.915-7.288 0-4.278-3.09-7.288-6.915-7.288-1.889 0-3.692 1.137-5.086 3.243zm-4.71 8.814c-2.457 0-4.475-2.094-4.475-4.769 0-2.675 2.018-4.769 4.475-4.769 1.95 0 3.398 1.455 4.316 3.208-.94 1.841-2.39 6.33-4.316 6.33zm9.42 0c-1.926 0-3.376-4.489-4.316-6.33.918-1.753 2.366-3.208 4.316-3.208 2.457 0 4.475 2.094 4.475 4.769 0 2.675-2.018 4.769-4.475 4.769z" fill="#0081FB"/>
+                    </svg>
+                  </div>
+                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                    Meta Business Suite
                   </span>
                 </div>
 
-                {/* Tools Used Section */}
-                <div className="space-y-1.5">
-                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-                    Tools Used
-                  </h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {["Canva", "Meta Business Suite", "CapCut", "Adobe Express", "ChatGPT", "Instagram", "Facebook", "Google Workspace"].map((tool) => (
-                      <span
-                        key={tool}
-                        className="text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/80 border border-slate-200/50 dark:border-white/10 px-2.5 py-0.5 rounded-full text-[11px] font-bold hover:bg-slate-100/80 dark:hover:bg-slate-700 hover:border-slate-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-default select-none"
-                      >
-                        {tool}
-                      </span>
-                    ))}
+                {/* ROW 1, COL 2: Canva */}
+                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                  <div className="w-[25px] h-[25px] rounded-full overflow-hidden flex items-center justify-center shrink-0">
+                    <img 
+                      src="https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" 
+                      alt="Canva" 
+                      className="w-full h-full object-cover" 
+                      referrerPolicy="no-referrer"
+                    />
                   </div>
+                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                    Canva
+                  </span>
+                </div>
+
+                {/* ROW 2, COL 1: InShot */}
+                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                  <div className="w-[25px] h-[25px] rounded-md overflow-hidden flex items-center justify-center shrink-0">
+                    <img 
+                      src="https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" 
+                      alt="InShot" 
+                      className="w-full h-full object-cover" 
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                    InShot
+                  </span>
+                </div>
+
+                {/* ROW 2, COL 2: ChatGPT */}
+                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="#FFFFFF" aria-hidden="true">
+                      <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.8956zm16.0993 3.8558L12.5973 8.3829l2.02-1.1638a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4022-.686zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L8.809 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.662zm-12.6401 4.135l-2.02-1.1639a.0804.0804 0 0 1-.038-.0567V6.0748a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.1979 5.4598a.7948.7948 0 0 0-.3928.6813v6.7369zm1.1495-2.0682l2.6115-1.5103 2.6115 1.5103v3.0206l-2.6115 1.5103-2.6115-1.5103z"/>
+                    </svg>
+                  </div>
+                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                    ChatGPT
+                  </span>
+                </div>
+
+                {/* ROW 3, COL 1: Gemini */}
+                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+                      <path d="M12 24C12 17.373 6.627 12 0 12C6.627 12 12 6.627 12 0C12 6.627 17.373 12 24 12C17.373 12 12 17.373 12 24Z" fill="url(#gemini_grad_02)" />
+                      <defs>
+                        <linearGradient id="gemini_grad_02" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stopColor="#4E82EE" />
+                          <stop offset="50%" stopColor="#9B72CF" />
+                          <stop offset="100%" stopColor="#F56565" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                    Gemini
+                  </span>
+                </div>
+
+                {/* ROW 3, COL 2: Google Docs */}
+                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 48 48" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+                      <path d="M30 6H14C11.79 6 10 7.79 10 10V38C10 40.21 11.79 42 14 42H34C36.21 42 38 40.21 38 38V14L30 6Z" fill="#4285F4"/>
+                      <path d="M30 6V14H38L30 6Z" fill="#A1C2FA"/>
+                      <path d="M16 22H32M16 28H32M16 34H26" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                    Google Docs
+                  </span>
+                </div>
+
+                {/* ROW 4, COL 1: Figma */}
+                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 24 24" className="w-[20px] h-[20px]" fill="none" aria-hidden="true">
+                      <path d="M6 9C6 7.343 7.343 6 9 6H12V12H9C7.343 12 6 10.657 6 9Z" fill="#F24E1E"/>
+                      <path d="M12 6H15C16.657 6 18 7.343 18 9C18 10.657 16.657 12 15 12H12V6Z" fill="#FF7262"/>
+                      <path d="M6 15C6 13.343 7.343 12 9 12H12V18H9C7.343 18 6 16.657 6 15Z" fill="#0ACF83"/>
+                      <path d="M12 12H15C16.657 12 18 13.343 18 15C18 16.657 16.657 18 15 18C13.343 18 12 16.657 12 15V12Z" fill="#1ABCFE"/>
+                      <path d="M6 12H12V18H9C7.343 18 6 16.657 6 15V12Z" fill="#A259FF"/>
+                    </svg>
+                  </div>
+                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                    Figma
+                  </span>
+                </div>
+
+                {/* ROW 4, COL 2: AI Flow (Google) */}
+                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
+                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+                      <path d="M12 2L14.2 7.2L19.5 9.5L14.2 11.8L12 17L9.8 11.8L4.5 9.5L9.8 7.2L12 2Z" fill="#4285F4"/>
+                      <circle cx="18" cy="18" r="2.5" fill="#34A853"/>
+                      <circle cx="6" cy="18" r="2.5" fill="#EA4335"/>
+                      <path d="M8.5 18H15.5" stroke="#FBBC05" strokeWidth="1.8" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                    AI Flow (Google)
+                  </span>
                 </div>
 
               </div>
-
-              {/* Right Column (Responsibilities) */}
-              <div className="lg:col-span-7">
-                
-                {/* Responsibilities Section */}
-                <div className="space-y-2.5">
-                  <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-                    Key Responsibilities
-                  </h4>
-                  <ul className="space-y-2.5">
-                    <li className="flex items-start gap-2.5 text-slate-700 dark:text-slate-300 text-xs md:text-[13px] leading-relaxed">
-                      <div className="w-4 h-4 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400">
-                        <Check size={9} strokeWidth={3} />
-                      </div>
-                      <span>
-                        Managed social media profiles for <strong>dental, cosmetology, and education brands</strong>, including content planning, scheduling, publishing, and account management.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2.5 text-slate-700 dark:text-slate-300 text-xs md:text-[13px] leading-relaxed">
-                      <div className="w-4 h-4 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400">
-                        <Check size={9} strokeWidth={3} />
-                      </div>
-                      <span>
-                        Created <strong>social media creatives, promotional posts, reels, and short-form videos</strong> aligned with brand guidelines and content requirements.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2.5 text-slate-700 dark:text-slate-300 text-xs md:text-[13px] leading-relaxed">
-                      <div className="w-4 h-4 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400">
-                        <Check size={9} strokeWidth={3} />
-                      </div>
-                      <span>
-                        Developed and maintained <strong>monthly content calendars</strong> to ensure consistent and engaging social media communication.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2.5 text-slate-700 dark:text-slate-300 text-xs md:text-[13px] leading-relaxed">
-                      <div className="w-4 h-4 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400">
-                        <Check size={9} strokeWidth={3} />
-                      </div>
-                      <span>
-                        Coordinated content requirements, creative development, approvals, and social media performance tracking across multiple business pages.
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-
-              </div>
-
             </div>
 
-            {/* Project Impact quote block */}
-            <div className="mt-6 bg-gradient-to-br from-blue-50 to-indigo-50/60 dark:from-blue-950/40 dark:to-indigo-950/30 border border-blue-100/60 dark:border-blue-800/30 p-5 rounded-2xl relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-3 opacity-10">
-                <Sparkles size={20} className="text-primary animate-pulse" />
-              </div>
-              
-              <div className="flex items-center gap-2.5 mb-2">
-                <div className="w-1 h-5 bg-primary rounded-full" />
-                <h5 className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.15em] text-primary">
-                  Project Impact
-                </h5>
-              </div>
-              
-              <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-[13px] md:text-sm font-semibold leading-relaxed">
+          </div>
+
+          {/* SECTION 8: PROJECT IMPACT – FULL-WIDTH BOTTOM BANNER */}
+          <div className="w-full mt-3.5 min-h-[70px] sm:h-[82px] rounded-[14px] bg-gradient-to-r from-[#0C1D3D] via-[#0D2248] to-[#0C1D3D] border border-[#1764D8] py-2.5 px-3.5 sm:py-3 sm:px-4 flex items-center gap-3.5 sm:gap-4">
+            {/* Left: Blue upward-trending analytics icon */}
+            <div className="w-[48px] h-[48px] rounded-[12px] bg-[#102B57] flex items-center justify-center shrink-0 border border-[#1764D8]/30">
+              <svg viewBox="0 0 24 24" className="w-7 h-7 text-[#3985FF]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+                <path d="M3 9l6-6 4 4 8-4" />
+                <polyline points="17 3 21 3 21 7" />
+              </svg>
+            </div>
+
+            {/* Middle: Vertical divider line */}
+            <div className="w-[1px] h-8 bg-[#1C3454] hidden sm:block shrink-0" aria-hidden="true" />
+
+            {/* Right: Heading and impact statement */}
+            <div className="flex-1 min-w-0">
+              <span className="text-[#3B82F6] font-semibold text-[12px] tracking-[1.5px] uppercase block leading-tight mb-0.5 select-none">
+                PROJECT IMPACT
+              </span>
+              <p className="text-[#F5F7FC] text-[13px] sm:text-[14px] font-normal sm:font-medium leading-snug">
                 Contributed to strengthening Apollo Dental Clinic's digital presence through strategic content planning, creative design, engaging social media campaigns, and consistent brand communication across Instagram and Facebook.
               </p>
             </div>
-          </motion.div>
+          </div>
 
         </div>
 
