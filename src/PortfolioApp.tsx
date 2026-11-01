@@ -1853,6 +1853,475 @@ const Services = () => {
     </section>
   );
 };
+// --- Master UI Design Implementation: Unified Experience System ---
+
+interface ResponsibilityItem {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+}
+
+interface ToolItem {
+  name: string;
+  icon: React.ReactNode;
+}
+
+interface ExperienceDetail {
+  icon: React.ReactNode;
+  label: string;
+}
+
+interface ExperienceItemData {
+  number: string;
+  sectionId: string;
+  companyName: string;
+  logoSrc: string;
+  logoAlt: string;
+  badges: React.ReactNode;
+  details: ExperienceDetail[];
+  overview: string;
+  responsibilities: ResponsibilityItem[];
+  tools: ToolItem[];
+  impactTitle: string;
+  impactContent: React.ReactNode;
+}
+
+// Reusable SVG icons for tools
+const MetaIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+    <path d="M12.001 8.243c-1.394-2.106-3.197-3.243-5.086-3.243C3.09 5 0 8.01 0 12.288 0 16.566 3.09 19.576 6.915 19.576c2.518 0 4.492-1.353 5.086-3.243.594 1.89 2.568 3.243 5.086 3.243 3.825 0 6.915-3.01 6.915-7.288 0-4.278-3.09-7.288-6.915-7.288-1.889 0-3.692 1.137-5.086 3.243zm-4.71 8.814c-2.457 0-4.475-2.094-4.475-4.769 0-2.675 2.018-4.769 4.475-4.769 1.95 0 3.398 1.455 4.316 3.208-.94 1.841-2.39 6.33-4.316 6.33zm9.42 0c-1.926 0-3.376-4.489-4.316-6.33.918-1.753 2.366-3.208 4.316-3.208 2.457 0 4.475 2.094 4.475 4.769 0 2.675-2.018 4.769-4.475 4.769z" fill="#0081FB"/>
+  </svg>
+);
+
+const CanvaIcon = () => (
+  <div className="w-[25px] h-[25px] rounded-full overflow-hidden flex items-center justify-center shrink-0">
+    <img 
+      src="https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" 
+      alt="Canva" 
+      className="w-full h-full object-cover" 
+      referrerPolicy="no-referrer"
+    />
+  </div>
+);
+
+const InShotIcon = () => (
+  <div className="w-[25px] h-[25px] rounded-md overflow-hidden flex items-center justify-center shrink-0">
+    <img 
+      src="https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" 
+      alt="InShot" 
+      className="w-full h-full object-cover" 
+      referrerPolicy="no-referrer"
+    />
+  </div>
+);
+
+const ChatGPTIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="#FFFFFF" aria-hidden="true">
+    <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.8956zm16.0993 3.8558L12.5973 8.3829l2.02-1.1638a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4022-.686zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L8.809 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.662zm-12.6401 4.135l-2.02-1.1639a.0804.0804 0 0 1-.038-.0567V6.0748a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.1979 5.4598a.7948.7948 0 0 0-.3928.6813v6.7369zm1.1495-2.0682l2.6115-1.5103 2.6115 1.5103v3.0206l-2.6115 1.5103-2.6115-1.5103z"/>
+  </svg>
+);
+
+const GoogleDocsIcon = () => (
+  <svg viewBox="0 0 48 48" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+    <path d="M30 6H14C11.79 6 10 7.79 10 10V38C10 40.21 11.79 42 14 42H34C36.21 42 38 40.21 38 38V14L30 6Z" fill="#4285F4"/>
+    <path d="M30 6V14H38L30 6Z" fill="#A1C2FA"/>
+    <path d="M16 22H32M16 28H32M16 34H26" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+  </svg>
+);
+
+const GoogleSheetsIcon = () => (
+  <svg viewBox="0 0 48 48" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+    <path d="M30 6H14C11.79 6 10 7.79 10 10V38C10 40.21 11.79 42 14 42H34C36.21 42 38 40.21 38 38V14L30 6Z" fill="#0F9D58"/>
+    <path d="M30 6V14H38L30 6Z" fill="#87CEAC"/>
+    <rect x="16" y="22" width="16" height="13" rx="1.5" stroke="white" strokeWidth="2.2" fill="none"/>
+    <line x1="24" y1="22" x2="24" y2="35" stroke="white" strokeWidth="2"/>
+    <line x1="16" y1="28.5" x2="32" y2="28.5" stroke="white" strokeWidth="2"/>
+  </svg>
+);
+
+const GoogleSlidesIcon = () => (
+  <svg viewBox="0 0 48 48" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+    <path d="M30 6H14C11.79 6 10 7.79 10 10V38C10 40.21 11.79 42 14 42H34C36.21 42 38 40.21 38 38V14L30 6Z" fill="#F4B400"/>
+    <path d="M30 6V14H38L30 6Z" fill="#FCE293"/>
+    <rect x="16" y="23" width="16" height="11" rx="1.5" stroke="white" strokeWidth="2.2" fill="none"/>
+  </svg>
+);
+
+const AsanaIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+    <circle cx="12" cy="6.2" r="3.9" fill="#FC636B"/>
+    <circle cx="6.3" cy="16.5" r="3.9" fill="#FF7759"/>
+    <circle cx="17.7" cy="16.5" r="3.9" fill="#F34079"/>
+  </svg>
+);
+
+const GeminiIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+    <path d="M12 24C12 17.373 6.627 12 0 12C6.627 12 12 6.627 12 0C12 6.627 17.373 12 24 12C17.373 12 12 17.373 12 24Z" fill="url(#gemini_master_grad)" />
+    <defs>
+      <linearGradient id="gemini_master_grad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#4E82EE" />
+        <stop offset="50%" stopColor="#9B72CF" />
+        <stop offset="100%" stopColor="#F56565" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const FigmaIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-[20px] h-[20px]" fill="none" aria-hidden="true">
+    <path d="M6 9C6 7.343 7.343 6 9 6H12V12H9C7.343 12 6 10.657 6 9Z" fill="#F24E1E"/>
+    <path d="M12 6H15C16.657 6 18 7.343 18 9C18 10.657 16.657 12 15 12H12V6Z" fill="#FF7262"/>
+    <path d="M6 15C6 13.343 7.343 12 9 12H12V18H9C7.343 18 6 16.657 6 15Z" fill="#0ACF83"/>
+    <path d="M12 12H15C16.657 12 18 13.343 18 15C18 16.657 16.657 18 15 18C13.343 18 12 16.657 12 15V12Z" fill="#1ABCFE"/>
+    <path d="M6 12H12V18H9C7.343 18 6 16.657 6 15V12Z" fill="#A259FF"/>
+  </svg>
+);
+
+const AIFlowIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
+    <path d="M12 2L14.2 7.2L19.5 9.5L14.2 11.8L12 17L9.8 11.8L4.5 9.5L9.8 7.2L12 2Z" fill="#4285F4"/>
+    <circle cx="18" cy="18" r="2.5" fill="#34A853"/>
+    <circle cx="6" cy="18" r="2.5" fill="#EA4335"/>
+    <path d="M8.5 18H15.5" stroke="#FBBC05" strokeWidth="1.8" strokeLinecap="round"/>
+  </svg>
+);
+
+const ChartFourBarIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-[26px] h-[26px] text-[#3985FF]" fill="currentColor" aria-hidden="true">
+    <rect x="2.5" y="14" width="3.4" height="7" rx="1.7" />
+    <rect x="8.3" y="10" width="3.4" height="11" rx="1.7" />
+    <rect x="14.1" y="6" width="3.4" height="15" rx="1.7" />
+    <rect x="19.9" y="2" width="3.4" height="19" rx="1.7" />
+  </svg>
+);
+
+// Unified Experience Data
+const experiencesData: ExperienceItemData[] = [
+  {
+    number: "01",
+    sectionId: "experience-01",
+    companyName: "Remedo Clinitech Private Ltd",
+    logoSrc: "/assets/aistudio/image_c42daa93.png",
+    logoAlt: "Remedo Clinitech",
+    badges: (
+      <div className="flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-[#00D6A0] shrink-0" />
+        <span className="text-[#00D6A0] text-[13px] font-semibold tracking-wider uppercase select-none">
+          CURRENT POSITION
+        </span>
+      </div>
+    ),
+    details: [
+      {
+        icon: <Briefcase size={17} className="text-[#3B82F6] shrink-0" />,
+        label: "Social Media Executive",
+      },
+      {
+        icon: <Calendar size={17} className="text-[#3B82F6] shrink-0" />,
+        label: "Sep 2026 – Present",
+      },
+      {
+        icon: <MapPin size={17} className="text-[#3B82F6] shrink-0" />,
+        label: "Remote",
+      },
+      {
+        icon: <Wifi size={17} className="text-[#3B82F6] shrink-0" />,
+        label: "Full-time",
+      },
+    ],
+    overview:
+      "Managing end-to-end social media operations for 30+ healthcare client accounts – from content creation and scheduling to client handling, performance tracking and monthly reporting using Meta Business Suite.",
+    responsibilities: [
+      {
+        id: "01",
+        title: "01. CONTENT CREATION",
+        description: "Create video scripts, static posts, blogs and creative content.",
+        icon: <FilePenLine size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+      },
+      {
+        id: "02",
+        title: "02. SCHEDULING & PUBLISHING",
+        description: "Plan and schedule content across social media profiles and ensure timely publishing.",
+        icon: <CalendarCheck size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+      },
+      {
+        id: "03",
+        title: "03. CLIENT HANDLING",
+        description: "Coordinate with clients and manage content requirements, feedback and approvals.",
+        icon: <Users size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+      },
+      {
+        id: "04",
+        title: "04. ANALYTICS & GROWTH",
+        description: "Track insights and metrics, identify improvements and optimise performance.",
+        icon: <ChartFourBarIcon />,
+      },
+    ],
+    tools: [
+      { name: "Meta Business Suite", icon: <MetaIcon /> },
+      { name: "Canva", icon: <CanvaIcon /> },
+      { name: "Google Docs", icon: <GoogleDocsIcon /> },
+      { name: "Google Sheets", icon: <GoogleSheetsIcon /> },
+      { name: "Google Slides", icon: <GoogleSlidesIcon /> },
+      { name: "ChatGPT", icon: <ChatGPTIcon /> },
+      { name: "InShot", icon: <InShotIcon /> },
+      { name: "Asana", icon: <AsanaIcon /> },
+    ],
+    impactTitle: "ROLE IMPACT",
+    impactContent: (
+      <>
+        Driving consistent content execution and performance growth across{" "}
+        <span className="text-[#3B82F6] font-semibold">30+ healthcare brands</span>{" "}
+        through strategic planning, creative content and data-driven social media management.
+      </>
+    ),
+  },
+  {
+    number: "02",
+    sectionId: "experience-02",
+    companyName: "Apollo Dental Clinic",
+    logoSrc: "/assets/aistudio/image_da995e50.png",
+    logoAlt: "Apollo Dental Clinic",
+    badges: (
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-[#102B57] text-[#3B82F6] border border-[#1C3454] select-none">
+          CLIENT PARTNER
+        </span>
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium tracking-wider uppercase bg-[#0D192B] text-[#AAB6CC] border border-[#263C5B] select-none">
+          DENTAL & COSMETOLOGY
+        </span>
+      </div>
+    ),
+    details: [
+      {
+        icon: <Briefcase size={17} className="text-[#3B82F6] shrink-0" />,
+        label: "Social Media Manager",
+      },
+      {
+        icon: <Globe size={17} className="text-[#3B82F6] shrink-0" />,
+        label: "Remote & Hybrid",
+      },
+      {
+        icon: <Calendar size={17} className="text-[#3B82F6] shrink-0" />,
+        label: "Nov 2024 – Jun 2026",
+      },
+    ],
+    overview:
+      "Apollo Dental Clinic is a premier dental care and cosmetology provider. In my role as Social Media Manager, I managed complete brand profiles across Facebook and Instagram, produced educational reels and high-converting creative designs, and maintained consistent multi-page brand communication.",
+    responsibilities: [
+      {
+        id: "01",
+        title: "01. SOCIAL MEDIA MANAGEMENT",
+        description: "Managed social media profiles for dental, cosmetology and education brands, including content planning, scheduling and publishing.",
+        icon: <Share2 size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+      },
+      {
+        id: "02",
+        title: "02. CREATIVE CONTENT CREATION",
+        description: "Created social media creatives, promotional posts, reels and short-form videos aligned with brand guidelines and content requirements.",
+        icon: <FilePenLine size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+      },
+      {
+        id: "03",
+        title: "03. CONTENT PLANNING & CALENDAR",
+        description: "Developed and maintained monthly content calendars to ensure consistent and engaging social media communication.",
+        icon: <CalendarCheck size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+      },
+      {
+        id: "04",
+        title: "04. CLIENT COORDINATION & REPORTING",
+        description: "Coordinated content requirements, creative development, approvals and social media performance tracking across multiple business pages.",
+        icon: <Users size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+      },
+    ],
+    tools: [
+      { name: "Meta Business Suite", icon: <MetaIcon /> },
+      { name: "Canva", icon: <CanvaIcon /> },
+      { name: "InShot", icon: <InShotIcon /> },
+      { name: "ChatGPT", icon: <ChatGPTIcon /> },
+      { name: "Gemini", icon: <GeminiIcon /> },
+      { name: "Google Docs", icon: <GoogleDocsIcon /> },
+      { name: "Figma", icon: <FigmaIcon /> },
+      { name: "AI Flow (Google)", icon: <AIFlowIcon /> },
+    ],
+    impactTitle: "PROJECT IMPACT",
+    impactContent: (
+      <>
+        Contributed to strengthening Apollo Dental Clinic&apos;s digital presence through strategic content planning, creative design, engaging social media campaigns, and consistent brand communication across Instagram and Facebook.
+      </>
+    ),
+  },
+];
+
+// Reusable Single Experience Entry Component for 100% Visual Parity
+const ExperienceEntryView: React.FC<{
+  data: ExperienceItemData;
+  isFirst?: boolean;
+  onOpenResume?: () => void;
+}> = ({ data, isFirst, onOpenResume }) => {
+  return (
+    <div id={data.sectionId} className={isFirst ? "" : "pt-2"}>
+      {/* 01 / 02 ───── EXPERIENCE Header */}
+      <div className="flex items-center justify-between h-6 mb-3.5">
+        <div className="flex items-center gap-3.5">
+          <span className="text-[#3B82F6] font-semibold text-[15px] sm:text-[16px] tracking-wider select-none">
+            {data.number}
+          </span>
+          <span className="w-14 sm:w-[85px] h-[1px] bg-[#3B82F6]" />
+          <span className="text-[#3B82F6] font-semibold text-[15px] sm:text-[16px] uppercase tracking-[5px] select-none">
+            EXPERIENCE
+          </span>
+        </div>
+
+        {isFirst && onOpenResume && (
+          <button
+            type="button"
+            onClick={onOpenResume}
+            className="inline-flex items-center gap-1.5 bg-[#101A2A] hover:bg-[#152338] hover:border-[#3B82F6]/50 border border-[#26354C] text-[#E5EAF4] px-3 py-1 rounded-full text-[11px] font-medium uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-sm select-none h-6"
+          >
+            <FileText size={12} className="text-[#3B82F6]" />
+            <span>View Resume</span>
+          </button>
+        )}
+      </div>
+
+      {/* Company Header Block */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-3">
+        {/* Company Logo: 76px x 76px with rounded-[16px] white container */}
+        <div className="w-[76px] h-[76px] rounded-[16px] bg-white p-1.5 flex items-center justify-center shrink-0 shadow-md border border-[#26354C]/40 select-none overflow-hidden">
+          <img 
+            src={data.logoSrc} 
+            alt={data.logoAlt} 
+            className="w-full h-full object-contain" 
+          />
+        </div>
+
+        {/* Company Details */}
+        <div className="flex-1 min-w-0 space-y-1">
+          {/* Status / Category Badges */}
+          <div>{data.badges}</div>
+
+          {/* Company Name (29px desktop, bold, white) */}
+          <h2 className="text-[22px] sm:text-[25px] xl:text-[29px] font-bold text-[#F5F7FC] tracking-tight leading-tight">
+            {data.companyName}
+          </h2>
+
+          {/* Employment Details Row */}
+          <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1 text-[#AAB6CC] text-[13px] sm:text-[14px] font-medium pt-0.5">
+            {data.details.map((item, idx) => (
+              <React.Fragment key={idx}>
+                <div className="flex items-center gap-1.5">
+                  {item.icon}
+                  <span>{item.label}</span>
+                </div>
+                {idx < data.details.length - 1 && (
+                  <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Professional Overview Paragraph */}
+      <div className="mt-3 mb-3.5">
+        <p className="text-[#D0D9E8] text-[14px] sm:text-[15px] leading-[1.5] max-w-full font-normal">
+          {data.overview}
+        </p>
+      </div>
+
+      {/* Full-width Divider Line */}
+      <div className="w-full h-[1px] bg-[#26354C] mb-3.5" />
+
+      {/* Main Content: 65% / 35% Two-Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,65fr)_1px_minmax(0,35fr)] gap-y-6 lg:gap-y-0 lg:gap-x-6 items-stretch">
+        
+        {/* Left Column (65%): WHAT I DO (4 Cards in 2x2 Grid) */}
+        <div className="flex flex-col">
+          <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] xl:text-[17px] uppercase tracking-[2px] mb-3 flex items-center gap-2.5 select-none">
+            <span className="w-2 h-2 rounded-full bg-[#3B82F6] shrink-0" />
+            <span>WHAT I DO</span>
+          </h3>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+            {data.responsibilities.map((resp) => (
+              <div 
+                key={resp.id}
+                className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 sm:p-3.5 flex items-center gap-3 min-h-[112px] transition-colors"
+              >
+                <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
+                  {resp.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
+                    {resp.title}
+                  </h4>
+                  <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
+                    {resp.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Center Vertical Divider Line on Desktop */}
+        <div className="hidden lg:block w-[1px] bg-[#26354C] self-stretch" aria-hidden="true" />
+
+        {/* Right Column (35%): TOOLS USED (8 Badges in 2x4 Grid) */}
+        <div className="flex flex-col">
+          <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] xl:text-[17px] uppercase tracking-[2px] mb-3 flex items-center gap-2.5 select-none">
+            <span className="w-2 h-2 rounded-full bg-[#3B82F6] shrink-0" />
+            <span>TOOLS USED</span>
+          </h3>
+
+          <div className="grid grid-cols-2 gap-x-2.5 gap-y-3 flex-1 content-between">
+            {data.tools.map((tool, idx) => (
+              <div 
+                key={idx}
+                className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none"
+              >
+                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
+                  {tool.icon}
+                </div>
+                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
+                  {tool.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      {/* Role / Project Impact Banner (82px height, upward analytics icon, electric blue heading) */}
+      <div className="w-full mt-3.5 min-h-[70px] sm:h-[82px] rounded-[14px] bg-gradient-to-r from-[#0C1D3D] via-[#0D2248] to-[#0C1D3D] border border-[#1764D8] py-2.5 px-3.5 sm:py-3 sm:px-4 flex items-center gap-3.5 sm:gap-4">
+        <div className="w-[48px] h-[48px] rounded-[12px] bg-[#102B57] flex items-center justify-center shrink-0 border border-[#1764D8]/30">
+          <svg viewBox="0 0 24 24" className="w-7 h-7 text-[#3985FF]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+            <path d="M3 9l6-6 4 4 8-4" />
+            <polyline points="17 3 21 3 21 7" />
+          </svg>
+        </div>
+
+        <div className="w-[1px] h-8 bg-[#1C3454] hidden sm:block shrink-0" aria-hidden="true" />
+
+        <div className="flex-1 min-w-0">
+          <span className="text-[#3B82F6] font-semibold text-[12px] tracking-[1.5px] uppercase block leading-tight mb-0.5 select-none">
+            {data.impactTitle}
+          </span>
+          <p className="text-[#F5F7FC] text-[13px] sm:text-[14px] font-normal sm:font-medium leading-snug">
+            {data.impactContent}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // --- Experience Section ---
 const Experience = ({ onOpenResume }: { onOpenResume?: () => void }) => {
@@ -1862,652 +2331,105 @@ const Experience = ({ onOpenResume }: { onOpenResume?: () => void }) => {
       className="w-full bg-[#080E1B] text-[#F5F7FC] pt-3 pb-3 px-4 sm:px-6 xl:px-[40px] relative transition-colors duration-300"
     >
       <div className="max-w-[1500px] mx-auto">
-        
-        {/* Top-left Section Number and Heading (12px top padding from nav, 14px bottom margin) */}
-        <div className="flex items-center justify-between h-6 mb-3.5">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <span className="text-[#3B82F6] font-medium text-[14px] sm:text-[15px] tracking-wider select-none">
-              01
-            </span>
-            <span className="w-10 sm:w-14 h-[1.5px] bg-[#3B82F6]" />
-            <span className="text-[#3B82F6] font-medium text-[14px] sm:text-[15px] uppercase tracking-[4px] select-none">
-              EXPERIENCE
-            </span>
-          </div>
-
-          {onOpenResume && (
-            <button
-              type="button"
-              onClick={onOpenResume}
-              className="inline-flex items-center gap-1.5 bg-[#101A2A] hover:bg-[#152338] hover:border-[#3B82F6]/50 border border-[#26354C] text-[#E5EAF4] px-3 py-1 rounded-full text-[11px] font-medium uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-sm select-none h-6"
-            >
-              <FileText size={12} className="text-[#3B82F6]" />
-              <span>View Resume</span>
-            </button>
-          )}
-        </div>
-
-        {/* SECTION 2: REDUCE COMPANY HEADER SIZE (76x76 monogram, 29px/25px name, 13px status, 14px details, 17px icons) */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-3">
-          {/* Left: Remedo logo (76px x 76px, rounded 16px) */}
-          <div className="w-[76px] h-[76px] rounded-[16px] bg-white p-1.5 flex items-center justify-center shrink-0 shadow-md shadow-blue-500/10 border border-[#26354C]/40 select-none overflow-hidden">
-            <img 
-              src="/assets/aistudio/image_c42daa93.png" 
-              alt="Remedo Clinitech" 
-              className="w-full h-full object-contain" 
+        {experiencesData.map((exp, index) => (
+          <React.Fragment key={exp.number}>
+            {index > 0 && (
+              <div className="w-full h-[1px] bg-[#26354C]/70 my-8 sm:my-10" />
+            )}
+            <ExperienceEntryView 
+              data={exp} 
+              isFirst={index === 0} 
+              onOpenResume={onOpenResume} 
             />
-          </div>
-
-          {/* Right: Company details */}
-          <div className="flex-1 min-w-0 space-y-1">
-            {/* Status indicator (13px) */}
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#00D6A0] shrink-0" />
-              <span className="text-[#00D6A0] text-[13px] font-semibold tracking-wider uppercase select-none">
-                CURRENT POSITION
-              </span>
-            </div>
-
-            {/* Company Name (29px desktop, 25px laptop) */}
-            <h2 className="text-[22px] sm:text-[25px] xl:text-[29px] font-bold text-[#F5F7FC] tracking-tight leading-tight">
-              Remedo Clinitech Private Ltd
-            </h2>
-
-            {/* Employment details row (14px font, 17px icons, single horizontal row) */}
-            <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1 text-[#AAB6CC] text-[13px] sm:text-[14px] font-medium pt-0.5">
-              <div className="flex items-center gap-1.5">
-                <Briefcase size={17} className="text-[#3B82F6] shrink-0" />
-                <span>Social Media Executive</span>
-              </div>
-              <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
-              <div className="flex items-center gap-1.5">
-                <Calendar size={17} className="text-[#3B82F6] shrink-0" />
-                <span>Sep 2026 – Present</span>
-              </div>
-              <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
-              <div className="flex items-center gap-1.5">
-                <MapPin size={17} className="text-[#3B82F6] shrink-0" />
-                <span>Remote</span>
-              </div>
-              <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
-              <div className="flex items-center gap-1.5">
-                <Wifi size={17} className="text-[#3B82F6] shrink-0" />
-                <span>Full-time</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* SECTION 3: REDUCE OVERVIEW TEXT (15px desktop, line-height 1.5, max 2 lines, mt 12px, mb 14px) */}
-        <div className="mt-3 mb-3.5">
-          <p className="text-[#D0D9E8] text-[14px] sm:text-[15px] leading-[1.5] max-w-full font-normal">
-            Managing end-to-end social media operations for 30+ healthcare client accounts – from content creation and scheduling to client handling, performance tracking and monthly reporting using Meta Business Suite.
-          </p>
-        </div>
-
-        {/* Full-width horizontal divider (14px margin bottom to main content) */}
-        <div className="w-full h-[1px] bg-[#26354C] mb-3.5" />
-
-        {/* SECTION 4, 5, 6: MAIN CONTENT – PRESERVE 65% / 35% SPLIT */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,65fr)_1px_minmax(0,35fr)] gap-y-6 lg:gap-y-0 lg:gap-x-6 items-stretch">
-          
-          {/* LEFT COLUMN: WHAT I DO (65% width) */}
-          <div className="flex flex-col">
-            <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[2px] mb-3 flex items-center gap-2 select-none">
-              <span>●</span> WHAT I DO
-            </h3>
-
-            {/* Exactly 4 Responsibility Cards in a 2 x 2 grid (12px padding, 112px min-h, 12px gap, 12px rounded) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
-              
-              {/* CARD 01 – CONTENT CREATION */}
-              <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
-                <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
-                  <FilePenLine size={26} className="text-[#3985FF]" strokeWidth={1.75} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
-                    01. CONTENT CREATION
-                  </h4>
-                  <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
-                    Create video scripts, static posts, blogs and creative content.
-                  </p>
-                </div>
-              </div>
-
-              {/* CARD 02 – SCHEDULING & PUBLISHING */}
-              <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
-                <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
-                  <CalendarCheck size={26} className="text-[#3985FF]" strokeWidth={1.75} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
-                    02. SCHEDULING & PUBLISHING
-                  </h4>
-                  <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
-                    Plan and schedule content across social media profiles and ensure timely publishing.
-                  </p>
-                </div>
-              </div>
-
-              {/* CARD 03 – CLIENT HANDLING */}
-              <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
-                <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
-                  <Users size={26} className="text-[#3985FF]" strokeWidth={1.75} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
-                    03. CLIENT HANDLING
-                  </h4>
-                  <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
-                    Coordinate with clients and manage content requirements, feedback and approvals.
-                  </p>
-                </div>
-              </div>
-
-              {/* CARD 04 – ANALYTICS & GROWTH */}
-              <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
-                <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 24 24" className="w-[26px] h-[26px] text-[#3985FF]" fill="currentColor" aria-hidden="true">
-                    <rect x="2.5" y="14" width="3.4" height="7" rx="1.7" />
-                    <rect x="8.3" y="10" width="3.4" height="11" rx="1.7" />
-                    <rect x="14.1" y="6" width="3.4" height="15" rx="1.7" />
-                    <rect x="19.9" y="2" width="3.4" height="19" rx="1.7" />
-                  </svg>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
-                    04. ANALYTICS & GROWTH
-                  </h4>
-                  <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
-                    Track insights and metrics, identify improvements and optimise performance.
-                  </p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* Vertical Divider Line between Left 65% and Right 35% on Desktop */}
-          <div className="hidden lg:block w-[1px] bg-[#26354C] self-stretch" />
-
-          {/* RIGHT COLUMN: TOOLS USED (35% width, 48px badge height, 25px icons, 13px text, 30px rounded) */}
-          <div className="flex flex-col">
-            <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[2px] mb-3 flex items-center gap-2 select-none">
-              <span>●</span> TOOLS USED
-            </h3>
-
-            {/* Exactly 8 Tools in a 2-column x 4-row grid (gap-x 10px, gap-y 12px) */}
-            <div className="grid grid-cols-2 gap-x-2.5 gap-y-3 flex-1 content-between">
-              
-              {/* ROW 1, COL 1: Meta Business Suite */}
-              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
-                    <path d="M12.001 8.243c-1.394-2.106-3.197-3.243-5.086-3.243C3.09 5 0 8.01 0 12.288 0 16.566 3.09 19.576 6.915 19.576c2.518 0 4.492-1.353 5.086-3.243.594 1.89 2.568 3.243 5.086 3.243 3.825 0 6.915-3.01 6.915-7.288 0-4.278-3.09-7.288-6.915-7.288-1.889 0-3.692 1.137-5.086 3.243zm-4.71 8.814c-2.457 0-4.475-2.094-4.475-4.769 0-2.675 2.018-4.769 4.475-4.769 1.95 0 3.398 1.455 4.316 3.208-.94 1.841-2.39 6.33-4.316 6.33zm9.42 0c-1.926 0-3.376-4.489-4.316-6.33.918-1.753 2.366-3.208 4.316-3.208 2.457 0 4.475 2.094 4.475 4.769 0 2.675-2.018 4.769-4.475 4.769z" fill="#0081FB"/>
-                  </svg>
-                </div>
-                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                  Meta Business Suite
-                </span>
-              </div>
-
-              {/* ROW 1, COL 2: Canva */}
-              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                <div className="w-[25px] h-[25px] rounded-full overflow-hidden flex items-center justify-center shrink-0">
-                  <img 
-                    src="https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" 
-                    alt="Canva" 
-                    className="w-full h-full object-cover" 
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                  Canva
-                </span>
-              </div>
-
-              {/* ROW 2, COL 1: Google Docs */}
-              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 48 48" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
-                    <path d="M30 6H14C11.79 6 10 7.79 10 10V38C10 40.21 11.79 42 14 42H34C36.21 42 38 40.21 38 38V14L30 6Z" fill="#4285F4"/>
-                    <path d="M30 6V14H38L30 6Z" fill="#A1C2FA"/>
-                    <path d="M16 22H32M16 28H32M16 34H26" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                  Google Docs
-                </span>
-              </div>
-
-              {/* ROW 2, COL 2: Google Sheets */}
-              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 48 48" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
-                    <path d="M30 6H14C11.79 6 10 7.79 10 10V38C10 40.21 11.79 42 14 42H34C36.21 42 38 40.21 38 38V14L30 6Z" fill="#0F9D58"/>
-                    <path d="M30 6V14H38L30 6Z" fill="#87CEAC"/>
-                    <rect x="16" y="22" width="16" height="13" rx="1.5" stroke="white" strokeWidth="2.2" fill="none"/>
-                    <line x1="24" y1="22" x2="24" y2="35" stroke="white" strokeWidth="2"/>
-                    <line x1="16" y1="28.5" x2="32" y2="28.5" stroke="white" strokeWidth="2"/>
-                  </svg>
-                </div>
-                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                  Google Sheets
-                </span>
-              </div>
-
-              {/* ROW 3, COL 1: Google Slides */}
-              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 48 48" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
-                    <path d="M30 6H14C11.79 6 10 7.79 10 10V38C10 40.21 11.79 42 14 42H34C36.21 42 38 40.21 38 38V14L30 6Z" fill="#F4B400"/>
-                    <path d="M30 6V14H38L30 6Z" fill="#FCE293"/>
-                    <rect x="16" y="23" width="16" height="11" rx="1.5" stroke="white" strokeWidth="2.2" fill="none"/>
-                  </svg>
-                </div>
-                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                  Google Slides
-                </span>
-              </div>
-
-              {/* ROW 3, COL 2: ChatGPT */}
-              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="#FFFFFF" aria-hidden="true">
-                    <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.8956zm16.0993 3.8558L12.5973 8.3829l2.02-1.1638a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4022-.686zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L8.809 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.662zm-12.6401 4.135l-2.02-1.1639a.0804.0804 0 0 1-.038-.0567V6.0748a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.1979 5.4598a.7948.7948 0 0 0-.3928.6813v6.7369zm1.1495-2.0682l2.6115-1.5103 2.6115 1.5103v3.0206l-2.6115 1.5103-2.6115-1.5103z"/>
-                  </svg>
-                </div>
-                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                  ChatGPT
-                </span>
-              </div>
-
-              {/* ROW 4, COL 1: InShot */}
-              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                <div className="w-[25px] h-[25px] rounded-md overflow-hidden flex items-center justify-center shrink-0">
-                  <img 
-                    src="https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" 
-                    alt="InShot" 
-                    className="w-full h-full object-cover" 
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                  InShot
-                </span>
-              </div>
-
-              {/* ROW 4, COL 2: Asana (Official 3-dot/circle mark in coral/orange/pink) */}
-              <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
-                    <circle cx="12" cy="6.2" r="3.9" fill="#FC636B"/>
-                    <circle cx="6.3" cy="16.5" r="3.9" fill="#FF7759"/>
-                    <circle cx="17.7" cy="16.5" r="3.9" fill="#F34079"/>
-                  </svg>
-                </div>
-                <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                  Asana
-                </span>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-
-        {/* SECTION 7: ROLE IMPACT BANNER (82px height, 48x48 icon container, 28px icon, 12px heading, 14px desc, 14px mt) */}
-        <div className="w-full mt-3.5 min-h-[70px] sm:h-[82px] rounded-[14px] bg-gradient-to-r from-[#0C1D3D] via-[#0D2248] to-[#0C1D3D] border border-[#1764D8] py-2.5 px-3.5 sm:py-3 sm:px-4 flex items-center gap-3.5 sm:gap-4">
-          {/* Left: Blue upward-trending analytics icon inside 48x48 square container */}
-          <div className="w-[48px] h-[48px] rounded-[12px] bg-[#102B57] flex items-center justify-center shrink-0 border border-[#1764D8]/30">
-            <svg viewBox="0 0 24 24" className="w-7 h-7 text-[#3985FF]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <line x1="18" y1="20" x2="18" y2="10" />
-              <line x1="12" y1="20" x2="12" y2="4" />
-              <line x1="6" y1="20" x2="6" y2="14" />
-              <path d="M3 9l6-6 4 4 8-4" />
-              <polyline points="17 3 21 3 21 7" />
-            </svg>
-          </div>
-
-          {/* Middle: Vertical divider line */}
-          <div className="w-[1px] h-8 bg-[#1C3454] hidden sm:block shrink-0" aria-hidden="true" />
-
-          {/* Right: Heading (12px) and impact statement (14px) */}
-          <div className="flex-1 min-w-0">
-            <span className="text-[#3B82F6] font-semibold text-[12px] tracking-[1.5px] uppercase block leading-tight mb-0.5 select-none">
-              ROLE IMPACT
-            </span>
-            <p className="text-[#F5F7FC] text-[13px] sm:text-[14px] font-normal sm:font-medium leading-snug">
-              Driving consistent content execution and performance growth across{" "}
-              <span className="text-[#3B82F6] font-semibold">30+ healthcare brands</span>{" "}
-              through strategic planning, creative content and data-driven social media management.
-            </p>
-          </div>
-        </div>
-
-        {/* ========================================================================= */}
-        {/* SEPARATOR BETWEEN EXPERIENCE 01 AND EXPERIENCE 02                         */}
-        {/* ========================================================================= */}
-        <div className="w-full h-[1px] bg-[#26354C]/70 my-8 sm:my-10" />
-
-        {/* ========================================================================= */}
-        {/* EXPERIENCE 02 – APOLLO DENTAL CLINIC                                      */}
-        {/* ========================================================================= */}
-        <div id="experience-02" className="pt-2">
-          
-          {/* Top-left Section Number and Heading */}
-          <div className="flex items-center justify-between h-6 mb-3.5">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <span className="text-[#3B82F6] font-medium text-[14px] sm:text-[15px] tracking-wider select-none">
-                02
-              </span>
-              <span className="w-10 sm:w-14 h-[1.5px] bg-[#3B82F6]" />
-              <span className="text-[#3B82F6] font-medium text-[14px] sm:text-[15px] uppercase tracking-[4px] select-none">
-                EXPERIENCE
-              </span>
-            </div>
-          </div>
-
-          {/* SECTION 3 & 4: COMPANY HEADER & EMPLOYMENT DETAILS */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-3">
-            {/* Left: Apollo Dental Clinic Logo (76px x 76px, rounded 16px) */}
-            <div className="w-[76px] h-[76px] rounded-[16px] bg-white p-1.5 flex items-center justify-center shrink-0 shadow-md shadow-purple-500/10 select-none overflow-hidden border border-[#26354C]/40">
-              <img 
-                src="/assets/aistudio/image_da995e50.png" 
-                alt="Apollo Dental Clinic" 
-                className="w-full h-full object-contain" 
-              />
-            </div>
-
-            {/* Right: Company details */}
-            <div className="flex-1 min-w-0 space-y-1">
-              {/* Labels above company name: CLIENT PARTNER & DENTAL & COSMETOLOGY */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-[#102B57] text-[#3B82F6] border border-[#1C3454] select-none">
-                  CLIENT PARTNER
-                </span>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium tracking-wider uppercase bg-[#0D192B] text-[#AAB6CC] border border-[#263C5B] select-none">
-                  DENTAL & COSMETOLOGY
-                </span>
-              </div>
-
-              {/* Company Name (29px desktop, bold, white) */}
-              <h2 className="text-[22px] sm:text-[25px] xl:text-[29px] font-bold text-[#F5F7FC] tracking-tight leading-tight">
-                Apollo Dental Clinic
-              </h2>
-
-              {/* Employment details row: Role, Type, Duration */}
-              <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1 text-[#AAB6CC] text-[13px] sm:text-[14px] font-medium pt-0.5">
-                <div className="flex items-center gap-1.5">
-                  <Briefcase size={17} className="text-[#3B82F6] shrink-0" />
-                  <span>Social Media Manager</span>
-                </div>
-                <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
-                <div className="flex items-center gap-1.5">
-                  <Globe size={17} className="text-[#00D6A0] shrink-0" />
-                  <span>Remote & Hybrid</span>
-                </div>
-                <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
-                <div className="flex items-center gap-1.5">
-                  <Calendar size={17} className="text-[#A78BFA] shrink-0" />
-                  <span>Nov 2024 – Jun 2026</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* SECTION 5: PROFESSIONAL OVERVIEW */}
-          <div className="mt-3 mb-3.5">
-            <p className="text-[#D0D9E8] text-[14px] sm:text-[15px] leading-[1.55] max-w-full font-normal">
-              Apollo Dental Clinic is a premier dental care and cosmetology provider. In my role as Social Media Manager, I managed complete brand profiles across Facebook and Instagram, produced educational reels and high-converting creative designs, and maintained consistent multi-page brand communication.
-            </p>
-          </div>
-
-          {/* Full-width horizontal divider */}
-          <div className="w-full h-[1px] bg-[#26354C] mb-3.5" />
-
-          {/* SECTION 6 & 7: MAIN CONTENT – 65% / 35% SPLIT */}
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,65fr)_1px_minmax(0,35fr)] gap-y-6 lg:gap-y-0 lg:gap-x-6 items-stretch">
-            
-            {/* LEFT COLUMN: WHAT I DO (65% width) */}
-            <div className="flex flex-col">
-              <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[2px] mb-3 flex items-center gap-2 select-none">
-                <span>●</span> WHAT I DO
-              </h3>
-
-              {/* Exactly 4 Responsibility Cards in a 2 x 2 grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
-                
-                {/* CARD 01 – SOCIAL MEDIA MANAGEMENT */}
-                <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
-                  <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
-                    <Share2 size={26} className="text-[#3985FF]" strokeWidth={1.75} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
-                      01. SOCIAL MEDIA MANAGEMENT
-                    </h4>
-                    <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
-                      Managed social media profiles for dental, cosmetology and education brands, including content planning, scheduling and publishing.
-                    </p>
-                  </div>
-                </div>
-
-                {/* CARD 02 – CREATIVE CONTENT CREATION */}
-                <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
-                  <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
-                    <FilePenLine size={26} className="text-[#3985FF]" strokeWidth={1.75} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
-                      02. CREATIVE CONTENT CREATION
-                    </h4>
-                    <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
-                      Created social media creatives, promotional posts, reels and short-form videos aligned with brand guidelines and content requirements.
-                    </p>
-                  </div>
-                </div>
-
-                {/* CARD 03 – CONTENT PLANNING & CALENDAR */}
-                <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
-                  <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
-                    <CalendarCheck size={26} className="text-[#3985FF]" strokeWidth={1.75} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
-                      03. CONTENT PLANNING & CALENDAR
-                    </h4>
-                    <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
-                      Developed and maintained monthly content calendars to ensure consistent and engaging social media communication.
-                    </p>
-                  </div>
-                </div>
-
-                {/* CARD 04 – CLIENT COORDINATION & REPORTING */}
-                <div className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 flex items-center gap-3 min-h-[112px] transition-colors">
-                  <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
-                    <Users size={26} className="text-[#3985FF]" strokeWidth={1.75} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
-                      04. CLIENT COORDINATION & REPORTING
-                    </h4>
-                    <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
-                      Coordinated content requirements, creative development, approvals and social media performance tracking across multiple business pages.
-                    </p>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            {/* Vertical Divider Line between Left 65% and Right 35% on Desktop */}
-            <div className="hidden lg:block w-[1px] bg-[#26354C] self-stretch" />
-
-            {/* RIGHT COLUMN: TOOLS USED (35% width, 8 tools in exact order) */}
-            <div className="flex flex-col">
-              <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] uppercase tracking-[2px] mb-3 flex items-center gap-2 select-none">
-                <span>●</span> TOOLS USED
-              </h3>
-
-              {/* Exactly 8 Tools in a 2-column x 4-row grid */}
-              <div className="grid grid-cols-2 gap-x-2.5 gap-y-3 flex-1 content-between">
-                
-                {/* ROW 1, COL 1: Meta Business Suite */}
-                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
-                      <path d="M12.001 8.243c-1.394-2.106-3.197-3.243-5.086-3.243C3.09 5 0 8.01 0 12.288 0 16.566 3.09 19.576 6.915 19.576c2.518 0 4.492-1.353 5.086-3.243.594 1.89 2.568 3.243 5.086 3.243 3.825 0 6.915-3.01 6.915-7.288 0-4.278-3.09-7.288-6.915-7.288-1.889 0-3.692 1.137-5.086 3.243zm-4.71 8.814c-2.457 0-4.475-2.094-4.475-4.769 0-2.675 2.018-4.769 4.475-4.769 1.95 0 3.398 1.455 4.316 3.208-.94 1.841-2.39 6.33-4.316 6.33zm9.42 0c-1.926 0-3.376-4.489-4.316-6.33.918-1.753 2.366-3.208 4.316-3.208 2.457 0 4.475 2.094 4.475 4.769 0 2.675-2.018 4.769-4.475 4.769z" fill="#0081FB"/>
-                    </svg>
-                  </div>
-                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                    Meta Business Suite
-                  </span>
-                </div>
-
-                {/* ROW 1, COL 2: Canva */}
-                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                  <div className="w-[25px] h-[25px] rounded-full overflow-hidden flex items-center justify-center shrink-0">
-                    <img 
-                      src="https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" 
-                      alt="Canva" 
-                      className="w-full h-full object-cover" 
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                    Canva
-                  </span>
-                </div>
-
-                {/* ROW 2, COL 1: InShot */}
-                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                  <div className="w-[25px] h-[25px] rounded-md overflow-hidden flex items-center justify-center shrink-0">
-                    <img 
-                      src="https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" 
-                      alt="InShot" 
-                      className="w-full h-full object-cover" 
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                    InShot
-                  </span>
-                </div>
-
-                {/* ROW 2, COL 2: ChatGPT */}
-                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="#FFFFFF" aria-hidden="true">
-                      <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.8956zm16.0993 3.8558L12.5973 8.3829l2.02-1.1638a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.4022-.686zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L8.809 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.662zm-12.6401 4.135l-2.02-1.1639a.0804.0804 0 0 1-.038-.0567V6.0748a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.1979 5.4598a.7948.7948 0 0 0-.3928.6813v6.7369zm1.1495-2.0682l2.6115-1.5103 2.6115 1.5103v3.0206l-2.6115 1.5103-2.6115-1.5103z"/>
-                    </svg>
-                  </div>
-                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                    ChatGPT
-                  </span>
-                </div>
-
-                {/* ROW 3, COL 1: Gemini */}
-                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
-                      <path d="M12 24C12 17.373 6.627 12 0 12C6.627 12 12 6.627 12 0C12 6.627 17.373 12 24 12C17.373 12 12 17.373 12 24Z" fill="url(#gemini_grad_02)" />
-                      <defs>
-                        <linearGradient id="gemini_grad_02" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-                          <stop offset="0%" stopColor="#4E82EE" />
-                          <stop offset="50%" stopColor="#9B72CF" />
-                          <stop offset="100%" stopColor="#F56565" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </div>
-                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                    Gemini
-                  </span>
-                </div>
-
-                {/* ROW 3, COL 2: Google Docs */}
-                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                    <svg viewBox="0 0 48 48" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
-                      <path d="M30 6H14C11.79 6 10 7.79 10 10V38C10 40.21 11.79 42 14 42H34C36.21 42 38 40.21 38 38V14L30 6Z" fill="#4285F4"/>
-                      <path d="M30 6V14H38L30 6Z" fill="#A1C2FA"/>
-                      <path d="M16 22H32M16 28H32M16 34H26" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                    Google Docs
-                  </span>
-                </div>
-
-                {/* ROW 4, COL 1: Figma */}
-                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                    <svg viewBox="0 0 24 24" className="w-[20px] h-[20px]" fill="none" aria-hidden="true">
-                      <path d="M6 9C6 7.343 7.343 6 9 6H12V12H9C7.343 12 6 10.657 6 9Z" fill="#F24E1E"/>
-                      <path d="M12 6H15C16.657 6 18 7.343 18 9C18 10.657 16.657 12 15 12H12V6Z" fill="#FF7262"/>
-                      <path d="M6 15C6 13.343 7.343 12 9 12H12V18H9C7.343 18 6 16.657 6 15Z" fill="#0ACF83"/>
-                      <path d="M12 12H15C16.657 12 18 13.343 18 15C18 16.657 16.657 18 15 18C13.343 18 12 16.657 12 15V12Z" fill="#1ABCFE"/>
-                      <path d="M6 12H12V18H9C7.343 18 6 16.657 6 15V12Z" fill="#A259FF"/>
-                    </svg>
-                  </div>
-                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                    Figma
-                  </span>
-                </div>
-
-                {/* ROW 4, COL 2: AI Flow (Google) */}
-                <div className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none">
-                  <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
-                    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" aria-hidden="true">
-                      <path d="M12 2L14.2 7.2L19.5 9.5L14.2 11.8L12 17L9.8 11.8L4.5 9.5L9.8 7.2L12 2Z" fill="#4285F4"/>
-                      <circle cx="18" cy="18" r="2.5" fill="#34A853"/>
-                      <circle cx="6" cy="18" r="2.5" fill="#EA4335"/>
-                      <path d="M8.5 18H15.5" stroke="#FBBC05" strokeWidth="1.8" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                  <span className="text-[12px] xl:text-[13px] font-medium text-[#E7EDF7] truncate">
-                    AI Flow (Google)
-                  </span>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-          {/* SECTION 8: PROJECT IMPACT – FULL-WIDTH BOTTOM BANNER */}
-          <div className="w-full mt-3.5 min-h-[70px] sm:h-[82px] rounded-[14px] bg-gradient-to-r from-[#0C1D3D] via-[#0D2248] to-[#0C1D3D] border border-[#1764D8] py-2.5 px-3.5 sm:py-3 sm:px-4 flex items-center gap-3.5 sm:gap-4">
-            {/* Left: Blue upward-trending analytics icon */}
-            <div className="w-[48px] h-[48px] rounded-[12px] bg-[#102B57] flex items-center justify-center shrink-0 border border-[#1764D8]/30">
-              <svg viewBox="0 0 24 24" className="w-7 h-7 text-[#3985FF]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <line x1="18" y1="20" x2="18" y2="10" />
-                <line x1="12" y1="20" x2="12" y2="4" />
-                <line x1="6" y1="20" x2="6" y2="14" />
-                <path d="M3 9l6-6 4 4 8-4" />
-                <polyline points="17 3 21 3 21 7" />
-              </svg>
-            </div>
-
-            {/* Middle: Vertical divider line */}
-            <div className="w-[1px] h-8 bg-[#1C3454] hidden sm:block shrink-0" aria-hidden="true" />
-
-            {/* Right: Heading and impact statement */}
-            <div className="flex-1 min-w-0">
-              <span className="text-[#3B82F6] font-semibold text-[12px] tracking-[1.5px] uppercase block leading-tight mb-0.5 select-none">
-                PROJECT IMPACT
-              </span>
-              <p className="text-[#F5F7FC] text-[13px] sm:text-[14px] font-normal sm:font-medium leading-snug">
-                Contributed to strengthening Apollo Dental Clinic's digital presence through strategic content planning, creative design, engaging social media campaigns, and consistent brand communication across Instagram and Facebook.
-              </p>
-            </div>
-          </div>
-
-        </div>
-
+          </React.Fragment>
+        ))}
       </div>
     </section>
+  );
+};
+
+// --- Animated Horizontal Transition Divider between Experience & Portfolio ---
+const ExperiencePortfolioTransition = () => {
+  return (
+    <div 
+      aria-hidden="true" 
+      className="relative w-full overflow-hidden bg-gradient-to-b from-[#080E1B] via-[#080E1B] to-slate-50 dark:to-[#070b14] py-6 sm:py-8 transition-colors duration-300 select-none"
+    >
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 xl:px-[40px]">
+        {/* Subtle animated horizontal line with expand-in and continuous ambient glow beam */}
+        <motion.div 
+          initial={{ scaleX: 0.3, opacity: 0 }}
+          whileInView={{ scaleX: 1, opacity: 1 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#26354C] to-transparent origin-center"
+        >
+          {/* Subtle electric blue ambient shimmer traveling along the line */}
+          <motion.div
+            className="absolute -top-[1px] -bottom-[1px] w-28 sm:w-48 bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-80 blur-[0.5px]"
+            animate={{
+              left: ["-15%", "105%"],
+            }}
+            transition={{
+              duration: 3.8,
+              repeat: Infinity,
+              ease: "easeInOut",
+              repeatDelay: 0.8,
+            }}
+          />
+
+          {/* Secondary softer cyan beam for depth */}
+          <motion.div
+            className="absolute -top-[0.5px] -bottom-[0.5px] w-16 sm:w-28 bg-gradient-to-r from-transparent via-[#38BDF8] to-transparent opacity-60"
+            animate={{
+              left: ["-25%", "115%"],
+            }}
+            transition={{
+              duration: 4.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.5,
+              repeatDelay: 1.2,
+            }}
+          />
+
+          {/* Centered glowing node anchor with gentle breathing pulse */}
+          <motion.div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none"
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            {/* Outer halo */}
+            <motion.div
+              className="absolute w-5 h-5 rounded-full bg-[#3B82F6]/20 blur-sm"
+              animate={{
+                scale: [1, 1.4, 1],
+                opacity: [0.3, 0.7, 0.3],
+              }}
+              transition={{
+                duration: 2.8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            {/* Center dot */}
+            <motion.div
+              className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] shadow-[0_0_8px_#3B82F6]"
+              animate={{
+                scale: [0.9, 1.15, 0.9],
+              }}
+              transition={{
+                duration: 2.8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </motion.div>
+        </motion.div>
+      </div>
+    </div>
   );
 };
 
@@ -3417,13 +3339,35 @@ const Portfolio = () => {
       videoNames: [
         "Consult Doctor for the Right Treatment!",
         "Take Action Early",
-        "Coffee Affects Your Sleep Cycle"
+        "Coffee Affects Your Sleep Cycle",
+        "Missing or Damaged Tooth Treatments"
       ]
     }
   ];
   
   const projects = [
     // Creatives
+    { 
+      name: "SureSmiles Invisalign Smile Campaign", 
+      category: "Creatives", 
+      type: "Dental Healthcare", 
+      img: "https://puny-lime-5boiicjq.edgeone.dev/file.png",
+      link: "#"
+    },
+    { 
+      name: "Pioneer Valley Pediatric Dental Care", 
+      category: "Creatives", 
+      type: "Pediatric Dental", 
+      img: "https://sophisticated-amaranth-u6iugers.edgeone.dev/file.png",
+      link: "#"
+    },
+    { 
+      name: "Canarsie Dental Smile Hygiene Campaign", 
+      category: "Creatives", 
+      type: "Dental Healthcare", 
+      img: "https://xenophobic-salmon-awcdywc7.edgeone.dev/file.png",
+      link: "#"
+    },
     { 
       name: "Creative Brand Graphic Design", 
       category: "Creatives", 
@@ -3572,6 +3516,15 @@ const Portfolio = () => {
       type: "Wellness & Health Tips",
       img: "https://inquisitive-emerald-zetoehzk.edgeone.app/ChatGPT%20Image%20Jun%2027,%202026,%2010_43_04%20AM.png",
       videoUrl: "https://www.image2url.com/r2/default/videos/1782537016091-df0acf48-6cbf-4bff-80e1-41917347a33b.mp4",
+      link: "#"
+    },
+    {
+      name: "Missing or Damaged Tooth Treatments",
+      category: "Videos",
+      videoCategory: "ai",
+      type: "Dental Healthcare & AI",
+      img: "/assets/ai_video_new_thumb.png",
+      videoUrl: "https://www.image2url.com/r2/default/videos/1793539315801-6500bb3b-a485-45d2-9cb1-3743042b8ffa.mp4",
       link: "#"
     },
     {
@@ -4890,6 +4843,7 @@ export default function PortfolioApp() {
         <About />
         <Services />
         <Experience onOpenResume={() => setIsResumeOpen(true)} />
+        <ExperiencePortfolioTransition />
         <Portfolio />
         <WhyChooseMe />
         <Process />
