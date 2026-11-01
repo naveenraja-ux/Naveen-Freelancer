@@ -55,7 +55,8 @@ import {
   Users,
   BarChart3,
   FileBarChart,
-  Share2
+  Share2,
+  Linkedin
 } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 
@@ -4432,6 +4433,20 @@ const Footer = () => {
             <p className="text-slate-400 max-w-md leading-relaxed text-xs md:text-sm">
               Expert Social Media Manager & Creative Designer helping healthcare, real estate, and digital brands build massive credibility, grow community engagement, and drive high-yield lead generation campaigns through refined aesthetic assets.
             </p>
+            <div className="mt-6 flex items-center gap-3">
+              <a
+                href="https://www.linkedin.com/in/naveen-raja-22b451400/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-[#0A66C2]/15 hover:bg-[#0A66C2]/25 text-[#388dff] hover:text-white border border-[#0A66C2]/30 hover:border-[#0A66C2]/70 text-xs font-semibold transition-all group shadow-sm hover:shadow-lg hover:shadow-[#0A66C2]/10"
+              >
+                <div className="w-5 h-5 rounded bg-[#0A66C2] flex items-center justify-center text-white shrink-0 group-hover:scale-105 transition-transform">
+                  <Linkedin size={12} fill="currentColor" />
+                </div>
+                <span>Connect on LinkedIn</span>
+                <ExternalLink size={12} className="opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+              </a>
+            </div>
           </div>
 
           <div className="md:col-span-3">
@@ -4442,6 +4457,17 @@ const Footer = () => {
               <li><a href="#experience" className="hover:text-primary transition-colors">Work Experience</a></li>
               <li><a href="#work" className="hover:text-primary transition-colors">Creative Showcase</a></li>
               <li><a href="#contact" className="hover:text-primary transition-colors">Get In Touch</a></li>
+              <li>
+                <a 
+                  href="https://www.linkedin.com/in/naveen-raja-22b451400/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hover:text-[#388dff] transition-colors inline-flex items-center gap-2 text-slate-300"
+                >
+                  <Linkedin size={13} className="text-[#0A66C2]" />
+                  <span>LinkedIn Profile</span>
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -4462,7 +4488,17 @@ const Footer = () => {
           <p className="font-medium">
             © {new Date().getFullYear()} Naveen Raja. All rights reserved. Built with pride.
           </p>
-          <div className="flex gap-8">
+          <div className="flex items-center gap-6">
+            <a 
+              href="https://www.linkedin.com/in/naveen-raja-22b451400/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#388dff] text-slate-400 transition-colors inline-flex items-center gap-1.5"
+              title="Visit Naveen Raja on LinkedIn"
+            >
+              <Linkedin size={14} className="text-[#0A66C2]" />
+              <span>LinkedIn</span>
+            </a>
             <button 
               onClick={() => setShowPrivacy(true)}
               className="hover:text-slate-300 transition-colors cursor-pointer text-xs font-semibold focus:outline-none"
@@ -4671,6 +4707,14 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                       <strong>Portfolio:</strong>
                       <a href="https://naveenraja.netlify.app/" target="_blank" rel="noreferrer" className="text-primary hover:underline font-bold">
                         https://naveenraja.netlify.app/
+                      </a>
+                    </span>
+                    <span className="text-slate-300 hidden sm:inline">•</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Linkedin size={13} className="text-[#0A66C2]" />
+                      <strong>LinkedIn:</strong>
+                      <a href="https://www.linkedin.com/in/naveen-raja-22b451400/" target="_blank" rel="noreferrer" className="text-primary hover:underline font-bold">
+                        naveen-raja
                       </a>
                     </span>
                   </div>
