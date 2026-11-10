@@ -47,8 +47,6 @@ import {
   Download,
   Building2,
   GraduationCap,
-  Sun,
-  Moon,
   Wifi,
   FilePenLine,
   CalendarCheck,
@@ -59,6 +57,7 @@ import {
   Linkedin
 } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
+import { FloatingParticlesBackground } from "./components/FloatingParticlesBackground";
 
 // --- Animated Smooth Rotating Counter Component ---
 const AnimatedCounter = ({ value, suffix = "", delay = 0, decimals = 0, colorClass = "text-primary" }: { value: number; suffix?: string; delay?: number; decimals?: number; colorClass?: string }) => {
@@ -142,13 +141,9 @@ const AnimatedCounter = ({ value, suffix = "", delay = 0, decimals = 0, colorCla
 
 // --- Navbar Component ---
 const Navbar = ({ 
-  onOpenResume,
-  theme = "light",
-  onToggleTheme
+  onOpenResume 
 }: { 
-  onOpenResume?: () => void;
-  theme?: "light" | "dark";
-  onToggleTheme?: () => void;
+  onOpenResume?: () => void; 
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -198,12 +193,12 @@ const Navbar = ({
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
       isScrolled 
-        ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-md py-2.5 shadow-sm border-b border-slate-100 dark:border-white/10" 
+        ? "bg-[#030407]/90 backdrop-blur-md py-3 shadow-lg shadow-black/60 border-b border-[#1F51FF]/20" 
         : "bg-transparent py-5"
     }`}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 flex justify-between items-center">
-        {/* Desktop Nav Links on Left with Glass Styling */}
-        <div className="hidden md:flex items-center gap-1 bg-slate-100/50 dark:bg-slate-900/60 hover:bg-slate-100/80 dark:hover:bg-slate-900/90 backdrop-blur-md p-1 rounded-full border border-slate-200/40 dark:border-white/10 transition-colors duration-300">
+        {/* Desktop Nav Links on Left with Midnight & Neon Blue Glass Styling */}
+        <div className="hidden md:flex items-center gap-1 bg-[#070b14]/90 hover:bg-[#070b14] backdrop-blur-md p-1 rounded-full border border-[#1F51FF]/30 transition-colors duration-300 shadow-inner">
           {navLinks.map((link) => {
             const isActive = activeSection === link.name;
             return (
@@ -213,14 +208,14 @@ const Navbar = ({
                 onClick={() => setActiveSection(link.name)}
                 className={`relative px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all duration-300 select-none ${
                   isActive 
-                    ? "text-primary shadow-sm" 
-                    : "text-slate-600 dark:text-slate-300 hover:text-navy dark:hover:text-white"
+                    ? "text-[#D4FF24] shadow-sm font-black" 
+                    : "text-slate-300 hover:text-white"
                 }`}
               >
                 {isActive && (
                   <motion.span
                     layoutId="activeNavBackground"
-                    className="absolute inset-0 bg-white dark:bg-slate-800 shadow-sm border border-slate-200/20 dark:border-white/10 rounded-full -z-10"
+                    className="absolute inset-0 bg-[#1F51FF]/25 shadow-sm border border-[#1F51FF]/60 rounded-full -z-10"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -232,33 +227,18 @@ const Navbar = ({
 
         {/* Desktop CTAs on Right / Mobile Menu Toggle */}
         <div className="flex items-center gap-3 ml-auto md:ml-0">
-          {/* Theme Toggle Button (Desktop) */}
-          <button
-            type="button"
-            onClick={onToggleTheme}
-            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            className="p-2 rounded-full bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-400 border border-slate-200/60 dark:border-white/10 shadow-sm transition-all duration-300 cursor-pointer"
-          >
-            {theme === "dark" ? (
-              <Sun size={17} className="text-amber-400 transition-transform hover:rotate-45" />
-            ) : (
-              <Moon size={17} className="text-slate-700 transition-transform hover:-rotate-12" />
-            )}
-          </button>
-
           <div className="hidden md:flex items-center gap-3">
             <button 
               type="button"
               onClick={onOpenResume}
-              className="inline-flex items-center gap-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-slate-700 text-navy dark:text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm cursor-pointer"
+              className="group inline-flex items-center gap-2 bg-transparent border border-[#1F51FF] hover:border-[#D4FF24] text-white hover:text-[#D4FF24] px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm cursor-pointer"
             >
-              <FileText size={14} className="text-primary" /> Resume
+              <FileText size={14} className="text-[#1F51FF] group-hover:text-[#D4FF24] transition-colors" /> Resume
             </button>
 
             <a 
               href="#contact" 
-              className="bg-navy dark:bg-primary hover:bg-primary dark:hover:bg-blue-600 text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md shadow-navy/10 hover:shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0"
+              className="bg-[#D4FF24] hover:bg-[#1F51FF] text-[#030407] hover:text-white px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 shadow-md shadow-[#D4FF24]/20 hover:shadow-[#1F51FF]/40 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
             >
               Let's Talk
             </a>
@@ -266,7 +246,7 @@ const Navbar = ({
 
           {/* Mobile Toggle */}
           <button 
-            className="md:hidden text-navy dark:text-white p-1 cursor-pointer" 
+            className="md:hidden text-white p-1 cursor-pointer hover:text-[#D4FF24] transition-colors" 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -280,7 +260,7 @@ const Navbar = ({
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute top-full left-0 w-full bg-white dark:bg-slate-900 shadow-xl py-6 px-6 flex flex-col gap-2 md:hidden border-t border-slate-100 dark:border-slate-800"
+          className="absolute top-full left-0 w-full bg-[#030407] shadow-2xl py-6 px-6 flex flex-col gap-2 md:hidden border-t border-[#1F51FF]/20 border-b border-[#1F51FF]/20 backdrop-blur-xl"
         >
           {navLinks.map((link) => {
             const isActive = activeSection === link.name;
@@ -290,8 +270,8 @@ const Navbar = ({
                 href={link.href} 
                 className={`text-xs font-bold uppercase tracking-wider py-2.5 px-3 rounded-lg transition-colors flex justify-between items-center ${
                   isActive 
-                    ? "bg-blue-50/70 dark:bg-blue-950/40 text-primary border-l-4 border-primary" 
-                    : "text-navy dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                    ? "bg-[#1F51FF]/20 text-[#D4FF24] border-l-4 border-[#D4FF24]" 
+                    : "text-slate-300 hover:text-white hover:bg-[#070b14]"
                 }`}
                 onClick={() => {
                   setActiveSection(link.name);
@@ -299,49 +279,25 @@ const Navbar = ({
                 }}
               >
                 <span>{link.name}</span>
-                {isActive && <span className="w-1.5 h-1.5 bg-primary rounded-full" />}
+                {isActive && <span className="w-1.5 h-1.5 bg-[#D4FF24] rounded-full shadow-[0_0_6px_#D4FF24]" />}
               </a>
             );
           })}
 
-          {/* Mobile Theme Toggle Row */}
-          <div className="flex items-center justify-between py-2 px-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-white/10 mt-1">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
-              Appearance
-            </span>
-            <button
-              type="button"
-              onClick={onToggleTheme}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 shadow-sm cursor-pointer"
-            >
-              {theme === "dark" ? (
-                <>
-                  <Sun size={14} className="text-amber-400" />
-                  <span>Light Mode</span>
-                </>
-              ) : (
-                <>
-                  <Moon size={14} className="text-slate-700" />
-                  <span>Dark Mode</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          <div className="flex flex-col gap-2.5 pt-4 border-t border-slate-100 dark:border-slate-800 mt-2">
+          <div className="flex flex-col gap-2.5 pt-4 border-t border-[#1F51FF]/20 mt-2">
             <button 
               type="button"
               onClick={() => {
                 setIsMenuOpen(false);
                 onOpenResume?.();
               }}
-              className="flex items-center justify-center gap-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-white/10 text-navy dark:text-white px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+              className="group flex items-center justify-center gap-2 bg-transparent border border-[#1F51FF] hover:border-[#D4FF24] text-white hover:text-[#D4FF24] px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
             >
-              <FileText size={15} className="text-primary" /> View Resume
+              <FileText size={15} className="text-[#1F51FF] group-hover:text-[#D4FF24] transition-colors" /> View Resume
             </button>
             <a 
               href="#contact" 
-              className="bg-navy dark:bg-primary text-white text-center px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-primary transition-all shadow-md"
+              className="bg-[#D4FF24] hover:bg-[#1F51FF] text-[#030407] hover:text-white text-center px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#D4FF24]/20 hover:shadow-[#1F51FF]/30"
               onClick={() => setIsMenuOpen(false)}
             >
               Let's Talk
@@ -356,9 +312,14 @@ const Navbar = ({
 // --- Hero Section ---
 const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
   return (
-    <section id="hero" className="relative pt-[100px] pb-16 md:pt-[130px] md:pb-24 overflow-hidden px-6 md:px-12 lg:px-24 bg-white dark:bg-[#070b14] transition-colors duration-300">
+    <section id="hero" className="relative pt-[110px] pb-16 md:pt-[140px] md:pb-24 overflow-hidden px-6 md:px-12 lg:px-24 bg-[#030407] text-white transition-colors duration-300">
+      {/* Blue Ambient Glow Elements */}
+      <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#1F51FF]/20 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 -right-32 w-[500px] h-[500px] bg-[#1F51FF]/15 rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(#1F51FF_1px,transparent_1px)] [background-size:28px_28px] opacity-15 pointer-events-none" />
+
       {/* Grid Hero Container */}
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Left Column (Content) - Left-aligned */}
@@ -369,40 +330,47 @@ const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
             className="lg:col-span-7 flex flex-col items-start text-left"
           >
             {/* Status Badge */}
-            <div className="inline-flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/80 hover:bg-blue-50/50 dark:hover:bg-blue-950/40 border border-slate-200/60 dark:border-white/10 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 transition-all duration-300 shadow-sm select-none mb-6">
+            <div className="inline-flex items-center gap-2.5 bg-[#070b14] border border-[#1F51FF]/40 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-slate-300 transition-all duration-300 shadow-sm select-none mb-6">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D4FF24] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D4FF24] shadow-[0_0_8px_#D4FF24]"></span>
               </span>
               <span>Available for Full-Time Opportunities</span>
             </div>
  
-            {/* Headline */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-display font-black leading-tight mb-4 tracking-tight text-navy dark:text-white text-left max-w-4xl">
-              Growing Brands Through <span className="text-primary font-black bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">Strategic Social Media.</span>
+            {/* Headline with Brand Palette: White + Neon Blue + Acid Lime */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[46px] xl:text-[50px] font-display font-black leading-[1.12] mb-5 tracking-tight text-white text-left max-w-4xl">
+              Growing <span className="text-[#1F51FF]">Brands</span> Through{" "}
+              <span className="text-[#D4FF24] drop-shadow-[0_0_35px_rgba(212,255,36,0.3)]">
+                Strategic Social Media.
+              </span>
             </h1>
  
             {/* Subtitle */}
-            <p className="text-xs md:text-sm font-bold uppercase tracking-wider text-primary mb-3 text-left">
-              Social Media Manager • Content Strategist • Graphic Designer • Video Editor
+            <p className="text-xs md:text-sm font-bold uppercase tracking-widest text-[#1F51FF] mb-3 text-left flex flex-wrap items-center gap-2">
+              <span>Social Media Manager</span>
+              <span className="text-[#D4FF24]">·</span>
+              <span>Content Strategist</span>
+              <span className="text-[#D4FF24]">·</span>
+              <span>Graphic Designer</span>
+              <span className="text-[#D4FF24]">·</span>
+              <span>Video Editor</span>
             </p>
  
             {/* Description */}
-            <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mb-8 text-left leading-relaxed max-w-xl">
-              With over 2+ years of expertise managing 30+ client accounts and healthcare brands, I help businesses grow through strategic content planning, engaging social media campaigns, creative design, and short-form video content that builds audience engagement and strengthens brand presence.
+            <p className="text-sm md:text-base text-slate-300 mb-8 text-left leading-relaxed max-w-xl font-normal">
+              I help brands grow through strategic content planning, creative design, and engaging social media management, backed by 2+ years of experience managing 30+ client accounts.
             </p>
  
-            {/* CTA buttons with modern animations and styles */}
+            {/* CTA buttons with brand palette styling */}
             <div className="flex flex-wrap gap-4 w-full sm:w-auto justify-start">
               <motion.a 
                 href="#work" 
                 whileHover={{ y: -3, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                className="relative bg-gradient-to-r from-primary via-blue-600 to-indigo-600 text-white px-8 py-4 rounded-full font-bold flex items-center gap-2.5 text-base shadow-lg shadow-primary/25 overflow-hidden group cursor-pointer z-10"
+                className="relative bg-[#D4FF24] hover:bg-[#1F51FF] text-[#030407] hover:text-white px-8 py-4 rounded-full font-black flex items-center gap-2.5 text-base shadow-lg shadow-[#D4FF24]/20 hover:shadow-[#1F51FF]/40 transition-all duration-300 group cursor-pointer z-10"
               >
-                {/* Micro-interactive radial glare overlay */}
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
                 View Portfolio 
                 <motion.span
                   animate={{ x: [0, 5, 0] }}
@@ -417,10 +385,9 @@ const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
                 whileHover={{ y: -3, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                className="relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/80 dark:border-white/10 hover:border-navy dark:hover:border-primary hover:bg-slate-50 dark:hover:bg-slate-800 text-navy dark:text-white px-8 py-4 rounded-full font-bold flex items-center gap-2.5 text-base shadow-sm hover:shadow-md transition-all group overflow-hidden cursor-pointer z-10"
+                className="relative bg-transparent border border-[#1F51FF] hover:border-[#D4FF24] text-white hover:text-[#D4FF24] px-8 py-4 rounded-full font-bold flex items-center gap-2.5 text-base shadow-sm transition-all duration-300 group cursor-pointer z-10"
               >
-                <div className="absolute left-0 top-0 w-[4px] h-full bg-primary/0 group-hover:bg-primary transition-all duration-300" />
-                <FileText size={20} className="text-slate-400 group-hover:text-primary transition-colors" /> 
+                <FileText size={20} className="text-[#1F51FF] group-hover:text-[#D4FF24] transition-colors" /> 
                 View Resume
               </motion.button>
             </div>
@@ -431,14 +398,11 @@ const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:col-span-5 relative w-full p-6 md:p-8 rounded-3xl border border-slate-100 dark:border-white/10 bg-gradient-to-br from-slate-50/70 via-white/80 to-slate-50/70 dark:from-slate-900/90 dark:via-slate-900/60 dark:to-slate-950/90 backdrop-blur-xl shadow-2xl flex flex-col gap-4 overflow-hidden min-h-[360px] justify-center"
+            className="lg:col-span-5 relative w-full p-6 md:p-8 rounded-3xl border border-[#1F51FF]/30 bg-[#070b14]/90 backdrop-blur-xl shadow-2xl flex flex-col gap-4 overflow-hidden min-h-[360px] justify-center"
           >
             {/* Ambient Backlight Glows */}
-            <div className="absolute top-0 right-0 w-60 h-60 bg-primary/10 rounded-full blur-3xl -z-10 animate-pulse pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-60 h-60 bg-blue-300/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
-
-            {/* Modern Tech Dot Grid background */}
-            <div className="absolute inset-0 -z-10 bg-[radial-gradient(#e2e8f0_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-70 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-60 h-60 bg-[#1F51FF]/20 rounded-full blur-3xl -z-10 animate-pulse pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-60 h-60 bg-[#1F51FF]/15 rounded-full blur-3xl -z-10 pointer-events-none" />
 
             {/* Slow Spinning Tech Concentric Rings */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] -z-10 pointer-events-none opacity-25">
@@ -448,9 +412,9 @@ const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
                 animate={{ rotate: 360 }}
                 transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
               >
-                <circle cx="50" cy="50" r="46" stroke="#4f8cff" strokeWidth="0.5" strokeDasharray="3 3" fill="none" />
-                <circle cx="50" cy="50" r="38" stroke="#0f172a" strokeWidth="0.25" fill="none" />
-                <circle cx="50" cy="50" r="28" stroke="#4f8cff" strokeWidth="1" strokeDasharray="1 8" fill="none" />
+                <circle cx="50" cy="50" r="46" stroke="#1F51FF" strokeWidth="0.75" strokeDasharray="3 3" fill="none" />
+                <circle cx="50" cy="50" r="38" stroke="#D4FF24" strokeWidth="0.35" fill="none" />
+                <circle cx="50" cy="50" r="28" stroke="#1F51FF" strokeWidth="1" strokeDasharray="1 8" fill="none" />
               </motion.svg>
             </div>
 
@@ -461,7 +425,7 @@ const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
                 y: [0, -25, 15, 0],
               }}
               transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-12 left-12 w-3.5 h-3.5 rounded-full bg-primary/30 blur-[2px] -z-10"
+              className="absolute top-12 left-12 w-3.5 h-3.5 rounded-full bg-[#D4FF24]/30 blur-[2px] -z-10"
             />
             <motion.div
               animate={{ 
@@ -469,13 +433,13 @@ const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
                 y: [0, 30, -15, 0],
               }}
               transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute bottom-16 right-16 w-5 h-5 rounded-full bg-primary/20 blur-[3px] -z-10"
+              className="absolute bottom-16 right-16 w-5 h-5 rounded-full bg-[#1F51FF]/40 blur-[3px] -z-10"
             />
 
             {/* Moving Wave-Line Vectors */}
             <div className="absolute -bottom-8 -left-8 w-44 h-44 -z-10 opacity-30 pointer-events-none">
               <motion.svg
-                className="w-full h-full text-primary"
+                className="w-full h-full text-[#1F51FF]"
                 viewBox="0 0 100 100"
                 fill="none"
                 stroke="currentColor"
@@ -500,7 +464,7 @@ const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
                 value: 30,
                 suffix: "+",
                 title: "Client Accounts Managed",
-                colorClass: "text-primary",
+                colorClass: "text-[#D4FF24]",
                 desc: "Active client portfolios & Meta operations at Remedo.",
                 badge: "Active Operations"
               },
@@ -508,7 +472,7 @@ const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
                 value: 50,
                 suffix: "+",
                 title: "Social Media Creatives",
-                colorClass: "text-navy dark:text-white",
+                colorClass: "text-white",
                 desc: "Posts, Carousels & Reels Delivered.",
                 badge: "Delivered Assets"
               },
@@ -516,7 +480,7 @@ const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
                 value: 250,
                 suffix: "K+",
                 title: "Content Views",
-                colorClass: "text-primary",
+                colorClass: "text-[#D4FF24]",
                 desc: "Building audience reach through engaging content.",
                 badge: "Audience Reach"
               }
@@ -527,21 +491,21 @@ const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 * idx }}
-                whileHover={{ y: -4, x: 4, scale: 1.02, borderColor: "#4f8cff" }}
-                className="relative bg-white/70 dark:bg-slate-800/60 backdrop-blur-md py-4 px-5 rounded-2xl border border-slate-100 dark:border-white/10 shadow-sm transition-all duration-300 flex items-center justify-between group hover:shadow-lg dark:hover:bg-slate-800/80 cursor-default text-left overflow-hidden"
+                whileHover={{ y: -4, x: 4, scale: 1.02, borderColor: "#1F51FF" }}
+                className="relative bg-[#030407]/90 backdrop-blur-md py-4 px-5 rounded-2xl border border-[#1F51FF]/30 shadow-sm transition-all duration-300 flex items-center justify-between group hover:shadow-lg hover:border-[#1F51FF] cursor-default text-left overflow-hidden"
               >
                 {/* Visual Glass Reflection Hover Effect */}
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-[#1F51FF]/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
 
                 <div className="flex-1 pr-4 z-10">
-                  <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700/80 text-[10px] font-bold text-slate-500 dark:text-slate-300 uppercase tracking-wider mb-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#1F51FF]/20 text-[10px] font-bold text-[#D4FF24] uppercase tracking-wider mb-2 border border-[#1F51FF]/30">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF24] shadow-[0_0_6px_#D4FF24]" />
                     {item.badge}
                   </div>
-                  <h4 className="text-base font-bold text-navy dark:text-white mb-1 font-display tracking-tight group-hover:text-primary transition-colors">
+                  <h4 className="text-base font-bold text-white mb-1 font-display tracking-tight group-hover:text-[#D4FF24] transition-colors">
                     {item.title}
                   </h4>
-                  <p className="text-xs text-slate-400 dark:text-slate-400 font-medium leading-relaxed">
+                  <p className="text-xs text-slate-400 font-medium leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
@@ -560,10 +524,6 @@ const Hero = ({ onOpenResume }: { onOpenResume?: () => void }) => {
 
         </div>
       </div>
-
-      {/* Subtle Background grids or decorative items */}
-      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-primary/5 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
-      <div className="absolute bottom-0 -right-20 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
     </section>
   );
 };
@@ -910,39 +870,40 @@ const About = () => {
       title: "Content Strategy",
       desc: "Planning content that drives engagement.",
       icon: <Layers size={24} />,
-      bg: "bg-blue-500/10 text-primary border-blue-500/10",
-      glow: "rgba(79, 140, 255, 0.15)"
+      bg: "bg-[#1F51FF]/20 text-[#D4FF24] border-[#1F51FF]/40",
+      glow: "rgba(31, 81, 255, 0.3)"
     },
     {
       title: "Reels Production",
       desc: "Editing short-form videos for social growth.",
       icon: <Video size={24} />,
-      bg: "bg-pink-500/10 text-pink-500 border-pink-500/10",
-      glow: "rgba(244, 63, 94, 0.15)"
+      bg: "bg-[#1F51FF]/20 text-[#D4FF24] border-[#1F51FF]/40",
+      glow: "rgba(212, 255, 36, 0.25)"
     },
     {
       title: "Creative Branding",
       desc: "Building consistent visual brand experiences.",
       icon: <Palette size={24} />,
-      bg: "bg-violet-500/10 text-violet-500 border-violet-500/10",
-      glow: "rgba(139, 92, 246, 0.15)"
+      bg: "bg-[#1F51FF]/20 text-[#D4FF24] border-[#1F51FF]/40",
+      glow: "rgba(31, 81, 255, 0.3)"
     },
     {
       title: "Digital Presence",
       desc: "Helping brands grow across digital platforms.",
       icon: <ExternalLink size={24} />,
-      bg: "bg-emerald-500/10 text-emerald-500 border-emerald-500/10",
-      glow: "rgba(16, 185, 129, 0.15)"
+      bg: "bg-[#1F51FF]/20 text-[#D4FF24] border-[#1F51FF]/40",
+      glow: "rgba(212, 255, 36, 0.25)"
     }
   ];
 
   return (
-    <section id="about" className="py-20 md:py-28 px-6 md:px-12 lg:px-24 bg-slate-50 dark:bg-[#090e1a] border-t border-slate-200/50 dark:border-white/5 relative overflow-hidden transition-colors duration-300">
-      {/* Subtle designer background mesh grids and accents */}
-      <div className="absolute top-0 left-1/4 w-[1px] h-full bg-slate-200/50 dark:bg-slate-800/40 -z-10" />
-      <div className="absolute top-0 left-2/4 w-[1px] h-full bg-slate-200/50 dark:bg-slate-800/40 -z-10" />
-      <div className="absolute top-0 left-3/4 w-[1px] h-full bg-slate-200/50 dark:bg-slate-800/40 -z-10" />
-      <div className="absolute right-12 top-24 w-40 h-40 rounded-full border border-slate-200/60 dark:border-white/10 -z-10 pointer-events-none" />
+    <section id="about" className="py-20 md:py-28 px-6 md:px-12 lg:px-24 bg-[#030407] border-t border-[#1F51FF]/20 relative overflow-hidden transition-colors duration-300">
+      {/* Subtle blue ambient glows and alignment hairlines */}
+      <div className="absolute top-0 left-1/4 w-[1px] h-full bg-[#1F51FF]/10 -z-10" />
+      <div className="absolute top-0 left-2/4 w-[1px] h-full bg-[#1F51FF]/10 -z-10" />
+      <div className="absolute top-0 left-3/4 w-[1px] h-full bg-[#1F51FF]/10 -z-10" />
+      <div className="absolute -left-20 top-1/2 w-80 h-80 bg-[#1F51FF]/15 rounded-full blur-[140px] pointer-events-none -z-10" />
+      <div className="absolute right-12 top-24 w-40 h-40 rounded-full border border-[#1F51FF]/20 -z-10 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto">
         <motion.div
@@ -953,20 +914,20 @@ const About = () => {
         >
           {/* Fully Centered Designer Header Layout */}
           <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16 relative z-10">
-            <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-4 bg-blue-50/80 dark:bg-blue-950/40 px-4 py-1.5 rounded-full border border-blue-100 dark:border-blue-800/40 inline-block select-none shadow-sm/50">
+            <span className="text-xs uppercase tracking-[0.25em] text-[#D4FF24] font-bold mb-4 bg-[#1F51FF]/20 px-4 py-1.5 rounded-full border border-[#1F51FF]/40 inline-block select-none shadow-sm/50">
               Who I Am
             </span>
             
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-navy dark:text-white tracking-tight leading-tight">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-white tracking-tight leading-tight">
               I’m Naveen Raja, a
             </h3>
             
             {/* Premium Standalone Centered Dynamic Word Box */}
-            <div className="mt-4 w-full max-w-xl bg-gradient-to-r from-blue-50/80 to-indigo-50/30 dark:from-blue-950/40 dark:to-indigo-950/30 border border-blue-100/60 dark:border-blue-800/40 p-4 md:p-5 rounded-2xl shadow-sm relative overflow-hidden flex items-center justify-center gap-4 group hover:border-primary/20 dark:hover:border-primary/40 transition-all duration-300">
-              <div className="absolute top-0 right-0 p-2 opacity-20 group-hover:opacity-40 transition-opacity">
-                <Sparkles size={16} className="text-primary animate-pulse" />
+            <div className="mt-4 w-full max-w-xl bg-[#070b14] border border-[#1F51FF]/40 p-4 md:p-5 rounded-2xl shadow-lg relative overflow-hidden flex items-center justify-center gap-4 group hover:border-[#D4FF24]/60 transition-all duration-300">
+              <div className="absolute top-0 right-0 p-2 opacity-30 group-hover:opacity-70 transition-opacity">
+                <Sparkles size={16} className="text-[#D4FF24] animate-pulse" />
               </div>
-              <div className="w-2 md:w-2.5 h-10 md:h-12 bg-primary rounded-full shrink-0 shadow-sm" />
+              <div className="w-2 md:w-2.5 h-10 md:h-12 bg-[#D4FF24] rounded-full shrink-0 shadow-[0_0_10px_#D4FF24]" />
               
               {/* Width balanced container with centered alignment */}
               <div className="relative h-10 md:h-12 flex items-center justify-center min-w-[240px] sm:min-w-[300px] md:min-w-[380px] w-full text-center">
@@ -977,7 +938,7 @@ const About = () => {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: 10, opacity: 0 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="absolute text-primary font-black text-xl sm:text-2xl md:text-3xl tracking-tight select-none text-center leading-none"
+                    className="absolute text-[#D4FF24] font-black text-xl sm:text-2xl md:text-3xl tracking-tight select-none text-center leading-none"
                   >
                     {words[currentWordIndex]}
                   </motion.span>
@@ -986,7 +947,7 @@ const About = () => {
             </div>
           </div>
 
-          {/* Premium Glass UI Cards in Single Row (4 columns on desktop) */}
+          {/* Premium Dark Cards with Lime Icons & Blue Borders */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl mx-auto">
             {cards.map((card, idx) => (
               <motion.div
@@ -996,7 +957,7 @@ const About = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.08 * idx }}
                 whileHover={{ y: -8, scale: 1.02 }}
-                className="relative overflow-hidden rounded-2xl bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/60 dark:border-white/10 p-6 md:p-8 shadow-sm transition-all duration-300 flex flex-col items-center text-center group hover:bg-white dark:hover:bg-slate-800/80 hover:border-primary/20 dark:hover:border-primary/40 hover:shadow-xl cursor-default"
+                className="relative overflow-hidden rounded-2xl bg-[#070b14] backdrop-blur-md border border-[#1F51FF]/30 p-6 md:p-8 shadow-sm transition-all duration-300 flex flex-col items-center text-center group hover:border-[#D4FF24]/60 hover:shadow-[0_0_25px_rgba(31, 81, 255,0.25)] cursor-default"
               >
                 {/* Advanced Micro Glow Backlit Light */}
                 <div 
@@ -1005,13 +966,13 @@ const About = () => {
                 />
 
                 {/* Subtle Dots Pattern on the inner background */}
-                <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] dark:bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px] opacity-10 pointer-events-none group-hover:opacity-20 transition-opacity" />
+                <div className="absolute inset-0 bg-[radial-gradient(#1F51FF_1px,transparent_1px)] [background-size:16px_16px] opacity-10 pointer-events-none group-hover:opacity-20 transition-opacity" />
 
                 {/* Corner Crosshair/Alignment Marks for UI designer look */}
-                <span className="absolute top-3 left-3 text-[10px] text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors font-mono font-bold select-none">[</span>
-                <span className="absolute top-3 right-3 text-[10px] text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors font-mono font-bold select-none">]</span>
-                <span className="absolute bottom-3 left-3 text-[10px] text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors font-mono font-bold select-none">+</span>
-                <span className="absolute bottom-3 right-3 text-[10px] text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors font-mono font-bold select-none">+</span>
+                <span className="absolute top-3 left-3 text-[10px] text-slate-600 group-hover:text-[#D4FF24] transition-colors font-mono font-bold select-none">[</span>
+                <span className="absolute top-3 right-3 text-[10px] text-slate-600 group-hover:text-[#D4FF24] transition-colors font-mono font-bold select-none">]</span>
+                <span className="absolute bottom-3 left-3 text-[10px] text-slate-600 group-hover:text-[#D4FF24] transition-colors font-mono font-bold select-none">+</span>
+                <span className="absolute bottom-3 right-3 text-[10px] text-slate-600 group-hover:text-[#D4FF24] transition-colors font-mono font-bold select-none">+</span>
 
                 {/* Infinite Floating Icon with background container */}
                 <motion.div
@@ -1022,24 +983,24 @@ const About = () => {
                   {card.icon}
                 </motion.div>
 
-                {/* Glass Card Title */}
-                <h4 className="text-base font-bold text-navy dark:text-white font-display mb-2 group-hover:text-primary transition-colors leading-tight">
+                {/* Card Title */}
+                <h4 className="text-base font-bold text-white font-display mb-2 group-hover:text-[#D4FF24] transition-colors leading-tight">
                   {card.title}
                 </h4>
 
                 {/* Card Description */}
-                <p className="text-xs text-slate-400 dark:text-slate-400 font-medium leading-relaxed">
+                <p className="text-xs text-slate-400 font-medium leading-relaxed">
                   {card.desc}
                 </p>
 
                 {/* Tech Line Bar Slider that fills on hover */}
-                <div className="w-full h-[2px] bg-slate-100 dark:bg-slate-800 rounded-full mt-6 overflow-hidden">
+                <div className="w-full h-[2px] bg-slate-800 rounded-full mt-6 overflow-hidden">
                   <motion.div 
                     initial={{ width: 0 }}
                     whileInView={{ width: "100%" }}
                     viewport={{ once: true }}
                     transition={{ duration: 1.2, delay: idx * 0.1 }}
-                    className="h-full bg-gradient-to-r from-primary to-blue-400 origin-left"
+                    className="h-full bg-gradient-to-r from-[#1F51FF] to-[#D4FF24] origin-left"
                   />
                 </div>
               </motion.div>
@@ -1059,40 +1020,41 @@ const Services = () => {
     <motion.span 
       initial={{ scale: 0.8 }}
       whileInView={{ scale: 1 }}
-      className="text-emerald-500 font-bold bg-emerald-50 rounded-full w-5 h-5 flex items-center justify-center text-[10px] shrink-0 border border-emerald-100"
+      className="text-[#030407] font-black bg-[#D4FF24] rounded-full w-5 h-5 flex items-center justify-center text-[10px] shrink-0 shadow-[0_0_8px_#D4FF24]"
     >
       ✓
     </motion.span>
   );
 
   return (
-    <section id="services" className="py-20 md:py-28 bg-slate-50 dark:bg-[#070b14] px-6 md:px-12 lg:px-24 relative overflow-hidden transition-colors duration-300">
+    <section id="services" className="py-20 md:py-28 bg-[#030407] px-6 md:px-12 lg:px-24 relative overflow-hidden transition-colors duration-300 border-t border-[#1F51FF]/20">
       {/* Subtle modern alignment grids for UI designer motif */}
-      <div className="absolute top-0 left-1/4 w-[1px] h-full bg-slate-200/40 dark:bg-slate-800/40 -z-10 pointer-events-none" />
-      <div className="absolute top-0 left-3/4 w-[1px] h-full bg-slate-200/40 dark:bg-slate-800/40 -z-10 pointer-events-none" />
-      <div className="absolute top-1/4 left-0 right-0 h-[1px] bg-slate-200/40 dark:bg-slate-800/40 -z-10 pointer-events-none" />
+      <div className="absolute top-0 left-1/4 w-[1px] h-full bg-[#1F51FF]/10 -z-10 pointer-events-none" />
+      <div className="absolute top-0 left-3/4 w-[1px] h-full bg-[#1F51FF]/10 -z-10 pointer-events-none" />
+      <div className="absolute top-1/4 left-0 right-0 h-[1px] bg-[#1F51FF]/10 -z-10 pointer-events-none" />
+      <div className="absolute -right-20 top-1/3 w-80 h-80 bg-[#1F51FF]/15 rounded-full blur-[140px] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           
           {/* Left Side: Sticky Texts Column */}
           <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
-            <span className="text-xs uppercase tracking-[0.2em] text-primary font-bold mb-3 inline-block bg-blue-50 dark:bg-blue-950/40 px-3.5 py-1 rounded-full border border-blue-100 dark:border-blue-800/40 shadow-sm/30 select-none">
+            <span className="text-xs uppercase tracking-[0.2em] text-[#D4FF24] font-bold mb-3 inline-block bg-[#1F51FF]/20 px-3.5 py-1 rounded-full border border-[#1F51FF]/40 shadow-sm/30 select-none">
               What I Do
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-navy dark:text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-white tracking-tight leading-tight">
               Helping Brands Build Their Digital Presence
             </h2>
-            <div className="h-1 w-16 bg-primary rounded-full" />
-            <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base font-semibold leading-relaxed">
+            <div className="h-1 w-16 bg-[#D4FF24] rounded-full shadow-[0_0_8px_#D4FF24]" />
+            <p className="text-slate-300 text-sm md:text-base font-normal leading-relaxed">
               From dynamic content strategy and creative design to trend-focused reels editing and robust social media management, I help businesses craft highly engaging content that grows their reach and builds a consistent, trustworthy online identity.
             </p>
             <div className="hidden lg:block pt-6">
               <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest block mb-2">Explore details below</span>
               <div className="flex gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-400/40 inline-block" />
-                <span className="w-2.5 h-2.5 rounded-full bg-indigo-400/40 inline-block" />
-                <span className="w-2.5 h-2.5 rounded-full bg-purple-400/40 inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#1F51FF]/50 inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#1F51FF] inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#D4FF24] inline-block shadow-[0_0_6px_#D4FF24]" />
               </div>
             </div>
           </div>
@@ -1103,7 +1065,7 @@ const Services = () => {
               {[
                 {
                   id: 1,
-                  badge: "📈 SOCIAL GROWTH",
+                  badge: "SOCIAL GROWTH",
                   title: "Social Media Management",
                   desc: "Plan, publish, and manage content that builds brand awareness and consistent audience growth.",
                   services: ["Content Strategy", "Content Calendar", "Community Mgmt", "Caption Writing"],
@@ -1112,12 +1074,11 @@ const Services = () => {
                   statLabel: "Campaigns & Content",
                   statIcon: "📊",
                   icon: <Smartphone size={20} />,
-                  badgeBg: "bg-blue-50 text-blue-600 border-blue-100",
                   modalId: "Social Media Management"
                 },
                 {
                   id: 2,
-                  badge: "🎥 SHORT-FORM CONTENT",
+                  badge: "SHORT-FORM CONTENT",
                   title: "Reels & Video Editing",
                   desc: "Create engaging short-form videos and Reels designed to capture attention and boost reach.",
                   services: ["Reels Editing", "Video Storytelling", "Trend Content", "Mobile Video"],
@@ -1126,12 +1087,11 @@ const Services = () => {
                   statLabel: "Videos Edited",
                   statIcon: "🎬",
                   icon: <Film size={20} />,
-                  badgeBg: "bg-rose-50 text-rose-600 border-rose-100",
                   modalId: "Video Editing"
                 },
                 {
                   id: 3,
-                  badge: "🎨 VISUAL BRANDING",
+                  badge: "VISUAL BRANDING",
                   title: "Creative Design",
                   desc: "Design professional social media posts, promotional art, and consistent branded assets.",
                   services: ["Social Creatives", "Posters & Brochures", "Brand Visuals", "Carousel Design"],
@@ -1140,12 +1100,11 @@ const Services = () => {
                   statLabel: "Designs Created",
                   statIcon: "🎨",
                   icon: <Palette size={20} />,
-                  badgeBg: "bg-emerald-50 text-emerald-600 border-emerald-100",
                   modalId: "Digital & Creative Design"
                 },
                 {
                   id: 4,
-                  badge: "🌐 DIGITAL EXPERIENCE",
+                  badge: "DIGITAL EXPERIENCE",
                   title: "Landing Pages & Sites",
                   desc: "Design responsive landing pages and portfolios that improve online presence and campaigns.",
                   services: ["Responsive Design", "Portfolio Sites", "Landing Pages", "UI Prototypes"],
@@ -1154,7 +1113,6 @@ const Services = () => {
                   statLabel: "Projects Delivered",
                   statIcon: "🌐",
                   icon: <Globe size={20} />,
-                  badgeBg: "bg-purple-50 text-purple-600 border-purple-100",
                   modalId: "Website Design"
                 }
               ].map((card) => (
@@ -1165,10 +1123,10 @@ const Services = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: card.id * 0.05 }}
                   whileHover={{ y: -8, transition: { duration: 0.2, ease: "easeOut" } }}
-                  className="bg-white dark:bg-slate-900/80 hover:bg-white/95 dark:hover:bg-slate-900 border border-slate-100 dark:border-white/10 hover:border-primary/40 dark:hover:border-primary/40 p-6 rounded-[2rem] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-default"
+                  className="bg-[#070b14] hover:bg-[#070b14] border border-[#1F51FF]/30 hover:border-[#1F51FF] p-6 rounded-[2rem] shadow-sm hover:shadow-[0_0_25px_rgba(31, 81, 255,0.25)] transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-default"
                 >
-                  <div className="absolute top-3 left-3 text-[8px] text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors font-mono select-none font-bold">[{String(card.id).padStart(2, '0')}]</div>
-                  <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute top-3 left-3 text-[8px] text-slate-600 group-hover:text-[#D4FF24] transition-colors font-mono select-none font-bold">[{String(card.id).padStart(2, '0')}]</div>
+                  <div className="absolute -top-10 -right-10 w-24 h-24 bg-[#1F51FF]/15 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                   <div>
                     {/* Header Action Row */}
@@ -1176,23 +1134,23 @@ const Services = () => {
                       <motion.div 
                         whileHover={{ 
                           y: -6, 
-                          scale: 1.15,
+                          scale: 1.15, 
                           transition: { 
                             type: "spring", 
                             stiffness: 400, 
-                            damping: 12,
+                            damping: 12, 
                             mass: 0.6 
                           } 
                         }}
                         whileTap={{ scale: 0.94 }}
-                        className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 border border-slate-100 dark:border-white/10 group-hover:text-primary group-hover:bg-primary/5 group-hover:border-primary/20 transition-colors duration-200 cursor-pointer shadow-sm hover:shadow-md select-none"
+                        className="w-10 h-10 rounded-xl bg-[#030407] flex items-center justify-center text-[#D4FF24] border border-[#1F51FF]/40 group-hover:bg-[#1F51FF]/20 group-hover:border-[#D4FF24]/60 transition-colors duration-200 cursor-pointer shadow-sm select-none"
                       >
                         {card.icon}
                       </motion.div>
                       
                       <button 
                         onClick={() => setOpenModalId(card.modalId)}
-                        className="text-[10px] font-bold text-slate-400 hover:text-primary hover:bg-primary/5 hover:border-primary/20 transition-all py-1 px-3 bg-slate-50/60 dark:bg-slate-800/60 border border-slate-100 dark:border-white/10 rounded-full cursor-pointer shadow-sm select-none"
+                        className="text-[10px] font-bold text-slate-300 hover:text-[#D4FF24] hover:bg-[#1F51FF]/20 hover:border-[#D4FF24]/40 transition-all py-1 px-3 bg-[#030407] border border-[#1F51FF]/30 rounded-full cursor-pointer shadow-sm select-none"
                       >
                         Details
                       </button>
@@ -1200,25 +1158,25 @@ const Services = () => {
 
                     {/* Badge Tag */}
                     <div className="mb-3">
-                      <span className={`text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.75 rounded-full border ${card.badgeBg} inline-block`}>
+                      <span className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.75 rounded-full border bg-[#1F51FF]/20 text-[#D4FF24] border-[#1F51FF]/40 inline-block">
                         {card.badge}
                       </span>
                     </div>
 
                     {/* Title & Desc */}
-                    <h3 className="text-base font-display font-black text-navy dark:text-white mb-1 tracking-tight">
+                    <h3 className="text-base font-display font-black text-white mb-1 tracking-tight group-hover:text-[#D4FF24] transition-colors">
                       {card.title}
                     </h3>
-                    <p className="text-slate-500 dark:text-slate-400 text-[11px] mb-4 font-semibold leading-relaxed min-h-[44px]">
+                    <p className="text-slate-400 text-[11px] mb-4 font-normal leading-relaxed min-h-[44px]">
                       {card.desc}
                     </p>
 
-                    {/* Rounded pills/tags instead of checklist */}
+                    {/* Rounded pills/tags */}
                     <div className="flex flex-wrap gap-1 mb-6">
                       {card.services.map((svc, idx) => (
                         <span 
                           key={idx} 
-                          className="text-[9px] font-bold text-slate-500 dark:text-slate-300 bg-slate-100/60 dark:bg-slate-800/60 border border-slate-200/40 dark:border-white/10 px-2 py-0.5 rounded-full hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all duration-200 select-none"
+                          className="text-[9px] font-medium text-slate-300 bg-[#030407] border border-[#1F51FF]/30 px-2 py-0.5 rounded-full hover:bg-[#1F51FF]/20 hover:text-[#D4FF24] hover:border-[#D4FF24]/40 transition-all duration-200 select-none"
                         >
                           {svc}
                         </span>
@@ -1227,20 +1185,20 @@ const Services = () => {
                   </div>
 
                   {/* Metric Footer */}
-                  <div className="border-t border-slate-100 dark:border-white/10 pt-4 flex items-center gap-3">
+                  <div className="border-t border-[#1F51FF]/20 pt-4 flex items-center gap-3">
                     <motion.div 
                       whileHover={{ 
                         y: -3, 
                         scale: 1.15, 
                         transition: { type: "spring", stiffness: 450, damping: 14 } 
                       }}
-                      className="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 group-hover:bg-primary/5 group-hover:text-primary transition-colors duration-300 shrink-0 cursor-pointer"
+                      className="w-8 h-8 rounded-full bg-[#030407] border border-[#1F51FF]/30 flex items-center justify-center text-[#D4FF24] group-hover:border-[#D4FF24]/50 transition-colors duration-300 shrink-0 cursor-pointer"
                     >
                       <span className="text-xs">{card.statIcon}</span>
                     </motion.div>
                     <div>
-                      <h4 className="text-base font-black font-mono tracking-tight text-navy dark:text-white leading-none">
-                        <AnimatedCounter value={card.statValue} suffix={card.statSuffix} colorClass="text-navy dark:text-white group-hover:text-primary transition-colors" />
+                      <h4 className="text-base font-black font-mono tracking-tight text-white leading-none">
+                        <AnimatedCounter value={card.statValue} suffix={card.statSuffix} colorClass="text-white group-hover:text-[#D4FF24] transition-colors" />
                       </h4>
                       <p className="text-[9px] font-bold text-slate-400 mt-0.5">{card.statLabel}</p>
                     </div>
@@ -1252,86 +1210,6 @@ const Services = () => {
 
         </div>
 
-        {/* Tools Section - Auto Scrolling Marquee */}
-        <div className="mt-20 md:mt-24">
-          <div className="text-center mb-10">
-            <h4 className="text-sm font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 font-mono">My Creative Toolkit</h4>
-            <div className="h-0.5 w-12 bg-primary mx-auto"></div>
-          </div>
-          
-          <div className="relative overflow-hidden w-full py-4">
-            {/* Gradient Overlays for smooth edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-slate-50 dark:from-[#070b14] to-transparent z-10 pointer-events-none"></div>
-            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-slate-50 dark:from-[#070b14] to-transparent z-10 pointer-events-none"></div>
-            
-            <motion.div 
-              className="flex whitespace-nowrap gap-8 md:gap-12 w-fit"
-              animate={{ x: [0, -1000] }}
-              transition={{ 
-                duration: 25, 
-                repeat: Infinity, 
-                ease: "linear" 
-              }}
-            >
-              {[
-                { name: "Figma", img: "https://artificial-amber-gp5uouqxoc.edgeone.app/figma%20icon.png" },
-                { name: "Canva", img: "https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" },
-                { name: "Inshot", img: "https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" },
-                { name: "Videography", icon: <Video size={20} />, color: "text-red-500", bg: "bg-red-50" },
-                { name: "Photography", icon: <Camera size={20} />, color: "text-sky-500", bg: "bg-sky-50" },
-                { name: "Video Shoot", icon: <Film size={20} />, color: "text-purple-500", bg: "bg-purple-50" },
-                { name: "Lightroom", img: "https://relevant-fuchsia-ztsw7kvcyc.edgeone.app/lightroom%20icon.png" },
-                { name: "Notion", icon: <FileText size={20} />, color: "text-slate-700 dark:text-slate-200", bg: "bg-slate-100 dark:bg-slate-800" },
-                { name: "CapCut", img: "https://abstract-plum-kls1whh7.edgeone.app/Capcut-icon.png" },
-                { name: "Facebook Meta", img: "https://separate-beige-6ponwx2u.edgeone.app/meta-social-network-emblem-blue-stylish-letter-m-or-mobius-band-vector.jpg" },
-                // Double for seamless loop
-                { name: "Figma", img: "https://artificial-amber-gp5uouqxoc.edgeone.app/figma%20icon.png" },
-                { name: "Canva", img: "https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" },
-                { name: "Inshot", img: "https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" },
-                { name: "Videography", icon: <Video size={20} />, color: "text-red-500", bg: "bg-red-50" },
-                { name: "Photography", icon: <Camera size={20} />, color: "text-sky-500", bg: "bg-sky-50" },
-                { name: "Video Shoot", icon: <Film size={20} />, color: "text-purple-500", bg: "bg-purple-50" },
-                { name: "Lightroom", img: "https://relevant-fuchsia-ztsw7kvcyc.edgeone.app/lightroom%20icon.png" },
-                { name: "Notion", icon: <FileText size={20} />, color: "text-slate-700 dark:text-slate-200", bg: "bg-slate-100 dark:bg-slate-800" },
-                { name: "CapCut", img: "https://abstract-plum-kls1whh7.edgeone.app/Capcut-icon.png" },
-                { name: "Facebook Meta", img: "https://separate-beige-6ponwx2u.edgeone.app/meta-social-network-emblem-blue-stylish-letter-m-or-mobius-band-vector.jpg" },
-                // Triple for extra safety on wide screens
-                { name: "Figma", img: "https://artificial-amber-gp5uouqxoc.edgeone.app/figma%20icon.png" },
-                { name: "Canva", img: "https://expensive-rose-l0ddo0le1o.edgeone.app/canva%20icon.png" },
-                { name: "Inshot", img: "https://shocked-gold-hpsfu1svv3.edgeone.app/Inshot%20icon.png" },
-                { name: "Videography", icon: <Video size={20} />, color: "text-red-500", bg: "bg-red-50" },
-                { name: "Photography", icon: <Camera size={20} />, color: "text-sky-500", bg: "bg-sky-50" },
-                { name: "Video Shoot", icon: <Film size={20} />, color: "text-purple-500", bg: "bg-purple-50" },
-                { name: "Lightroom", img: "https://relevant-fuchsia-ztsw7kvcyc.edgeone.app/lightroom%20icon.png" },
-                { name: "Notion", icon: <FileText size={20} />, color: "text-slate-700 dark:text-slate-200", bg: "bg-slate-100 dark:bg-slate-800" },
-                { name: "CapCut", img: "https://abstract-plum-kls1whh7.edgeone.app/Capcut-icon.png" },
-                { name: "Facebook Meta", img: "https://separate-beige-6ponwx2u.edgeone.app/meta-social-network-emblem-blue-stylish-letter-m-or-mobius-band-vector.jpg" },
-              ].map((tool: any, index) => (
-                <div 
-                  key={index} 
-                  className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/10 shadow-sm hover:border-primary/30 transition-colors group cursor-default"
-                >
-                  <motion.div 
-                    whileHover={{ 
-                      y: -4, 
-                      scale: 1.15, 
-                      transition: { type: "spring", stiffness: 400, damping: 13 } 
-                    }}
-                    className={`w-10 h-10 rounded-lg ${tool.bg || 'bg-slate-50 dark:bg-slate-800'} ${tool.color || 'text-navy dark:text-white'} flex items-center justify-center transition-colors overflow-hidden cursor-pointer`}
-                  >
-                    {tool.img ? (
-                      <img src={tool.img} alt={tool.name} className="w-full h-full object-contain p-1.5" referrerPolicy="no-referrer" />
-                    ) : (
-                      tool.icon
-                    )}
-                  </motion.div>
-                  <span className="text-sm font-bold text-navy dark:text-white uppercase tracking-wider">{tool.name}</span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-
       {/* Modals */}
       {openModalId === "Social Media Management" && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
@@ -1340,17 +1218,17 @@ const Services = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setOpenModalId(null)}
-            className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#030407]/80 backdrop-blur-md"
           />
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="relative w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+            className="relative w-full max-w-2xl bg-[#070b14] border border-[#1F51FF]/40 rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col text-white"
           >
             <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
               <button 
                 onClick={() => setOpenModalId(null)}
-                className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors text-slate-500 hover:text-navy"
+                className="absolute top-6 right-6 p-2 rounded-full bg-[#030407] hover:bg-[#1F51FF]/20 transition-colors text-slate-300 hover:text-[#D4FF24] border border-[#1F51FF]/30"
               >
                 <X size={20} />
               </button>
@@ -1358,24 +1236,24 @@ const Services = () => {
               <div className="flex items-center gap-4 mb-8">
                 <motion.div 
                   whileHover={{ y: -5, scale: 1.1, transition: { type: "spring", stiffness: 400, damping: 14 } }}
-                  className="w-16 h-16 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500 cursor-pointer shadow-sm"
+                  className="w-16 h-16 rounded-2xl bg-[#030407] border border-[#1F51FF]/40 flex items-center justify-center text-[#D4FF24] cursor-pointer shadow-sm"
                 >
                   <Instagram size={32} />
                 </motion.div>
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-navy">Social Media Management</h3>
-                  <p className="text-primary font-bold text-sm uppercase tracking-widest">Instagram Growth & Strategy</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white">Social Media Management</h3>
+                  <p className="text-[#D4FF24] font-bold text-sm uppercase tracking-widest">Instagram Growth & Strategy</p>
                 </div>
               </div>
 
               <div className="space-y-8">
-                <div className="space-y-4 text-slate-600 leading-relaxed">
+                <div className="space-y-4 text-slate-300 leading-relaxed font-normal">
                   <p>I help brands build a strong and consistent presence across Facebook and Instagram through strategic content, creative design, and data-driven growth techniques.</p>
                   <p>From planning content calendars to creating engaging reels, page handling, and growing your audience, I manage everything needed. I also handle the full Facebook Meta Suite, run targeted ad campaigns, and generate high-quality leads for your business.</p>
                 </div>
 
                 <div>
-                  <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🚀 What I Do</h4>
+                  <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">What I Do</h4>
                   <ul className="grid sm:grid-cols-2 gap-3">
                     {[
                       "Content Planning & Strategy",
@@ -1385,9 +1263,9 @@ const Services = () => {
                       "Meta Ad Campaigns Setup & Run",
                       "Business Lead Generation"
                     ].map((item) => (
-                      <li key={item} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <CheckCircle2 size={16} className="text-green-500 shrink-0" />
-                        <span className="text-sm font-medium text-slate-700">{item}</span>
+                      <li key={item} className="flex items-center gap-3 bg-[#030407] p-3 rounded-xl border border-[#1F51FF]/30">
+                        <CheckCircle2 size={16} className="text-[#D4FF24] shrink-0" />
+                        <span className="text-sm font-medium text-slate-200">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -1395,7 +1273,7 @@ const Services = () => {
 
                 <div className="grid sm:grid-cols-2 gap-8">
                   <div>
-                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">📈 Expected Results</h4>
+                    <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">Expected Results</h4>
                     <ul className="space-y-2">
                       {[
                         "Increased engagement & reach",
@@ -1404,15 +1282,15 @@ const Services = () => {
                         "Growth in followers & visibility",
                         "Professional & attractive feed"
                       ].map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#D4FF24] shadow-[0_0_6px_#D4FF24] shrink-0" />
                           {item}
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🎯 Who This Is For</h4>
+                    <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">Who This Is For</h4>
                     <ul className="space-y-2">
                       {[
                         "Clinics & healthcare brands",
@@ -1420,8 +1298,8 @@ const Services = () => {
                         "Personal brands",
                         "Small businesses & startups"
                       ].map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
-                          <div className="w-1.5 h-1.5 rounded-full bg-navy shrink-0" />
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#1F51FF] shrink-0" />
                           {item}
                         </li>
                       ))}
@@ -1429,21 +1307,21 @@ const Services = () => {
                   </div>
                 </div>
 
-                <div className="bg-navy p-6 rounded-2xl text-white">
-                  <h4 className="font-bold mb-2 flex items-center gap-2">💼 My Approach</h4>
-                  <p className="text-sm text-white/80 leading-relaxed">I focus on creating content that is not just visually appealing, but also strategic and result-driven — helping your brand stand out and grow consistently.</p>
+                <div className="bg-[#030407] border border-[#1F51FF]/30 p-6 rounded-2xl text-white">
+                  <h4 className="font-bold mb-2 flex items-center gap-2 text-[#D4FF24]">My Approach</h4>
+                  <p className="text-sm text-slate-300 leading-relaxed font-normal">I focus on creating content that is not just visually appealing, but also strategic and result-driven — helping your brand stand out and grow consistently.</p>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div className="pt-4 border-t border-[#1F51FF]/20 flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div>
-                    <p className="text-slate-500 text-sm font-medium">👉 Let's grow your brand together</p>
-                    <p className="text-navy font-bold">Contact me or DM me today!</p>
+                    <p className="text-slate-400 text-sm font-medium">👉 Let's grow your brand together</p>
+                    <p className="text-white font-bold">Contact me or DM me today!</p>
                   </div>
                   <div className="flex gap-3 w-full sm:w-auto">
                     <a 
                       href="#contact" 
                       onClick={() => setOpenModalId(null)}
-                      className="flex-1 sm:flex-initial bg-primary text-white px-6 py-3 rounded-xl font-bold text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                      className="flex-1 sm:flex-initial bg-[#D4FF24] hover:bg-[#1F51FF] text-[#030407] hover:text-white px-6 py-3 rounded-xl font-black text-center transition-all shadow-lg shadow-[#D4FF24]/20"
                     >
                       Contact Me
                     </a>
@@ -1451,7 +1329,7 @@ const Services = () => {
                       href="https://wa.me/6385941180"
                       target="_blank"
                       rel="noreferrer"
-                      className="flex-1 sm:flex-initial bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold text-center hover:opacity-90 transition-all shadow-lg"
+                      className="flex-1 sm:flex-initial bg-transparent border border-[#1F51FF] hover:border-[#D4FF24] text-white hover:text-[#D4FF24] px-6 py-3 rounded-xl font-bold text-center transition-all"
                     >
                       WhatsApp
                     </a>
@@ -1470,17 +1348,17 @@ const Services = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setOpenModalId(null)}
-            className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#030407]/80 backdrop-blur-md"
           />
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="relative w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+            className="relative w-full max-w-2xl bg-[#070b14] border border-[#1F51FF]/40 rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col text-white"
           >
             <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
               <button 
                 onClick={() => setOpenModalId(null)}
-                className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors text-slate-500 hover:text-navy"
+                className="absolute top-6 right-6 p-2 rounded-full bg-[#030407] hover:bg-[#1F51FF]/20 transition-colors text-slate-300 hover:text-[#D4FF24] border border-[#1F51FF]/30"
               >
                 <X size={20} />
               </button>
@@ -1488,23 +1366,23 @@ const Services = () => {
               <div className="flex items-center gap-4 mb-8">
                 <motion.div 
                   whileHover={{ y: -5, scale: 1.1, transition: { type: "spring", stiffness: 400, damping: 14 } }}
-                  className="w-16 h-16 rounded-2xl bg-cyan-50 flex items-center justify-center text-cyan-500 cursor-pointer shadow-sm"
+                  className="w-16 h-16 rounded-2xl bg-[#030407] border border-[#1F51FF]/40 flex items-center justify-center text-[#D4FF24] cursor-pointer shadow-sm"
                 >
                   <Layout size={32} />
                 </motion.div>
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-navy">Website Design</h3>
-                  <p className="text-primary font-bold text-sm uppercase tracking-widest">UI/UX & Custom Development</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white">Website Design</h3>
+                  <p className="text-[#D4FF24] font-bold text-sm uppercase tracking-widest">UI/UX & Custom Development</p>
                 </div>
               </div>
 
               <div className="space-y-8">
-                <div className="space-y-4 text-slate-600 leading-relaxed">
+                <div className="space-y-4 text-slate-300 leading-relaxed font-normal">
                   <p>I design and develop modern, user-focused websites that help your business stand out online. From UI/UX design to live deployment, I handle the complete process to deliver a clean, responsive, and professional website experience.</p>
                 </div>
 
                 <div>
-                  <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🚀 What I Do</h4>
+                  <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">What I Do</h4>
                   <ul className="grid sm:grid-cols-2 gap-3">
                     {[
                       "UI/UX Design",
@@ -1514,9 +1392,9 @@ const Services = () => {
                       "Hosting & Deployment Setup",
                       "Design Consistency"
                     ].map((item) => (
-                      <li key={item} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <CheckCircle2 size={16} className="text-green-500 shrink-0" />
-                        <span className="text-sm font-medium text-slate-700">{item}</span>
+                      <li key={item} className="flex items-center gap-3 bg-[#030407] p-3 rounded-xl border border-[#1F51FF]/30">
+                        <CheckCircle2 size={16} className="text-[#D4FF24] shrink-0" />
+                        <span className="text-sm font-medium text-slate-200">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -1524,7 +1402,7 @@ const Services = () => {
 
                 <div className="grid sm:grid-cols-2 gap-8">
                   <div>
-                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">📈 Expected Results</h4>
+                    <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">Expected Results</h4>
                     <ul className="space-y-2">
                       {[
                         "Professional online presence",
@@ -1533,15 +1411,15 @@ const Services = () => {
                         "Mobile-friendly and responsive design",
                         "Improved conversions and engagement"
                       ].map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#D4FF24] shadow-[0_0_6px_#D4FF24] shrink-0" />
                           {item}
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🎯 Who This Is For</h4>
+                    <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">Who This Is For</h4>
                     <ul className="space-y-2">
                       {[
                         "Clinics & healthcare websites",
@@ -1549,8 +1427,8 @@ const Services = () => {
                         "Personal brands & portfolios",
                         "Startups & small businesses"
                       ].map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
-                          <div className="w-1.5 h-1.5 rounded-full bg-navy shrink-0" />
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#1F51FF] shrink-0" />
                           {item}
                         </li>
                       ))}
@@ -1558,21 +1436,21 @@ const Services = () => {
                   </div>
                 </div>
 
-                <div className="bg-navy p-6 rounded-2xl text-white">
-                  <h4 className="font-bold mb-2 flex items-center gap-2">💼 My Approach</h4>
-                  <p className="text-sm text-white/80 leading-relaxed">I focus on creating websites that are not just visually appealing but also functional, fast, and conversion-driven, ensuring your visitors turn into customers.</p>
+                <div className="bg-[#030407] border border-[#1F51FF]/30 p-6 rounded-2xl text-white">
+                  <h4 className="font-bold mb-2 flex items-center gap-2 text-[#D4FF24]">My Approach</h4>
+                  <p className="text-sm text-slate-300 leading-relaxed font-normal">I focus on creating websites that are not just visually appealing but also functional, fast, and conversion-driven, ensuring your visitors turn into customers.</p>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div className="pt-4 border-t border-[#1F51FF]/20 flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div>
-                    <p className="text-slate-500 text-sm font-medium">👉 Let's build your website</p>
-                    <p className="text-navy font-bold">Contact me or DM me today!</p>
+                    <p className="text-slate-400 text-sm font-medium">👉 Let's build your website</p>
+                    <p className="text-white font-bold">Contact me or DM me today!</p>
                   </div>
                   <div className="flex gap-3 w-full sm:w-auto">
                     <a 
                       href="#contact" 
                       onClick={() => setOpenModalId(null)}
-                      className="flex-1 sm:flex-initial bg-primary text-white px-6 py-3 rounded-xl font-bold text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                      className="flex-1 sm:flex-initial bg-[#D4FF24] hover:bg-[#1F51FF] text-[#030407] hover:text-white px-6 py-3 rounded-xl font-black text-center transition-all shadow-lg shadow-[#D4FF24]/20"
                     >
                       Contact Me
                     </a>
@@ -1580,7 +1458,7 @@ const Services = () => {
                       href="https://wa.me/6385941180"
                       target="_blank"
                       rel="noreferrer"
-                      className="flex-1 sm:flex-initial bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold text-center hover:opacity-90 transition-all shadow-lg"
+                      className="flex-1 sm:flex-initial bg-transparent border border-[#1F51FF] hover:border-[#D4FF24] text-white hover:text-[#D4FF24] px-6 py-3 rounded-xl font-bold text-center transition-all"
                     >
                       WhatsApp
                     </a>
@@ -1598,17 +1476,17 @@ const Services = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setOpenModalId(null)}
-            className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#030407]/80 backdrop-blur-md"
           />
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="relative w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+            className="relative w-full max-w-2xl bg-[#070b14] border border-[#1F51FF]/40 rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col text-white"
           >
             <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
               <button 
                 onClick={() => setOpenModalId(null)}
-                className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors text-slate-500 hover:text-navy"
+                className="absolute top-6 right-6 p-2 rounded-full bg-[#030407] hover:bg-[#1F51FF]/20 transition-colors text-slate-300 hover:text-[#D4FF24] border border-[#1F51FF]/30"
               >
                 <X size={20} />
               </button>
@@ -1616,23 +1494,23 @@ const Services = () => {
               <div className="flex items-center gap-4 mb-8">
                 <motion.div 
                   whileHover={{ y: -5, scale: 1.1, transition: { type: "spring", stiffness: 400, damping: 14 } }}
-                  className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center text-red-500 cursor-pointer shadow-sm"
+                  className="w-16 h-16 rounded-2xl bg-[#030407] border border-[#1F51FF]/40 flex items-center justify-center text-[#D4FF24] cursor-pointer shadow-sm"
                 >
                   <Video size={32} />
                 </motion.div>
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-navy">Videography & Video Editing</h3>
-                  <p className="text-primary font-bold text-sm uppercase tracking-widest">Complete Video Production</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white">Videography & Video Editing</h3>
+                  <p className="text-[#D4FF24] font-bold text-sm uppercase tracking-widest">Complete Video Production</p>
                 </div>
               </div>
 
               <div className="space-y-8">
-                <div className="space-y-4 text-slate-600 leading-relaxed">
+                <div className="space-y-4 text-slate-300 leading-relaxed font-normal">
                   <p>I produce and edit high-impact video content tailored for social media, corporate branding, and promotional campaigns. In addition to high-end post-editing, I handle independent on-site camera shoots, professional videography, and staging photography to bring projects to life from ground up.</p>
                 </div>
 
                 <div>
-                  <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🚀 What I Do</h4>
+                  <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">What I Do</h4>
                   <ul className="grid sm:grid-cols-2 gap-3">
                     {[
                       "Independent Video Shoots",
@@ -1644,9 +1522,9 @@ const Services = () => {
                       "Business & Brand Videos",
                       "Sound Design & Trends"
                     ].map((item) => (
-                      <li key={item} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <CheckCircle2 size={16} className="text-green-500 shrink-0" />
-                        <span className="text-sm font-medium text-slate-700">{item}</span>
+                      <li key={item} className="flex items-center gap-3 bg-[#030407] p-3 rounded-xl border border-[#1F51FF]/30">
+                        <CheckCircle2 size={16} className="text-[#D4FF24] shrink-0" />
+                        <span className="text-sm font-medium text-slate-200">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -1654,7 +1532,7 @@ const Services = () => {
 
                 <div className="grid sm:grid-cols-2 gap-8">
                   <div>
-                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">📈 Expected Results</h4>
+                    <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">Expected Results</h4>
                     <ul className="space-y-2">
                       {[
                         "Higher engagement and reach",
@@ -1663,15 +1541,15 @@ const Services = () => {
                         "Strong visual storytelling",
                         "Professional brand presence"
                       ].map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#D4FF24] shadow-[0_0_6px_#D4FF24] shrink-0" />
                           {item}
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🎯 Who This Is For</h4>
+                    <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">Who This Is For</h4>
                     <ul className="space-y-2">
                       {[
                         "Social media brands & creators",
@@ -1679,8 +1557,8 @@ const Services = () => {
                         "Clinics & service-based brands",
                         "Startups & small businesses"
                       ].map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
-                          <div className="w-1.5 h-1.5 rounded-full bg-navy shrink-0" />
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#1F51FF] shrink-0" />
                           {item}
                         </li>
                       ))}
@@ -1688,21 +1566,21 @@ const Services = () => {
                   </div>
                 </div>
 
-                <div className="bg-navy p-6 rounded-2xl text-white">
-                  <h4 className="font-bold mb-2 flex items-center gap-2">💼 My Approach</h4>
-                  <p className="text-sm text-white/80 leading-relaxed">I focus on creating videos that are not just visually appealing but also optimized for attention, engagement, and performance — helping your content stand out in a crowded feed.</p>
+                <div className="bg-[#030407] border border-[#1F51FF]/30 p-6 rounded-2xl text-white">
+                  <h4 className="font-bold mb-2 flex items-center gap-2 text-[#D4FF24]">My Approach</h4>
+                  <p className="text-sm text-slate-300 leading-relaxed font-normal">I focus on creating videos that are not just visually appealing but also optimized for attention, engagement, and performance — helping your content stand out in a crowded feed.</p>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div className="pt-4 border-t border-[#1F51FF]/20 flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div>
-                    <p className="text-slate-500 text-sm font-medium">👉 Let's create impactful videos</p>
-                    <p className="text-navy font-bold">Contact me or DM me today!</p>
+                    <p className="text-slate-400 text-sm font-medium">👉 Let's create impactful videos</p>
+                    <p className="text-white font-bold">Contact me or DM me today!</p>
                   </div>
                   <div className="flex gap-3 w-full sm:w-auto">
                     <a 
                       href="#contact" 
                       onClick={() => setOpenModalId(null)}
-                      className="flex-1 sm:flex-initial bg-primary text-white px-6 py-3 rounded-xl font-bold text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                      className="flex-1 sm:flex-initial bg-[#D4FF24] hover:bg-[#1F51FF] text-[#030407] hover:text-white px-6 py-3 rounded-xl font-black text-center transition-all shadow-lg shadow-[#D4FF24]/20"
                     >
                       Contact Me
                     </a>
@@ -1710,7 +1588,7 @@ const Services = () => {
                       href="https://wa.me/6385941180"
                       target="_blank"
                       rel="noreferrer"
-                      className="flex-1 sm:flex-initial bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold text-center hover:opacity-90 transition-all shadow-lg"
+                      className="flex-1 sm:flex-initial bg-transparent border border-[#1F51FF] hover:border-[#D4FF24] text-white hover:text-[#D4FF24] px-6 py-3 rounded-xl font-bold text-center transition-all"
                     >
                       WhatsApp
                     </a>
@@ -1728,17 +1606,17 @@ const Services = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setOpenModalId(null)}
-            className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#030407]/80 backdrop-blur-md"
           />
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="relative w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+            className="relative w-full max-w-2xl bg-[#070b14] border border-[#1F51FF]/40 rounded-[2.5rem] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col text-white"
           >
             <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
               <button 
                 onClick={() => setOpenModalId(null)}
-                className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors text-slate-500 hover:text-navy"
+                className="absolute top-6 right-6 p-2 rounded-full bg-[#030407] hover:bg-[#1F51FF]/20 transition-colors text-slate-300 hover:text-[#D4FF24] border border-[#1F51FF]/30"
               >
                 <X size={20} />
               </button>
@@ -1746,23 +1624,23 @@ const Services = () => {
               <div className="flex items-center gap-4 mb-8">
                 <motion.div 
                   whileHover={{ y: -5, scale: 1.1, transition: { type: "spring", stiffness: 400, damping: 14 } }}
-                  className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500 cursor-pointer shadow-sm"
+                  className="w-16 h-16 rounded-2xl bg-[#030407] border border-[#1F51FF]/40 flex items-center justify-center text-[#D4FF24] cursor-pointer shadow-sm"
                 >
                   <Palette size={32} />
                 </motion.div>
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-navy">Digital & Creative Design</h3>
-                  <p className="text-primary font-bold text-sm uppercase tracking-widest">Brand Identity & Visuals</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white">Digital & Creative Design</h3>
+                  <p className="text-[#D4FF24] font-bold text-sm uppercase tracking-widest">Brand Identity & Visuals</p>
                 </div>
               </div>
 
               <div className="space-y-8">
-                <div className="space-y-4 text-slate-600 leading-relaxed">
+                <div className="space-y-4 text-slate-300 leading-relaxed font-normal">
                   <p>I create visually compelling designs that elevate your brand identity across digital and print platforms. From social media creatives to complete branding materials, every design is crafted to be clean, modern, and aligned with your brand vision.</p>
                 </div>
 
                 <div>
-                  <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🚀 What I Do</h4>
+                  <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">What I Do</h4>
                   <ul className="grid sm:grid-cols-2 gap-3">
                     {[
                       "Social Media Creatives",
@@ -1772,9 +1650,9 @@ const Services = () => {
                       "PDF & Presentation Design",
                       "Custom Design Solutions"
                     ].map((item) => (
-                      <li key={item} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                        <CheckCircle2 size={16} className="text-green-500 shrink-0" />
-                        <span className="text-sm font-medium text-slate-700">{item}</span>
+                      <li key={item} className="flex items-center gap-3 bg-[#030407] p-3 rounded-xl border border-[#1F51FF]/30">
+                        <CheckCircle2 size={16} className="text-[#D4FF24] shrink-0" />
+                        <span className="text-sm font-medium text-slate-200">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -1782,7 +1660,7 @@ const Services = () => {
 
                 <div className="grid sm:grid-cols-2 gap-8">
                   <div>
-                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">📈 Expected Results</h4>
+                    <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">Expected Results</h4>
                     <ul className="space-y-2">
                       {[
                         "Strong and consistent brand identity",
@@ -1791,15 +1669,15 @@ const Services = () => {
                         "Improved brand recognition",
                         "Clean and modern design presence"
                       ].map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#D4FF24] shadow-[0_0_6px_#D4FF24] shrink-0" />
                           {item}
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-navy mb-4 flex items-center gap-2">🎯 Who This Is For</h4>
+                    <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2">Who This Is For</h4>
                     <ul className="space-y-2">
                       {[
                         "Businesses & startups",
@@ -1807,8 +1685,8 @@ const Services = () => {
                         "Real estate companies",
                         "Personal brands & professionals"
                       ].map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
-                          <div className="w-1.5 h-1.5 rounded-full bg-navy shrink-0" />
+                        <li key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#1F51FF] shrink-0" />
                           {item}
                         </li>
                       ))}
@@ -1816,21 +1694,21 @@ const Services = () => {
                   </div>
                 </div>
 
-                <div className="bg-navy p-6 rounded-2xl text-white">
-                  <h4 className="font-bold mb-2 flex items-center gap-2">💼 My Approach</h4>
-                  <p className="text-sm text-white/80 leading-relaxed">I focus on creating designs that are not just visually attractive but also purpose-driven, ensuring every element supports your brand communication and marketing goals.</p>
+                <div className="bg-[#030407] border border-[#1F51FF]/30 p-6 rounded-2xl text-white">
+                  <h4 className="font-bold mb-2 flex items-center gap-2 text-[#D4FF24]">My Approach</h4>
+                  <p className="text-sm text-slate-300 leading-relaxed font-normal">I focus on creating designs that are not just visually attractive but also purpose-driven, ensuring every element supports your brand communication and marketing goals.</p>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div className="pt-4 border-t border-[#1F51FF]/20 flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div>
-                    <p className="text-slate-500 text-sm font-medium">👉 Let's design your brand identity</p>
-                    <p className="text-navy font-bold">Contact me or DM me today!</p>
+                    <p className="text-slate-400 text-sm font-medium">👉 Let's design your brand identity</p>
+                    <p className="text-white font-bold">Contact me or DM me today!</p>
                   </div>
                   <div className="flex gap-3 w-full sm:w-auto">
                     <a 
                       href="#contact" 
                       onClick={() => setOpenModalId(null)}
-                      className="flex-1 sm:flex-initial bg-primary text-white px-6 py-3 rounded-xl font-bold text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                      className="flex-1 sm:flex-initial bg-[#D4FF24] hover:bg-[#1F51FF] text-[#030407] hover:text-white px-6 py-3 rounded-xl font-black text-center transition-all shadow-lg shadow-[#D4FF24]/20"
                     >
                       Contact Me
                     </a>
@@ -1838,7 +1716,7 @@ const Services = () => {
                       href="https://wa.me/6385941180"
                       target="_blank"
                       rel="noreferrer"
-                      className="flex-1 sm:flex-initial bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold text-center hover:opacity-90 transition-all shadow-lg"
+                      className="flex-1 sm:flex-initial bg-transparent border border-[#1F51FF] hover:border-[#D4FF24] text-white hover:text-[#D4FF24] px-6 py-3 rounded-xl font-bold text-center transition-all"
                     >
                       WhatsApp
                     </a>
@@ -1990,7 +1868,7 @@ const AIFlowIcon = () => (
 );
 
 const ChartFourBarIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-[26px] h-[26px] text-[#3985FF]" fill="currentColor" aria-hidden="true">
+  <svg viewBox="0 0 24 24" className="w-[26px] h-[26px] text-[#D4FF24]" fill="currentColor" aria-hidden="true">
     <rect x="2.5" y="14" width="3.4" height="7" rx="1.7" />
     <rect x="8.3" y="10" width="3.4" height="11" rx="1.7" />
     <rect x="14.1" y="6" width="3.4" height="15" rx="1.7" />
@@ -2008,27 +1886,27 @@ const experiencesData: ExperienceItemData[] = [
     logoAlt: "Remedo Clinitech",
     badges: (
       <div className="flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-[#00D6A0] shrink-0" />
-        <span className="text-[#00D6A0] text-[13px] font-semibold tracking-wider uppercase select-none">
+        <span className="w-2 h-2 rounded-full bg-[#D4FF24] shadow-[0_0_8px_#D4FF24] shrink-0" />
+        <span className="text-[#D4FF24] text-[13px] font-semibold tracking-wider uppercase select-none">
           CURRENT POSITION
         </span>
       </div>
     ),
     details: [
       {
-        icon: <Briefcase size={17} className="text-[#3B82F6] shrink-0" />,
+        icon: <Briefcase size={17} className="text-[#1F51FF] shrink-0" />,
         label: "Social Media Executive",
       },
       {
-        icon: <Calendar size={17} className="text-[#3B82F6] shrink-0" />,
+        icon: <Calendar size={17} className="text-[#1F51FF] shrink-0" />,
         label: "Sep 2026 – Present",
       },
       {
-        icon: <MapPin size={17} className="text-[#3B82F6] shrink-0" />,
+        icon: <MapPin size={17} className="text-[#1F51FF] shrink-0" />,
         label: "Remote",
       },
       {
-        icon: <Wifi size={17} className="text-[#3B82F6] shrink-0" />,
+        icon: <Wifi size={17} className="text-[#1F51FF] shrink-0" />,
         label: "Full-time",
       },
     ],
@@ -2039,19 +1917,19 @@ const experiencesData: ExperienceItemData[] = [
         id: "01",
         title: "01. CONTENT CREATION",
         description: "Create video scripts, static posts, blogs and creative content.",
-        icon: <FilePenLine size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+        icon: <FilePenLine size={26} className="text-[#D4FF24]" strokeWidth={1.75} />,
       },
       {
         id: "02",
         title: "02. SCHEDULING & PUBLISHING",
         description: "Plan and schedule content across social media profiles and ensure timely publishing.",
-        icon: <CalendarCheck size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+        icon: <CalendarCheck size={26} className="text-[#D4FF24]" strokeWidth={1.75} />,
       },
       {
         id: "03",
         title: "03. CLIENT HANDLING",
         description: "Coordinate with clients and manage content requirements, feedback and approvals.",
-        icon: <Users size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+        icon: <Users size={26} className="text-[#D4FF24]" strokeWidth={1.75} />,
       },
       {
         id: "04",
@@ -2074,7 +1952,7 @@ const experiencesData: ExperienceItemData[] = [
     impactContent: (
       <>
         Driving consistent content execution and performance growth across{" "}
-        <span className="text-[#3B82F6] font-semibold">30+ healthcare brands</span>{" "}
+        <span className="text-[#D4FF24] font-semibold">30+ healthcare brands</span>{" "}
         through strategic planning, creative content and data-driven social media management.
       </>
     ),
@@ -2087,25 +1965,25 @@ const experiencesData: ExperienceItemData[] = [
     logoAlt: "Apollo Dental Clinic",
     badges: (
       <div className="flex flex-wrap items-center gap-2">
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-[#102B57] text-[#3B82F6] border border-[#1C3454] select-none">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-[#1F51FF]/20 text-[#D4FF24] border border-[#1F51FF]/40 select-none">
           CLIENT PARTNER
         </span>
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium tracking-wider uppercase bg-[#0D192B] text-[#AAB6CC] border border-[#263C5B] select-none">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium tracking-wider uppercase bg-[#070b14] text-slate-300 border border-[#1F51FF]/30 select-none">
           DENTAL & COSMETOLOGY
         </span>
       </div>
     ),
     details: [
       {
-        icon: <Briefcase size={17} className="text-[#3B82F6] shrink-0" />,
+        icon: <Briefcase size={17} className="text-[#1F51FF] shrink-0" />,
         label: "Social Media Manager",
       },
       {
-        icon: <Globe size={17} className="text-[#3B82F6] shrink-0" />,
+        icon: <Globe size={17} className="text-[#1F51FF] shrink-0" />,
         label: "Remote & Hybrid",
       },
       {
-        icon: <Calendar size={17} className="text-[#3B82F6] shrink-0" />,
+        icon: <Calendar size={17} className="text-[#1F51FF] shrink-0" />,
         label: "Nov 2024 – Jun 2026",
       },
     ],
@@ -2116,25 +1994,25 @@ const experiencesData: ExperienceItemData[] = [
         id: "01",
         title: "01. SOCIAL MEDIA MANAGEMENT",
         description: "Managed social media profiles for dental, cosmetology and education brands, including content planning, scheduling and publishing.",
-        icon: <Share2 size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+        icon: <Share2 size={26} className="text-[#D4FF24]" strokeWidth={1.75} />,
       },
       {
         id: "02",
         title: "02. CREATIVE CONTENT CREATION",
         description: "Created social media creatives, promotional posts, reels and short-form videos aligned with brand guidelines and content requirements.",
-        icon: <FilePenLine size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+        icon: <FilePenLine size={26} className="text-[#D4FF24]" strokeWidth={1.75} />,
       },
       {
         id: "03",
         title: "03. CONTENT PLANNING & CALENDAR",
         description: "Developed and maintained monthly content calendars to ensure consistent and engaging social media communication.",
-        icon: <CalendarCheck size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+        icon: <CalendarCheck size={26} className="text-[#D4FF24]" strokeWidth={1.75} />,
       },
       {
         id: "04",
         title: "04. CLIENT COORDINATION & REPORTING",
         description: "Coordinated content requirements, creative development, approvals and social media performance tracking across multiple business pages.",
-        icon: <Users size={26} className="text-[#3985FF]" strokeWidth={1.75} />,
+        icon: <Users size={26} className="text-[#D4FF24]" strokeWidth={1.75} />,
       },
     ],
     tools: [
@@ -2167,11 +2045,11 @@ const ExperienceEntryView: React.FC<{
       {/* 01 / 02 ───── EXPERIENCE Header */}
       <div className="flex items-center justify-between h-6 mb-3.5">
         <div className="flex items-center gap-3.5">
-          <span className="text-[#3B82F6] font-semibold text-[15px] sm:text-[16px] tracking-wider select-none">
+          <span className="text-[#1F51FF] font-bold text-[15px] sm:text-[16px] tracking-wider select-none">
             {data.number}
           </span>
-          <span className="w-14 sm:w-[85px] h-[1px] bg-[#3B82F6]" />
-          <span className="text-[#3B82F6] font-semibold text-[15px] sm:text-[16px] uppercase tracking-[5px] select-none">
+          <span className="w-14 sm:w-[85px] h-[1px] bg-[#1F51FF]" />
+          <span className="text-[#1F51FF] font-bold text-[15px] sm:text-[16px] uppercase tracking-[5px] select-none">
             EXPERIENCE
           </span>
         </div>
@@ -2180,9 +2058,9 @@ const ExperienceEntryView: React.FC<{
           <button
             type="button"
             onClick={onOpenResume}
-            className="inline-flex items-center gap-1.5 bg-[#101A2A] hover:bg-[#152338] hover:border-[#3B82F6]/50 border border-[#26354C] text-[#E5EAF4] px-3 py-1 rounded-full text-[11px] font-medium uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-sm select-none h-6"
+            className="inline-flex items-center gap-1.5 bg-[#070b14] hover:bg-[#1F51FF] hover:text-white border border-[#1F51FF]/40 text-[#D4FF24] px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-sm select-none h-6 group"
           >
-            <FileText size={12} className="text-[#3B82F6]" />
+            <FileText size={12} className="text-[#D4FF24] group-hover:text-white transition-colors" />
             <span>View Resume</span>
           </button>
         )}
@@ -2191,7 +2069,7 @@ const ExperienceEntryView: React.FC<{
       {/* Company Header Block */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-3">
         {/* Company Logo: 76px x 76px with rounded-[16px] white container */}
-        <div className="w-[76px] h-[76px] rounded-[16px] bg-white p-1.5 flex items-center justify-center shrink-0 shadow-md border border-[#26354C]/40 select-none overflow-hidden">
+        <div className="w-[76px] h-[76px] rounded-[16px] bg-white p-1.5 flex items-center justify-center shrink-0 shadow-md border border-[#1F51FF]/30 select-none overflow-hidden">
           <img 
             src={data.logoSrc} 
             alt={data.logoAlt} 
@@ -2218,7 +2096,7 @@ const ExperienceEntryView: React.FC<{
                   <span>{item.label}</span>
                 </div>
                 {idx < data.details.length - 1 && (
-                  <span className="text-[#26354C] hidden sm:inline" aria-hidden="true">|</span>
+                  <span className="text-[#1F51FF]/40 hidden sm:inline" aria-hidden="true">|</span>
                 )}
               </React.Fragment>
             ))}
@@ -2234,15 +2112,15 @@ const ExperienceEntryView: React.FC<{
       </div>
 
       {/* Full-width Divider Line */}
-      <div className="w-full h-[1px] bg-[#26354C] mb-3.5" />
+      <div className="w-full h-[1px] bg-[#1F51FF]/20 mb-3.5" />
 
       {/* Main Content: 65% / 35% Two-Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,65fr)_1px_minmax(0,35fr)] gap-y-6 lg:gap-y-0 lg:gap-x-6 items-stretch">
         
         {/* Left Column (65%): WHAT I DO (4 Cards in 2x2 Grid) */}
         <div className="flex flex-col">
-          <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] xl:text-[17px] uppercase tracking-[2px] mb-3 flex items-center gap-2.5 select-none">
-            <span className="w-2 h-2 rounded-full bg-[#3B82F6] shrink-0" />
+          <h3 className="text-[#1F51FF] font-bold text-[14px] sm:text-[15px] xl:text-[17px] uppercase tracking-[2px] mb-3 flex items-center gap-2.5 select-none">
+            <span className="w-2 h-2 rounded-full bg-[#D4FF24] shadow-[0_0_8px_#D4FF24] shrink-0" />
             <span>WHAT I DO</span>
           </h3>
 
@@ -2250,13 +2128,13 @@ const ExperienceEntryView: React.FC<{
             {data.responsibilities.map((resp) => (
               <div 
                 key={resp.id}
-                className="bg-[#0D1728] border border-[#1C3454] hover:border-[#3B82F6]/50 rounded-[12px] p-3 sm:p-3.5 flex items-center gap-3 min-h-[112px] transition-colors"
+                className="bg-[#070b14] border border-[#1F51FF]/30 hover:border-[#1F51FF] hover:shadow-[0_0_20px_rgba(31, 81, 255,0.2)] rounded-[12px] p-3 sm:p-3.5 flex items-center gap-3 min-h-[112px] transition-all group"
               >
-                <div className="w-[54px] h-[54px] rounded-full bg-[#102B57] flex items-center justify-center shrink-0">
+                <div className="w-[54px] h-[54px] rounded-full bg-[#1F51FF]/20 border border-[#1F51FF]/40 flex items-center justify-center shrink-0">
                   {resp.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-[14px] font-semibold text-[#F5F7FC] uppercase tracking-wide leading-snug mb-0.5">
+                  <h4 className="text-[14px] font-semibold text-[#F5F7FC] group-hover:text-[#D4FF24] uppercase tracking-wide leading-snug mb-0.5 transition-colors">
                     {resp.title}
                   </h4>
                   <p className="text-[12px] text-[#B6C3D8] leading-[1.45]">
@@ -2269,12 +2147,12 @@ const ExperienceEntryView: React.FC<{
         </div>
 
         {/* Center Vertical Divider Line on Desktop */}
-        <div className="hidden lg:block w-[1px] bg-[#26354C] self-stretch" aria-hidden="true" />
+        <div className="hidden lg:block w-[1px] bg-[#1F51FF]/20 self-stretch" aria-hidden="true" />
 
         {/* Right Column (35%): TOOLS USED (8 Badges in 2x4 Grid) */}
         <div className="flex flex-col">
-          <h3 className="text-[#3B82F6] font-semibold text-[14px] sm:text-[15px] xl:text-[17px] uppercase tracking-[2px] mb-3 flex items-center gap-2.5 select-none">
-            <span className="w-2 h-2 rounded-full bg-[#3B82F6] shrink-0" />
+          <h3 className="text-[#1F51FF] font-bold text-[14px] sm:text-[15px] xl:text-[17px] uppercase tracking-[2px] mb-3 flex items-center gap-2.5 select-none">
+            <span className="w-2 h-2 rounded-full bg-[#D4FF24] shadow-[0_0_8px_#D4FF24] shrink-0" />
             <span>TOOLS USED</span>
           </h3>
 
@@ -2282,7 +2160,7 @@ const ExperienceEntryView: React.FC<{
             {data.tools.map((tool, idx) => (
               <div 
                 key={idx}
-                className="flex items-center gap-2.5 bg-[#0D192B] border border-[#263C5B] hover:border-[#3B82F6]/50 rounded-[30px] h-[48px] px-3 transition-colors select-none"
+                className="flex items-center gap-2.5 bg-[#070b14] border border-[#1F51FF]/30 hover:border-[#D4FF24]/60 hover:shadow-[0_0_12px_rgba(212,255,36,0.15)] rounded-[30px] h-[48px] px-3 transition-all select-none"
               >
                 <div className="w-[25px] h-[25px] flex items-center justify-center shrink-0">
                   {tool.icon}
@@ -2298,9 +2176,9 @@ const ExperienceEntryView: React.FC<{
       </div>
 
       {/* Role / Project Impact Banner (82px height, upward analytics icon, electric blue heading) */}
-      <div className="w-full mt-3.5 min-h-[70px] sm:h-[82px] rounded-[14px] bg-gradient-to-r from-[#0C1D3D] via-[#0D2248] to-[#0C1D3D] border border-[#1764D8] py-2.5 px-3.5 sm:py-3 sm:px-4 flex items-center gap-3.5 sm:gap-4">
-        <div className="w-[48px] h-[48px] rounded-[12px] bg-[#102B57] flex items-center justify-center shrink-0 border border-[#1764D8]/30">
-          <svg viewBox="0 0 24 24" className="w-7 h-7 text-[#3985FF]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <div className="w-full mt-3.5 min-h-[70px] sm:h-[82px] rounded-[14px] bg-gradient-to-r from-[#030407] via-[#091733] to-[#030407] border border-[#1F51FF]/60 py-2.5 px-3.5 sm:py-3 sm:px-4 flex items-center gap-3.5 sm:gap-4 shadow-lg shadow-black/40">
+        <div className="w-[48px] h-[48px] rounded-[12px] bg-[#1F51FF]/20 flex items-center justify-center shrink-0 border border-[#1F51FF]/40 text-[#D4FF24]">
+          <svg viewBox="0 0 24 24" className="w-7 h-7 text-[#D4FF24]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <line x1="18" y1="20" x2="18" y2="10" />
             <line x1="12" y1="20" x2="12" y2="4" />
             <line x1="6" y1="20" x2="6" y2="14" />
@@ -2309,10 +2187,10 @@ const ExperienceEntryView: React.FC<{
           </svg>
         </div>
 
-        <div className="w-[1px] h-8 bg-[#1C3454] hidden sm:block shrink-0" aria-hidden="true" />
+        <div className="w-[1px] h-8 bg-[#1F51FF]/30 hidden sm:block shrink-0" aria-hidden="true" />
 
         <div className="flex-1 min-w-0">
-          <span className="text-[#3B82F6] font-semibold text-[12px] tracking-[1.5px] uppercase block leading-tight mb-0.5 select-none">
+          <span className="text-[#1F51FF] font-bold text-[12px] tracking-[1.5px] uppercase block leading-tight mb-0.5 select-none">
             {data.impactTitle}
           </span>
           <p className="text-[#F5F7FC] text-[13px] sm:text-[14px] font-normal sm:font-medium leading-snug">
@@ -2329,13 +2207,13 @@ const Experience = ({ onOpenResume }: { onOpenResume?: () => void }) => {
   return (
     <section 
       id="experience" 
-      className="w-full bg-[#080E1B] text-[#F5F7FC] pt-3 pb-3 px-4 sm:px-6 xl:px-[40px] relative transition-colors duration-300"
+      className="w-full bg-[#030407] text-[#F5F7FC] pt-3 pb-3 px-4 sm:px-6 xl:px-[40px] relative transition-colors duration-300 border-t border-[#1F51FF]/20"
     >
       <div className="max-w-[1500px] mx-auto">
         {experiencesData.map((exp, index) => (
           <React.Fragment key={exp.number}>
             {index > 0 && (
-              <div className="w-full h-[1px] bg-[#26354C]/70 my-8 sm:my-10" />
+              <div className="w-full h-[1px] bg-[#1F51FF]/20 my-8 sm:my-10" />
             )}
             <ExperienceEntryView 
               data={exp} 
@@ -2354,7 +2232,7 @@ const ExperiencePortfolioTransition = () => {
   return (
     <div 
       aria-hidden="true" 
-      className="relative w-full overflow-hidden bg-gradient-to-b from-[#080E1B] via-[#080E1B] to-slate-50 dark:to-[#070b14] py-6 sm:py-8 transition-colors duration-300 select-none"
+      className="relative w-full overflow-hidden bg-[#030407] py-6 sm:py-8 transition-colors duration-300 select-none border-t border-[#1F51FF]/20"
     >
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 xl:px-[40px]">
         {/* Subtle animated horizontal line with expand-in and continuous ambient glow beam */}
@@ -2363,11 +2241,11 @@ const ExperiencePortfolioTransition = () => {
           whileInView={{ scaleX: 1, opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#26354C] to-transparent origin-center"
+          className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-[#1F51FF]/30 to-transparent origin-center"
         >
-          {/* Subtle electric blue ambient shimmer traveling along the line */}
+          {/* Subtle electric neon blue ambient shimmer traveling along the line */}
           <motion.div
-            className="absolute -top-[1px] -bottom-[1px] w-28 sm:w-48 bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-80 blur-[0.5px]"
+            className="absolute -top-[1px] -bottom-[1px] w-28 sm:w-48 bg-gradient-to-r from-transparent via-[#1F51FF] to-transparent opacity-90 blur-[0.5px]"
             animate={{
               left: ["-15%", "105%"],
             }}
@@ -2379,9 +2257,9 @@ const ExperiencePortfolioTransition = () => {
             }}
           />
 
-          {/* Secondary softer cyan beam for depth */}
+          {/* Secondary acid lime beam for high-contrast futuristic depth */}
           <motion.div
-            className="absolute -top-[0.5px] -bottom-[0.5px] w-16 sm:w-28 bg-gradient-to-r from-transparent via-[#38BDF8] to-transparent opacity-60"
+            className="absolute -top-[0.5px] -bottom-[0.5px] w-16 sm:w-28 bg-gradient-to-r from-transparent via-[#D4FF24] to-transparent opacity-70"
             animate={{
               left: ["-25%", "115%"],
             }}
@@ -2404,7 +2282,7 @@ const ExperiencePortfolioTransition = () => {
           >
             {/* Outer halo */}
             <motion.div
-              className="absolute w-5 h-5 rounded-full bg-[#3B82F6]/20 blur-sm"
+              className="absolute w-5 h-5 rounded-full bg-[#D4FF24]/20 blur-sm"
               animate={{
                 scale: [1, 1.4, 1],
                 opacity: [0.3, 0.7, 0.3],
@@ -2417,7 +2295,7 @@ const ExperiencePortfolioTransition = () => {
             />
             {/* Center dot */}
             <motion.div
-              className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] shadow-[0_0_8px_#3B82F6]"
+              className="w-1.5 h-1.5 rounded-full bg-[#D4FF24] shadow-[0_0_8px_#D4FF24]"
               animate={{
                 scale: [0.9, 1.15, 0.9],
               }}
@@ -2737,8 +2615,8 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
       onTouchStart={handleUserActivity}
       className={`relative select-none flex flex-col items-center justify-center transition-all duration-300 ${
         isFullscreen
-          ? "fixed inset-0 w-screen h-screen max-w-none max-h-none z-[999999] bg-black p-0 m-0"
-          : "bg-[#0B0F19]/95 border border-white/10 p-3 sm:p-4 rounded-[2rem] max-w-[340px] sm:max-w-[360px] w-full max-h-[70vh] shadow-2xl backdrop-blur-2xl overflow-hidden"
+          ? "fixed inset-0 w-screen h-screen max-w-none max-h-none z-[999999] bg-[#030407] p-0 m-0"
+          : "bg-[#070b14]/95 border border-[#1F51FF]/40 p-3 sm:p-4 rounded-[2rem] max-w-[340px] sm:max-w-[360px] w-full max-h-[70vh] shadow-2xl backdrop-blur-2xl overflow-hidden"
       }`}
     >
       {/* Cinematic Blur Accent Background Glow */}
@@ -2749,9 +2627,9 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
 
       {/* Top Header Bar (when not fullscreen) */}
       {!isFullscreen && (
-        <div className="w-full flex items-center justify-between mb-2.5 pb-2 border-b border-white/10 select-none px-1">
+        <div className="w-full flex items-center justify-between mb-2.5 pb-2 border-b border-[#1F51FF]/20 select-none px-1">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#D4FF24] shadow-[0_0_8px_#D4FF24] animate-pulse" />
             <h4 className="text-[11px] font-semibold tracking-wider text-slate-300 uppercase font-mono truncate max-w-[170px]">
               {project.type || "Reel"} • Video Player
             </h4>
@@ -2761,7 +2639,7 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
               type="button"
               onClick={toggleFullscreen}
               aria-label="Enter fullscreen"
-              className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-white/10 hover:bg-primary text-white transition-colors cursor-pointer border border-white/10 flex items-center gap-1"
+              className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-[#1F51FF]/30 hover:bg-[#D4FF24] text-white hover:text-[#030407] transition-colors cursor-pointer border border-[#1F51FF]/50 flex items-center gap-1"
             >
               <Maximize2 size={10} />
               <span>Fullscreen</span>
@@ -2773,12 +2651,12 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
       {/* Fullscreen Floating Top Navigation */}
       {isFullscreen && (
         <div 
-          className={`absolute top-0 inset-x-0 z-40 p-4 sm:p-6 bg-gradient-to-b from-black/90 via-black/50 to-transparent flex items-center justify-between transition-opacity duration-300 ${
+          className={`absolute top-0 inset-x-0 z-40 p-4 sm:p-6 bg-gradient-to-b from-[#030407]/95 via-[#030407]/60 to-transparent flex items-center justify-between transition-opacity duration-300 ${
             showControls ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
         >
           <div className="flex items-center gap-3">
-            <span className="px-3 py-1 text-xs font-mono font-bold text-white bg-white/10 backdrop-blur-md rounded-full border border-white/20">
+            <span className="px-3 py-1 text-xs font-mono font-bold text-[#D4FF24] bg-[#1F51FF]/30 backdrop-blur-md rounded-full border border-[#1F51FF]/50">
               {project.type || "9:16 Vertical Reel"}
             </span>
             <h3 className="text-white font-bold text-sm sm:text-base font-display drop-shadow-md truncate max-w-[240px] sm:max-w-md">
@@ -2791,7 +2669,7 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
               type="button"
               onClick={toggleFullscreen}
               aria-label="Exit fullscreen"
-              className="flex items-center gap-1.5 bg-white/15 hover:bg-white/30 text-white px-3.5 py-1.5 rounded-full text-xs font-bold backdrop-blur-md transition-all cursor-pointer border border-white/20 shadow-lg"
+              className="flex items-center gap-1.5 bg-[#070b14]/90 hover:bg-[#D4FF24] text-white hover:text-[#030407] px-3.5 py-1.5 rounded-full text-xs font-bold backdrop-blur-md transition-all cursor-pointer border border-[#1F51FF]/40 shadow-lg"
             >
               <Minimize2 size={14} />
               <span className="hidden sm:inline">Exit Fullscreen</span>
@@ -2805,7 +2683,7 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
         className={`relative overflow-hidden flex items-center justify-center ${
           isFullscreen 
             ? "w-full h-full max-h-screen flex-1 my-auto" 
-            : "w-full aspect-[9/16] max-h-[58vh] bg-black rounded-2xl border border-white/10 shadow-2xl"
+            : "w-full aspect-[9/16] max-h-[58vh] bg-black rounded-2xl border border-[#1F51FF]/30 shadow-2xl"
         }`}
       >
         {/* Aspect-Ratio Centered Canvas Frame (Never stretches on 16:9 / ultrawide displays) */}
@@ -2854,7 +2732,7 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
                 setIsPlaying(!isPlaying);
                 handleUserActivity();
               }}
-              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-primary/95 hover:bg-primary text-white flex items-center justify-center shadow-2xl shadow-primary/40 transition-all cursor-pointer pointer-events-auto ${
+              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#D4FF24] hover:bg-[#1F51FF] text-[#030407] hover:text-white flex items-center justify-center shadow-2xl shadow-[#D4FF24]/40 transition-all cursor-pointer pointer-events-auto ${
                 isPlaying 
                   ? `${showControls ? "opacity-0 hover:opacity-90" : "opacity-0"} scale-95` 
                   : "opacity-100 scale-100"
@@ -2873,7 +2751,7 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
             ? `absolute bottom-0 inset-x-0 p-4 sm:p-6 bg-gradient-to-t from-black/95 via-black/70 to-transparent ${
                 showControls ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
               }`
-            : "mt-2 pt-2 border-t border-white/10 w-full flex flex-col gap-2"
+            : "mt-2 pt-2 border-t border-[#1F51FF]/20 w-full flex flex-col gap-2"
         }`}
       >
         <div className={`${isFullscreen ? "max-w-xl mx-auto w-full flex flex-col gap-2.5" : "w-full flex flex-col gap-2"}`}>
@@ -2887,8 +2765,8 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
               onClick={handleProgressClick}
               className="flex-1 h-1.5 sm:h-2 bg-white/20 hover:bg-white/30 rounded-full relative cursor-pointer group/bar transition-all"
             >
-              <div className="h-full bg-primary rounded-full relative" style={{ width: `${progress}%` }}>
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-2 border-primary shadow-md opacity-90 group-hover/bar:scale-125 transition-transform" />
+              <div className="h-full bg-[#D4FF24] rounded-full relative" style={{ width: `${progress}%` }}>
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-2 border-[#1F51FF] shadow-md opacity-90 group-hover/bar:scale-125 transition-transform" />
               </div>
             </div>
             <span className="text-[10px] sm:text-xs font-mono font-medium text-slate-400 w-9 text-left shrink-0">
@@ -2907,7 +2785,7 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
                   handleUserActivity();
                 }}
                 aria-label={isPlaying ? "Pause video" : "Play video"}
-                className="text-white hover:text-primary transition-colors cursor-pointer p-1 focus:outline-none"
+                className="text-white hover:text-[#D4FF24] transition-colors cursor-pointer p-1 focus:outline-none"
               >
                 {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
               </button>
@@ -2943,7 +2821,7 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
                 type="button"
                 onClick={handleSoundToggle}
                 aria-label={isMuted ? "Unmute audio" : "Mute audio"}
-                className="text-white hover:text-primary transition-colors cursor-pointer p-1 focus:outline-none"
+                className="text-white hover:text-[#D4FF24] transition-colors cursor-pointer p-1 focus:outline-none"
                 title={isMuted ? "Unmute (M)" : "Mute (M)"}
               >
                 {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
@@ -2953,7 +2831,7 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
                 type="button"
                 onClick={toggleFullscreen}
                 aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-                className="text-white hover:text-primary transition-colors cursor-pointer p-1 focus:outline-none"
+                className="text-white hover:text-[#D4FF24] transition-colors cursor-pointer p-1 focus:outline-none"
                 title={isFullscreen ? "Exit Fullscreen (F / Esc)" : "Fullscreen (F)"}
               >
                 {isFullscreen ? <Minimize2 size={18} /> : <Maximize size={18} />}
@@ -3063,10 +2941,10 @@ const InteractiveReelCard: React.FC<InteractiveReelCardProps> = ({
 
   return (
     <div
-      className={`group relative w-[210px] sm:w-[230px] md:w-[240px] h-[360px] sm:h-[380px] bg-slate-950 rounded-2xl overflow-hidden border ${
+      className={`group relative w-[210px] sm:w-[230px] md:w-[240px] h-[360px] sm:h-[380px] bg-[#070b14] rounded-2xl overflow-hidden border ${
         isActive
-          ? "border-primary shadow-2xl shadow-primary/30 ring-2 ring-primary/40"
-          : "border-slate-800 hover:border-primary/50 shadow-xl"
+          ? "border-[#D4FF24] shadow-2xl shadow-[#D4FF24]/25 ring-2 ring-[#D4FF24]/40"
+          : "border-[#1F51FF]/30 hover:border-[#1F51FF] shadow-xl"
       } transition-all duration-300 flex flex-col justify-between select-none shrink-0`}
     >
       {/* Video Canvas Container */}
@@ -3097,18 +2975,18 @@ const InteractiveReelCard: React.FC<InteractiveReelCardProps> = ({
         )}
 
         {/* Ambient Dark Gradient Layer */}
-        <div className={`absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-black/40 transition-opacity duration-300 ${
+        <div className={`absolute inset-0 bg-gradient-to-t from-[#030407] via-[#030407]/30 to-black/40 transition-opacity duration-300 ${
           isActive ? "opacity-30 group-hover:opacity-50" : "opacity-70 group-hover:opacity-85"
         }`} />
       </div>
 
       {/* Top Header Tag */}
       <div className="relative z-10 p-3 flex items-center justify-between w-full pointer-events-none">
-        <span className="px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white bg-black/60 backdrop-blur-md rounded-full border border-white/10 shadow-sm truncate max-w-[150px]">
+        <span className="px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-[#D4FF24] bg-[#030407]/80 backdrop-blur-md rounded-full border border-[#1F51FF]/40 shadow-sm truncate max-w-[150px]">
           {project.type || "Reel"}
         </span>
         {isActive && (
-          <span className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-md shadow-primary" />
+          <span className="w-2 h-2 rounded-full bg-[#D4FF24] shadow-[0_0_8px_#D4FF24] animate-pulse" />
         )}
       </div>
 
@@ -3125,7 +3003,7 @@ const InteractiveReelCard: React.FC<InteractiveReelCardProps> = ({
             e.stopPropagation();
             onPlayToggle();
           }}
-          className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-xl shadow-primary/40 group-hover:scale-110 group-hover:bg-primary/95 transition-all duration-300 cursor-pointer pointer-events-auto"
+          className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-[#D4FF24] hover:bg-[#1F51FF] text-[#030407] hover:text-white flex items-center justify-center shadow-xl shadow-[#D4FF24]/40 group-hover:scale-110 transition-all duration-300 cursor-pointer pointer-events-auto"
         >
           {isActive ? (
             <Pause size={22} fill="currentColor" />
@@ -3136,10 +3014,10 @@ const InteractiveReelCard: React.FC<InteractiveReelCardProps> = ({
       </div>
 
       {/* Bottom Info & Controls Bar */}
-      <div className="relative z-20 p-3 bg-gradient-to-t from-slate-950 via-slate-950/95 to-transparent flex flex-col gap-1.5 w-full">
+      <div className="relative z-20 p-3 bg-gradient-to-t from-[#030407] via-[#030407]/95 to-transparent flex flex-col gap-1.5 w-full">
         {/* Title */}
         <div className="text-left pointer-events-none">
-          <p className="text-[9px] font-mono font-bold uppercase tracking-wider text-primary truncate">
+          <p className="text-[9px] font-mono font-bold uppercase tracking-wider text-[#D4FF24] truncate">
             {isActive ? "NOW PLAYING 🎬" : "VERTICAL REEL"}
           </p>
           <h4 className="text-xs font-bold text-white font-display leading-tight truncate">
@@ -3153,10 +3031,10 @@ const InteractiveReelCard: React.FC<InteractiveReelCardProps> = ({
           className="w-full h-1 bg-white/20 hover:bg-white/30 rounded-full relative cursor-pointer group/bar transition-all"
         >
           <div 
-            className="h-full bg-primary rounded-full relative transition-all duration-100" 
+            className="h-full bg-[#D4FF24] rounded-full relative transition-all duration-100" 
             style={{ width: `${progress}%` }}
           >
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full border border-primary shadow-sm" />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full border border-[#1F51FF] shadow-sm" />
           </div>
         </div>
 
@@ -3170,7 +3048,7 @@ const InteractiveReelCard: React.FC<InteractiveReelCardProps> = ({
                 e.stopPropagation();
                 onPlayToggle();
               }}
-              className="text-white hover:text-primary transition-colors cursor-pointer p-0.5"
+              className="text-white hover:text-[#D4FF24] transition-colors cursor-pointer p-0.5"
               title={isActive ? "Pause" : "Play"}
             >
               {isActive ? <Pause size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
@@ -3188,7 +3066,7 @@ const InteractiveReelCard: React.FC<InteractiveReelCardProps> = ({
                 e.stopPropagation();
                 onMuteToggle();
               }}
-              className="text-white hover:text-primary transition-colors cursor-pointer p-0.5"
+              className="text-white hover:text-[#D4FF24] transition-colors cursor-pointer p-0.5"
               title={isMuted ? "Unmute" : "Mute"}
             >
               {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
@@ -3198,7 +3076,7 @@ const InteractiveReelCard: React.FC<InteractiveReelCardProps> = ({
               type="button"
               aria-label="Enter fullscreen"
               onClick={handleFullscreenClick}
-              className="text-white hover:text-primary transition-colors cursor-pointer p-0.5"
+              className="text-white hover:text-[#D4FF24] transition-colors cursor-pointer p-0.5"
               title="Watch in Fullscreen"
             >
               <Maximize size={14} />
@@ -3239,7 +3117,7 @@ const ReelCarousel = ({
       {/* Scroll navigation arrows */}
       <div className="w-full flex items-center justify-between gap-3 mb-3 px-2">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+          <span className="text-xs font-mono font-bold text-[#D4FF24] bg-[#1F51FF]/20 px-3 py-1 rounded-full border border-[#1F51FF]/40">
             {projects.length} Total Reels
           </span>
           <span className="text-xs text-slate-400 font-medium hidden sm:inline">
@@ -3252,7 +3130,7 @@ const ReelCarousel = ({
             type="button"
             aria-label="Previous reel"
             onClick={() => scrollByAmount(-280)}
-            className="w-8 h-8 rounded-full bg-white hover:bg-slate-100 text-slate-700 hover:text-navy flex items-center justify-center border border-slate-200 transition-all cursor-pointer shadow-sm"
+            className="w-8 h-8 rounded-full bg-[#070b14] hover:bg-[#1F51FF] text-white flex items-center justify-center border border-[#1F51FF]/40 transition-all cursor-pointer shadow-sm"
             title="Previous"
           >
             <ChevronLeft size={16} />
@@ -3261,7 +3139,7 @@ const ReelCarousel = ({
             type="button"
             aria-label="Next reel"
             onClick={() => scrollByAmount(280)}
-            className="w-8 h-8 rounded-full bg-white hover:bg-slate-100 text-slate-700 hover:text-navy flex items-center justify-center border border-slate-200 transition-all cursor-pointer shadow-sm"
+            className="w-8 h-8 rounded-full bg-[#070b14] hover:bg-[#1F51FF] text-white flex items-center justify-center border border-[#1F51FF]/40 transition-all cursor-pointer shadow-sm"
             title="Next"
           >
             <ChevronRight size={16} />
@@ -3562,24 +3440,24 @@ const Portfolio = () => {
   const isVideoMode = filter === "Videos";
 
   return (
-    <section id="work" className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-white dark:bg-[#070b14] transition-colors duration-300 border-t border-slate-100 dark:border-white/5">
+    <section id="work" className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-[#030407] text-[#F5F7FC] transition-colors duration-300 border-t border-[#1F51FF]/20">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-4 inline-block bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-800/40 px-4 py-1.5 rounded-full select-none">
+          <span className="text-xs uppercase tracking-[0.25em] text-[#D4FF24] font-bold mb-4 inline-block bg-[#1F51FF]/20 border border-[#1F51FF]/40 px-4 py-1.5 rounded-full select-none">
             {isVideoMode ? "VIDEO & REEL WORK" : "EXPLORE PORTFOLIO"}
           </span>
-          <h3 className="text-3xl md:text-5xl font-display font-black text-navy dark:text-white mb-4 tracking-tight">
+          <h3 className="text-3xl md:text-5xl font-display font-black text-white mb-4 tracking-tight">
             {isVideoMode ? "Video & Reel Work" : "Work Samples"}
           </h3>
           
           {isVideoMode && (
-            <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base font-medium max-w-2xl mx-auto mb-6 leading-relaxed">
+            <p className="text-slate-400 text-sm md:text-base font-medium max-w-2xl mx-auto mb-6 leading-relaxed">
               Selected work across healthcare, industry, real estate and AI-powered content creation.
             </p>
           )}
 
           {/* Segmented Pill Navigation Bar */}
-          <div className="flex flex-wrap justify-center gap-1.5 md:gap-2 bg-slate-50 dark:bg-slate-900/80 p-1.5 rounded-2xl md:rounded-full max-w-4xl mx-auto border border-slate-100 dark:border-white/10 shadow-inner select-none mb-6 backdrop-blur-md">
+          <div className="flex flex-wrap justify-center gap-1.5 md:gap-2 bg-[#070b14] p-1.5 rounded-2xl md:rounded-full max-w-4xl mx-auto border border-[#1F51FF]/30 shadow-inner select-none mb-6 backdrop-blur-md">
             {categories.map(cat => (
               <button
                 key={cat}
@@ -3590,8 +3468,8 @@ const Portfolio = () => {
                 }}
                 className={`px-4 md:px-6 py-2 rounded-xl md:rounded-full text-xs md:text-sm font-bold transition-all duration-300 cursor-pointer ${
                   filter === cat 
-                    ? "bg-navy dark:bg-primary text-white shadow-md shadow-navy/20 dark:shadow-primary/30 scale-[1.03]" 
-                    : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white hover:bg-white dark:hover:bg-slate-800 transition-all duration-200"
+                    ? "bg-[#D4FF24] text-[#030407] font-black shadow-md shadow-[#D4FF24]/20 scale-[1.03]" 
+                    : "text-slate-400 hover:text-white hover:bg-[#1F51FF]/20 transition-all duration-200"
                 }`}
               >
                 {cat}
@@ -3621,21 +3499,21 @@ const Portfolio = () => {
                         setSelectedVideoCategory(showcase.id);
                         setActivePlayingVideo(null);
                       }}
-                      className="group relative h-[360px] md:h-[380px] w-full bg-slate-50 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-800/90 rounded-[2rem] overflow-hidden border border-slate-200/80 dark:border-white/10 shadow-md hover:shadow-xl hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-400 cursor-pointer flex flex-col justify-between select-none"
+                      className="group relative h-[360px] md:h-[380px] w-full bg-[#070b14] hover:bg-[#09152b] rounded-[2rem] overflow-hidden border border-[#1F51FF]/30 shadow-md hover:shadow-2xl hover:border-[#1F51FF] hover:shadow-[0_0_25px_rgba(31, 81, 255,0.25)] transition-all duration-400 cursor-pointer flex flex-col justify-between select-none"
                     >
                       {/* Top / Background Collage Showcase */}
-                      <div className="relative h-[240px] md:h-[250px] w-full overflow-hidden flex items-center justify-center p-4 bg-gradient-to-b from-slate-100/90 to-slate-200/50 dark:from-slate-800/80 dark:to-slate-900/60">
+                      <div className="relative h-[240px] md:h-[250px] w-full overflow-hidden flex items-center justify-center p-4 bg-gradient-to-b from-[#030407] to-[#070b14]">
                         {/* Collage Layout based on category */}
                         {showcase.id === "healthcare" && (
                           <div className="relative w-full h-full flex items-center justify-center">
                             {categoryProjects[0] && (
-                              <div className="absolute w-[100px] sm:w-[115px] aspect-[9/16] -rotate-6 translate-x-3 translate-y-1 scale-95 opacity-90 rounded-xl overflow-hidden border-2 border-white dark:border-slate-800 shadow-xl transition-all duration-500 group-hover:-rotate-12 group-hover:scale-100 group-hover:translate-x-0">
+                              <div className="absolute w-[100px] sm:w-[115px] aspect-[9/16] -rotate-6 translate-x-3 translate-y-1 scale-95 opacity-90 rounded-xl overflow-hidden border-2 border-[#1F51FF]/40 shadow-xl transition-all duration-500 group-hover:-rotate-12 group-hover:scale-100 group-hover:translate-x-0">
                                 <img src={categoryProjects[0].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                                 <div className="absolute inset-0 bg-black/10" />
                               </div>
                             )}
                             {categoryProjects[1] && (
-                              <div className="absolute w-[100px] sm:w-[115px] aspect-[9/16] rotate-6 -translate-x-3 -translate-y-1 z-10 scale-100 rounded-xl overflow-hidden border-2 border-primary shadow-xl transition-all duration-500 group-hover:rotate-12 group-hover:scale-105 group-hover:-translate-x-0">
+                              <div className="absolute w-[100px] sm:w-[115px] aspect-[9/16] rotate-6 -translate-x-3 -translate-y-1 z-10 scale-100 rounded-xl overflow-hidden border-2 border-[#1F51FF] shadow-xl transition-all duration-500 group-hover:rotate-12 group-hover:scale-105 group-hover:-translate-x-0">
                                 <img src={categoryProjects[1].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
                               </div>
@@ -3646,17 +3524,17 @@ const Portfolio = () => {
                         {showcase.id === "industry" && (
                           <div className="relative w-full h-full flex items-center justify-center">
                             {categoryProjects[0] && (
-                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] -rotate-12 -translate-x-9 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-white dark:border-slate-800 shadow-lg transition-all duration-500 group-hover:-rotate-16 group-hover:-translate-x-11">
+                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] -rotate-12 -translate-x-9 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-[#1F51FF]/40 shadow-lg transition-all duration-500 group-hover:-rotate-16 group-hover:-translate-x-11">
                                 <img src={categoryProjects[0].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                               </div>
                             )}
                             {categoryProjects[5] && (
-                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] rotate-12 translate-x-9 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-white dark:border-slate-800 shadow-lg transition-all duration-500 group-hover:rotate-16 group-hover:translate-x-11">
+                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] rotate-12 translate-x-9 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-[#1F51FF]/40 shadow-lg transition-all duration-500 group-hover:rotate-16 group-hover:translate-x-11">
                                 <img src={categoryProjects[5].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                               </div>
                             )}
                             {categoryProjects[1] && (
-                              <div className="absolute w-[98px] sm:w-[112px] aspect-[9/16] rotate-0 z-10 translate-y-0 scale-100 rounded-xl overflow-hidden border-2 border-primary shadow-xl transition-all duration-500 group-hover:scale-105">
+                              <div className="absolute w-[98px] sm:w-[112px] aspect-[9/16] rotate-0 z-10 translate-y-0 scale-100 rounded-xl overflow-hidden border-2 border-[#1F51FF] shadow-xl transition-all duration-500 group-hover:scale-105">
                                 <img src={categoryProjects[1].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                               </div>
                             )}
@@ -3666,17 +3544,17 @@ const Portfolio = () => {
                         {showcase.id === "ai" && (
                           <div className="relative w-full h-full flex items-center justify-center">
                             {categoryProjects[0] && (
-                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] -rotate-10 -translate-x-7 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-white dark:border-slate-800 shadow-lg transition-all duration-500 group-hover:-rotate-14 group-hover:-translate-x-9">
+                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] -rotate-10 -translate-x-7 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-[#1F51FF]/40 shadow-lg transition-all duration-500 group-hover:-rotate-14 group-hover:-translate-x-9">
                                 <img src={categoryProjects[0].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                               </div>
                             )}
                             {categoryProjects[2] && (
-                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] rotate-10 translate-x-7 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-white dark:border-slate-800 shadow-lg transition-all duration-500 group-hover:rotate-14 group-hover:translate-x-9">
+                              <div className="absolute w-[90px] sm:w-[105px] aspect-[9/16] rotate-10 translate-x-7 translate-y-2 scale-90 opacity-80 rounded-xl overflow-hidden border-2 border-[#1F51FF]/40 shadow-lg transition-all duration-500 group-hover:rotate-14 group-hover:translate-x-9">
                                 <img src={categoryProjects[2].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                               </div>
                             )}
                             {categoryProjects[1] && (
-                              <div className="absolute w-[98px] sm:w-[112px] aspect-[9/16] rotate-0 z-10 translate-y-0 scale-100 rounded-xl overflow-hidden border-2 border-primary shadow-xl transition-all duration-500 group-hover:scale-105">
+                              <div className="absolute w-[98px] sm:w-[112px] aspect-[9/16] rotate-0 z-10 translate-y-0 scale-100 rounded-xl overflow-hidden border-2 border-[#1F51FF] shadow-xl transition-all duration-500 group-hover:scale-105">
                                 <img src={categoryProjects[1].img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                               </div>
                             )}
@@ -3684,20 +3562,20 @@ const Portfolio = () => {
                         )}
 
                         {/* Prominent Play Icon Badge */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-4 z-20 w-11 h-11 rounded-full bg-primary text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-primary/95 transition-all duration-300 pointer-events-none">
-                          <Play size={18} className="fill-white ml-0.5" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-4 z-20 w-11 h-11 rounded-full bg-[#D4FF24] text-[#030407] flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#1F51FF] group-hover:text-white transition-all duration-300 pointer-events-none">
+                          <Play size={18} className="fill-current ml-0.5" />
                         </div>
                       </div>
 
                       {/* Bottom Overlay Content */}
-                      <div className="absolute inset-x-0 bottom-0 pt-12 pb-5 px-5 bg-gradient-to-t from-white via-white/95 to-transparent dark:from-slate-900 dark:via-slate-900/95 dark:to-transparent z-20 flex flex-col justify-end text-left pointer-events-none">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1 font-mono">
+                      <div className="absolute inset-x-0 bottom-0 pt-12 pb-5 px-5 bg-gradient-to-t from-[#070b14] via-[#070b14]/95 to-transparent z-20 flex flex-col justify-end text-left pointer-events-none">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-[#1F51FF] mb-1 font-mono">
                           {showcase.label}
                         </p>
-                        <h4 className="text-lg md:text-xl font-black text-navy dark:text-white font-display leading-tight mb-2 group-hover:text-primary transition-colors">
+                        <h4 className="text-lg md:text-xl font-black text-white font-display leading-tight mb-2 group-hover:text-[#D4FF24] transition-colors">
                           {showcase.title}
                         </h4>
-                        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-navy dark:text-slate-200 bg-slate-100 dark:bg-slate-800 group-hover:bg-primary group-hover:text-white border border-slate-200 dark:border-white/10 group-hover:border-primary px-3 py-1 rounded-full transition-all duration-300 w-fit pointer-events-auto shadow-sm">
+                        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#D4FF24] bg-[#1F51FF]/20 group-hover:bg-[#D4FF24] group-hover:text-[#030407] border border-[#1F51FF]/40 group-hover:border-[#D4FF24] px-3 py-1 rounded-full transition-all duration-300 w-fit pointer-events-auto shadow-sm">
                           <span>{showcase.cta}</span>
                           <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                         </div>
@@ -3714,33 +3592,33 @@ const Portfolio = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.3 }}
-                className="w-full max-w-7xl mx-auto bg-slate-50/80 dark:bg-slate-900/80 rounded-[2.5rem] border border-slate-200 dark:border-white/10 p-6 md:p-8 shadow-xl backdrop-blur-md"
+                className="w-full max-w-7xl mx-auto bg-[#070b14] rounded-[2.5rem] border border-[#1F51FF]/30 p-6 md:p-8 shadow-xl backdrop-blur-md"
               >
                 {/* Studio Navigation & Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-slate-200 dark:border-white/10">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-[#1F51FF]/20">
                   <button
                     type="button"
                     onClick={() => {
                       setSelectedVideoCategory(null);
                       setActivePlayingVideo(null);
                     }}
-                    className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-200 hover:text-navy dark:hover:text-white bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 px-4 py-2.5 rounded-full border border-slate-200 dark:border-white/10 hover:border-primary/40 transition-all cursor-pointer w-fit shadow-sm group"
+                    className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-200 hover:text-[#D4FF24] bg-[#030407] hover:bg-[#1F51FF]/20 px-4 py-2.5 rounded-full border border-[#1F51FF]/40 hover:border-[#D4FF24] transition-all cursor-pointer w-fit shadow-sm group"
                   >
-                    <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" />
+                    <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform text-[#D4FF24]" />
                     <span>Back to Categories</span>
                   </button>
 
                   <div className="text-left sm:text-center">
-                    <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-primary">
+                    <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#1F51FF]">
                       {videoShowcaseCategories.find(c => c.id === selectedVideoCategory)?.label}
                     </p>
-                    <h3 className="text-xl md:text-2xl font-black text-navy dark:text-white font-display">
+                    <h3 className="text-xl md:text-2xl font-black text-white font-display">
                       {videoShowcaseCategories.find(c => c.id === selectedVideoCategory)?.title}
                     </h3>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-primary bg-primary/10 dark:bg-primary/20 px-3.5 py-1.5 rounded-full border border-primary/20">
+                    <span className="text-xs font-mono font-bold text-[#D4FF24] bg-[#1F51FF]/20 px-3.5 py-1.5 rounded-full border border-[#1F51FF]/40">
                       {projects.filter(p => p.category === "Videos" && (p as any).videoCategory === selectedVideoCategory).length} Reels Total
                     </span>
                   </div>
@@ -3842,7 +3720,7 @@ const Portfolio = () => {
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
                 className="group"
               >
-                <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-4 card-shadow border border-slate-100 dark:border-white/10 bg-[#f8fafc] dark:bg-slate-900/70 flex items-center justify-center p-3">
+                <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-4 card-shadow border border-[#1F51FF]/30 hover:border-[#1F51FF] bg-[#070b14] flex items-center justify-center p-3 transition-all duration-300 hover:shadow-[0_0_25px_rgba(31, 81, 255,0.25)]">
                   <img 
                     src={project.img} 
                     alt={project.name} 
@@ -3862,11 +3740,11 @@ const Portfolio = () => {
                         type: project.type,
                         videoUrl: (project as any).videoUrl
                       })}
-                      className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 text-left w-full h-full cursor-pointer focus:outline-none"
+                      className="absolute inset-0 bg-gradient-to-t from-[#030407]/95 via-[#030407]/40 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 text-left w-full h-full cursor-pointer focus:outline-none"
                     >
-                      <p className="text-[10px] uppercase font-bold tracking-widest text-primary/80 mb-1">{project.category}</p>
+                      <p className="text-[10px] uppercase font-bold tracking-widest text-[#1F51FF] mb-1">{project.category}</p>
                       <h4 className="text-lg font-bold text-white leading-tight">{project.name}</h4>
-                      <span className="text-[11px] text-primary font-bold mt-2.5 flex items-center gap-1 border-t border-white/15 pt-2 w-full">
+                      <span className="text-[11px] text-[#D4FF24] font-bold mt-2.5 flex items-center gap-1 border-t border-[#1F51FF]/30 pt-2 w-full">
                         Expand Fullscreen Display 🔍
                       </span>
                     </button>
@@ -3875,11 +3753,11 @@ const Portfolio = () => {
                       href={project.link}
                       target="_blank"
                       rel="noreferrer"
-                      className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 text-left w-full h-full"
+                      className="absolute inset-0 bg-gradient-to-t from-[#030407]/95 via-[#030407]/40 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 text-left w-full h-full"
                     >
-                      <p className="text-[10px] uppercase font-bold tracking-widest text-primary/80 mb-1">{project.category}</p>
+                      <p className="text-[10px] uppercase font-bold tracking-widest text-[#1F51FF] mb-1">{project.category}</p>
                       <h4 className="text-lg font-bold text-white leading-tight">{project.name}</h4>
-                      <span className="text-[11px] text-primary font-bold mt-2.5 flex items-center gap-1 border-t border-white/15 pt-2 w-full">
+                      <span className="text-[11px] text-[#D4FF24] font-bold mt-2.5 flex items-center gap-1 border-t border-[#1F51FF]/30 pt-2 w-full">
                         Visit Live Link <ExternalLink size={12} className="inline ml-1" />
                       </span>
                     </a>
@@ -3897,7 +3775,7 @@ const Portfolio = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               onClick={() => setLightboxProject(null)}
-              className="absolute inset-0 bg-navy/95 dark:bg-black/95 backdrop-blur-md cursor-pointer"
+              className="absolute inset-0 bg-[#030407]/95 backdrop-blur-md cursor-pointer"
             />
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
@@ -3908,7 +3786,7 @@ const Portfolio = () => {
                 type="button"
                 aria-label="Close modal"
                 onClick={() => setLightboxProject(null)}
-                className="absolute -top-3 -right-3 md:top-4 md:right-4 bg-white/20 hover:bg-white/30 text-white rounded-full p-2.5 backdrop-blur-md transition-colors z-[120] focus:outline-none cursor-pointer"
+                className="absolute -top-3 -right-3 md:top-4 md:right-4 bg-[#1F51FF]/30 hover:bg-[#D4FF24] text-white hover:text-[#030407] rounded-full p-2.5 backdrop-blur-md transition-colors z-[120] focus:outline-none cursor-pointer border border-[#1F51FF]/40"
               >
                 <X size={22} />
               </button>
@@ -3925,11 +3803,11 @@ const Portfolio = () => {
                   <img 
                     src={lightboxProject.img} 
                     alt={lightboxProject.name} 
-                    className="max-h-[65vh] w-auto max-w-full object-contain rounded-[2rem] shadow-2xl border border-white/5 bg-[#172554]/20 p-2"
+                    className="max-h-[65vh] w-auto max-w-full object-contain rounded-[2rem] shadow-2xl border border-[#1F51FF]/40 bg-[#070b14] p-2"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="mt-4 text-center px-6 py-2.5 bg-navy/80 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl max-w-sm">
-                    <span className="text-[9px] font-mono font-bold text-primary uppercase tracking-[0.2em]">{lightboxProject.category}</span>
+                  <div className="mt-4 text-center px-6 py-2.5 bg-[#070b14]/95 backdrop-blur-xl rounded-2xl border border-[#1F51FF]/30 shadow-2xl max-w-sm">
+                    <span className="text-[9px] font-mono font-bold text-[#1F51FF] uppercase tracking-[0.2em]">{lightboxProject.category}</span>
                     <h4 className="text-white text-base font-black tracking-tight mt-0.5">{lightboxProject.name}</h4>
                   </div>
                 </div>
@@ -3948,31 +3826,27 @@ const WhyChooseMe = () => {
     { 
       title: "Real Client Experience", 
       desc: "2+ years of proven results across 30+ client accounts and healthcare brands.",
-      icon: <CheckCircle2 className="text-primary" size={24} />,
-      color: "bg-blue-50"
+      icon: <CheckCircle2 className="text-[#D4FF24]" size={24} />,
     },
     { 
       title: "Consistent & Reliable", 
       desc: "I ensure your brand stays active and professional every single day.",
-      icon: <Layout className="text-emerald-500" size={24} />,
-      color: "bg-emerald-50"
+      icon: <Layout className="text-[#D4FF24]" size={24} />,
     },
     { 
       title: "Business Focused", 
       desc: "I focus on your business goals, not just pretty designs.",
-      icon: <Palette className="text-purple-500" size={24} />,
-      color: "bg-purple-50"
+      icon: <Palette className="text-[#D4FF24]" size={24} />,
     },
     { 
       title: "Quick Support", 
       desc: "Fast communication and transparent updates throughout the project.",
-      icon: <MessageSquare className="text-orange-500" size={24} />,
-      color: "bg-orange-50"
+      icon: <MessageSquare className="text-[#D4FF24]" size={24} />,
     }
   ];
 
   return (
-    <section className="py-20 md:py-28 px-6 md:px-12 lg:px-24 bg-white dark:bg-[#070b14] relative overflow-hidden transition-colors duration-300 border-t border-slate-100 dark:border-white/5">
+    <section className="py-20 md:py-28 px-6 md:px-12 lg:px-24 bg-[#030407] text-[#F5F7FC] relative overflow-hidden transition-colors duration-300 border-t border-[#1F51FF]/20">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
@@ -3980,9 +3854,13 @@ const WhyChooseMe = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-sm uppercase tracking-widest text-primary font-bold mb-4">Why Choose Me</h2>
-            <h3 className="text-4xl md:text-5xl font-display font-black text-navy dark:text-white mb-8 leading-tight">Design that builds trust & authority for your brand</h3>
-            <p className="text-lg text-slate-600 dark:text-slate-300 mb-10 leading-relaxed font-medium">
+            <span className="text-xs uppercase tracking-[0.25em] text-[#D4FF24] font-bold mb-4 inline-block bg-[#1F51FF]/20 border border-[#1F51FF]/40 px-4 py-1.5 rounded-full select-none">
+              Why Choose Me
+            </span>
+            <h3 className="text-4xl md:text-5xl font-display font-black text-white mb-8 leading-tight">
+              Design that builds <span className="text-[#1F51FF]">trust</span> & <span className="text-[#D4FF24]">authority</span> for your brand
+            </h3>
+            <p className="text-lg text-slate-300 mb-10 leading-relaxed font-medium">
               I combine creative expertise with a deep understanding of business needs to deliver results that actually matter.
             </p>
           </motion.div>
@@ -3995,13 +3873,13 @@ const WhyChooseMe = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className={`${point.color} dark:bg-slate-900/60 p-8 rounded-[2.5rem] border border-transparent md:hover:border-slate-200 dark:border-white/5 dark:md:hover:border-white/20 transition-all group backdrop-blur-sm`}
+                className="bg-[#070b14] border border-[#1F51FF]/30 hover:border-[#1F51FF] p-8 rounded-[2.5rem] transition-all group backdrop-blur-sm hover:shadow-[0_0_25px_rgba(31, 81, 255,0.25)]"
               >
-                <div className="w-14 h-14 rounded-2xl bg-white dark:bg-slate-800 border border-transparent dark:border-white/10 flex items-center justify-center mb-6 shadow-sm md:group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 rounded-2xl bg-[#030407] border border-[#1F51FF]/40 group-hover:border-[#D4FF24] flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-all">
                   {point.icon}
                 </div>
-                <h4 className="font-bold text-navy dark:text-white mb-3 text-lg">{point.title}</h4>
-                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{point.desc}</p>
+                <h4 className="font-bold text-white group-hover:text-[#D4FF24] mb-3 text-lg transition-colors">{point.title}</h4>
+                <p className="text-slate-300 text-sm leading-relaxed">{point.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -4014,16 +3892,14 @@ const WhyChooseMe = () => {
 // --- Process Section ---
 const Process = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [timerKey, setTimerKey] = useState(0);
 
   const steps = [
     { 
       title: "Understand", 
       desc: "Deep dive into your brand goals.", 
-      icon: <MessageSquare size={20} />, 
-      color: "bg-blue-500", 
-      borderColor: "border-blue-200", 
-      textColor: "text-blue-600",
-      lightBg: "bg-blue-50/50",
+      icon: <MessageSquare size={18} />, 
       details: "Understanding your current baseline, target audience, and business goals to outline your brand message.",
       actions: ["Brand Audit & Assessment", "Competitor & Trend Analysis", "1-on-1 Discovery Sync Session"],
       deliverable: "Strategic Brand Positioning Map"
@@ -4031,11 +3907,7 @@ const Process = () => {
     { 
       title: "Strategy", 
       desc: "Planning for maximum impact.", 
-      icon: <Layout size={20} />, 
-      color: "bg-indigo-500", 
-      borderColor: "border-indigo-200", 
-      textColor: "text-indigo-600",
-      lightBg: "bg-indigo-50/50",
+      icon: <Layout size={18} />, 
       details: "Translating discovery findings into a robust content strategy with clear timelines and messaging pillars.",
       actions: ["Monthly Content Calendar Setup", "Creative Moodboard Selection", "Vibe & Style Direction Guidelines"],
       deliverable: "Aesthetic Direction & Content Plan"
@@ -4043,23 +3915,15 @@ const Process = () => {
     { 
       title: "Drafting", 
       desc: "Creating the first set of visuals.", 
-      icon: <Palette size={20} />, 
-      color: "bg-purple-500", 
-      borderColor: "border-purple-200", 
-      textColor: "text-purple-600",
-      lightBg: "bg-purple-50/50",
-      details: "Bringing concepts to life using Canva, CapCut, and advanced design principles. High-fidelity first drafts.",
+      icon: <Palette size={18} />, 
+      details: "Bringing concepts to life using Canva, InShot, and advanced design principles. High-fidelity first drafts.",
       actions: ["High-End Social Media Creatives", "Reels & Shorts Video Editing", "Engaging Captions & Hook Writing"],
       deliverable: "First Batch of Video & Graphic Drafts"
     },
     { 
       title: "Refining", 
       desc: "Perfecting based on your feedback.", 
-      icon: <CheckCircle2 size={20} />, 
-      color: "bg-pink-500", 
-      borderColor: "border-pink-200", 
-      textColor: "text-pink-600",
-      lightBg: "bg-pink-50/50",
+      icon: <CheckCircle2 size={18} />, 
       details: "Reviewing the drafts together, adjusting tone, captions, visual pacing, and formatting.",
       actions: ["Structured Revision Rounds", "Micro-adjusting Typography & Sound", "Visual Alignment Checks"],
       deliverable: "Final Approved & Polished Assets"
@@ -4067,49 +3931,74 @@ const Process = () => {
     { 
       title: "Delivery", 
       desc: "High-quality final files ready to post.", 
-      icon: <ExternalLink size={20} />, 
-      color: "bg-emerald-500", 
-      borderColor: "border-emerald-200", 
-      textColor: "text-emerald-600",
-      lightBg: "bg-emerald-50/50",
+      icon: <ExternalLink size={18} />, 
       details: "Exporting high-resolution final content and publishing seamlessly via Meta Business Suite scheduler.",
       actions: ["Seamless Meta Business Suite Scheduling", "Optimized Hashtags & SEO Tags", "Delivery of High-Res Google Drive files"],
       deliverable: "Publish-Ready Scheduled Content"
     }
   ];
 
+  // Manual stage selection: immediately switches stage and restarts the 5-second auto-play timer
+  const handleSelectStep = (idx: number) => {
+    setActiveStep(idx);
+    setTimerKey((prev) => prev + 1);
+  };
+
+  // Automatic progression: switches to next stage every 5 seconds, loops back to Understand
+  useEffect(() => {
+    if (isPaused) return;
+
+    const timer = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % steps.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [isPaused, timerKey, activeStep, steps.length]);
+
+  const progressPercentage = Math.round(((activeStep + 1) / steps.length) * 100);
+
   return (
-    <section className="py-20 md:py-28 px-6 md:px-12 lg:px-24 bg-slate-50 dark:bg-[#080d1a] overflow-hidden transition-colors duration-300 border-t border-slate-200/50 dark:border-white/5">
+    <section 
+      id="process"
+      className="py-12 md:py-16 px-6 md:px-12 lg:px-24 bg-[#030407] text-[#F5F7FC] overflow-hidden transition-colors duration-300 border-t border-[#1F51FF]/20"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <div className="max-w-2xl">
-            <h2 className="text-sm uppercase tracking-widest text-primary font-bold mb-4">How I Work</h2>
-            <h3 className="text-4xl md:text-5xl mb-0 font-display font-black text-navy dark:text-white leading-tight">A simple, transparent process to elevate your brand</h3>
+        {/* Compact Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
+          <div>
+            <span className="text-xs uppercase tracking-[0.25em] text-[#D4FF24] font-bold mb-2.5 inline-block bg-[#1F51FF]/20 border border-[#1F51FF]/40 px-3.5 py-1 rounded-full select-none">
+              How I Work
+            </span>
+            <h3 className="text-xl sm:text-2xl md:text-[28px] lg:text-[32px] font-display font-black text-white leading-tight tracking-tight whitespace-normal md:whitespace-nowrap">
+              A simple, transparent process to <span className="text-[#1F51FF]">elevate</span> your <span className="text-[#D4FF24]">brand</span>
+            </h3>
           </div>
-          <div className="hidden md:block">
-            <div className="w-24 h-24 rounded-full border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-400 dark:text-slate-500 animate-spin-slow">
-              <ArrowRight size={32} className="rotate-45" />
+          <div className="hidden md:block shrink-0">
+            <div className="w-14 h-14 rounded-full border border-dashed border-[#1F51FF]/40 flex items-center justify-center text-[#D4FF24] animate-spin-slow">
+              <ArrowRight size={22} className="rotate-45" />
             </div>
           </div>
         </div>
 
         {/* Process Flow Chart Interactive UI */}
-        <div className="space-y-12">
+        <div className="space-y-6 md:space-y-7">
           
           {/* Connector Flow Line & Stepper Nodes */}
-          <div className="relative pb-4">
+          <div className="relative pb-2">
             
             {/* Horizontal Line for Desktop */}
-            <div className="absolute top-10 left-[10%] right-[10%] h-[3px] bg-slate-200/60 dark:bg-slate-800 rounded-full hidden md:block">
+            <div className="absolute top-7 left-[10%] right-[10%] h-[3px] bg-[#1F51FF]/25 rounded-full hidden md:block">
               <motion.div 
-                className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-500 rounded-full shadow-lg"
-                animate={{ width: `${(activeStep / 4) * 100}%` }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="h-full bg-gradient-to-r from-[#1F51FF] to-[#D4FF24] rounded-full shadow-sm shadow-[#D4FF24]/20"
+                animate={{ width: `${(activeStep / (steps.length - 1)) * 100}%` }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
               />
             </div>
 
-            {/* Stepper Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-4 relative z-10">
+            {/* Stepper Grid (All 5 nodes and labels clickable) */}
+            <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 md:gap-3 relative z-10">
               {steps.map((step, idx) => {
                 const isActive = activeStep === idx;
                 const isCompleted = activeStep > idx;
@@ -4117,46 +4006,70 @@ const Process = () => {
                 return (
                   <button
                     key={step.title}
-                    onClick={() => setActiveStep(idx)}
-                    className="flex md:flex-col items-start md:items-center text-left md:text-center p-4 rounded-2xl md:bg-transparent bg-white dark:bg-slate-900/80 border md:border-transparent border-slate-200/50 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 md:hover:border-transparent transition-all duration-300 group focus:outline-none w-full cursor-pointer"
+                    type="button"
+                    onClick={() => handleSelectStep(idx)}
+                    className={`flex md:flex-col items-center text-left md:text-center p-3 sm:p-3.5 rounded-2xl transition-all duration-300 group focus:outline-none w-full cursor-pointer relative ${
+                      isActive 
+                        ? "bg-[#070b14] border border-[#D4FF24]/60 shadow-[0_0_18px_rgba(212,255,36,0.15)]" 
+                        : "bg-[#070b14]/50 md:bg-transparent border border-[#1F51FF]/20 md:border-transparent hover:border-[#1F51FF]/50 hover:bg-[#070b14]/40"
+                    }`}
                   >
                     {/* Circle Node */}
-                    <div className="relative mb-0 md:mb-5 mr-4 md:mr-0 shrink-0">
+                    <div className="relative mb-0 md:mb-2.5 mr-3.5 md:mr-0 shrink-0">
                       <motion.div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center border-4 ${
+                        animate={{ scale: isActive ? 1.08 : 1 }}
+                        transition={{ duration: 0.2 }}
+                        className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${
                           isActive 
-                            ? "bg-white dark:bg-slate-900 shadow-xl scale-110 z-20" 
+                            ? "bg-[#030407] border-[#D4FF24] text-[#D4FF24] shadow-[0_0_14px_rgba(212,255,36,0.45)] z-20" 
                             : isCompleted 
-                              ? `${step.color} text-white border-white dark:border-slate-900 shadow-md z-10` 
-                              : "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700 z-0"
-                        } transition-all duration-300`}
-                        animate={{
-                          borderColor: isActive ? "rgba(59, 130, 246, 1)" : isCompleted ? "#ffffff" : "rgba(226, 232, 240, 1)",
-                          boxShadow: isActive ? "0px 10px 25px -5px rgba(59, 130, 246, 0.3)" : "none"
-                        }}
+                              ? "bg-[#1F51FF] text-white border-[#1F51FF] shadow-sm z-10" 
+                              : "bg-[#070b14] text-slate-400 border-[#1F51FF]/30 z-0 group-hover:border-[#1F51FF]/60 group-hover:text-slate-200"
+                        } transition-colors duration-300`}
                       >
-                        <span className={isActive ? step.textColor : isCompleted ? "text-white" : "text-slate-400 dark:text-slate-500"}>
-                          {step.icon}
-                        </span>
+                        {step.icon}
                       </motion.div>
                       
                       {/* Floating Step Tag */}
-                      <span className="absolute -top-3 -right-3 bg-slate-900 dark:bg-slate-700 text-white font-mono font-black text-[9px] rounded-full w-5 h-5 flex items-center justify-center border border-white dark:border-slate-800">
+                      <span className={`absolute -top-1.5 -right-1.5 font-mono font-black text-[9px] rounded-full w-4.5 h-4.5 flex items-center justify-center border shadow-xs ${
+                        isActive 
+                          ? "bg-[#D4FF24] text-[#030407] border-[#D4FF24]" 
+                          : "bg-[#1F51FF] text-white border-[#1F51FF]/60"
+                      }`}>
                         0{idx + 1}
                       </span>
                     </div>
 
                     {/* Step Texts */}
-                    <div>
-                      <h4 className={`text-base font-bold transition-colors duration-300 ${isActive ? "text-primary font-black" : "text-navy dark:text-slate-200"}`}>
-                        {step.title}
-                      </h4>
-                      <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5 font-semibold leading-relaxed hidden md:block max-w-[150px] mx-auto">
+                    <div className="w-full min-w-0">
+                      <div className="flex items-center justify-between md:justify-center gap-1">
+                        <h4 className={`text-sm font-bold transition-colors duration-300 truncate ${
+                          isActive ? "text-[#D4FF24] font-black" : "text-white group-hover:text-slate-200"
+                        }`}>
+                          {step.title}
+                        </h4>
+                      </div>
+                      <p className="text-slate-400 text-[11px] mt-0.5 font-medium leading-tight hidden md:block max-w-[130px] mx-auto line-clamp-1">
                         {step.desc}
                       </p>
-                      <p className="text-slate-500 dark:text-slate-400 text-[11px] mt-0.5 font-semibold leading-relaxed md:hidden">
+                      <p className="text-slate-400 text-[11px] mt-0.5 font-medium leading-tight md:hidden">
                         {step.desc}
                       </p>
+
+                      {/* 5-second countdown progress bar on active step */}
+                      <div className="mt-2 w-full h-[3px] bg-[#1F51FF]/20 rounded-full overflow-hidden">
+                        {isActive ? (
+                          <motion.div
+                            key={`timer-${activeStep}-${timerKey}-${isPaused}`}
+                            initial={{ width: "0%" }}
+                            animate={{ width: isPaused ? "50%" : "100%" }}
+                            transition={{ duration: isPaused ? 0 : 5, ease: "linear" }}
+                            className="h-full bg-gradient-to-r from-[#1F51FF] to-[#D4FF24] rounded-full shadow-[0_0_6px_#D4FF24]"
+                          />
+                        ) : (
+                          <div className={`h-full ${isCompleted ? "bg-[#1F51FF]/40" : "bg-transparent"}`} />
+                        )}
+                      </div>
                     </div>
                   </button>
                 );
@@ -4164,131 +4077,135 @@ const Process = () => {
             </div>
           </div>
 
-          {/* Active Step Panel / Dashboard */}
-          <motion.div
-            key={activeStep}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="bg-white dark:bg-slate-900/90 border border-slate-200/60 dark:border-white/10 rounded-[2.5rem] p-6 md:p-10 shadow-xl relative overflow-hidden backdrop-blur-md"
-          >
+          {/* Active Step Panel / Dashboard Card */}
+          <div className="bg-[#070b14] border border-[#1F51FF]/30 rounded-3xl p-5 sm:p-7 md:p-8 shadow-xl relative overflow-hidden backdrop-blur-md">
             {/* Diagonal Vibe Accent */}
-            <div className={`absolute top-0 left-0 w-3 h-full ${steps[activeStep].color}`} />
+            <div className="absolute top-0 left-0 w-2.5 h-full bg-gradient-to-b from-[#1F51FF] to-[#D4FF24]" />
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
               
               {/* Left Column: Stage Detail & Deliverables */}
-              <div className="lg:col-span-7 space-y-6">
-                <div>
-                  <span className={`text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full ${steps[activeStep].textColor} ${steps[activeStep].lightBg} dark:bg-slate-800/80 border ${steps[activeStep].borderColor} dark:border-white/15`}>
+              <div className="lg:col-span-7 space-y-4 md:space-y-5 min-h-[220px] flex flex-col justify-between">
+                <motion.div
+                  key={`details-${activeStep}`}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full text-[#D4FF24] bg-[#1F51FF]/20 border border-[#1F51FF]/40">
                     STAGE 0{activeStep + 1} • {steps[activeStep].title.toUpperCase()}
                   </span>
-                  <h3 className="text-2xl md:text-3xl font-display font-black text-navy dark:text-white mt-3 tracking-tight">
+                  <h3 className="text-2xl md:text-[26px] font-display font-black text-white mt-2.5 tracking-tight">
                     {steps[activeStep].title} Phase
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base font-semibold mt-2 leading-relaxed">
+                  <p className="text-slate-300 text-sm md:text-[15px] font-medium mt-1.5 leading-relaxed">
                     {steps[activeStep].details}
                   </p>
-                </div>
+                </motion.div>
 
                 {/* Key Action items checklist */}
-                <div className="space-y-3">
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-400">
+                <motion.div 
+                  key={`actions-${activeStep}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.05 }}
+                  className="space-y-2.5"
+                >
+                  <h5 className="text-[11px] font-bold uppercase tracking-wider text-[#1F51FF]">
                     Key Activities & Workflows
                   </h5>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                     {steps[activeStep].actions.map((action, i) => (
-                      <div key={i} className="flex items-center gap-3 bg-slate-50/60 dark:bg-slate-800/50 border border-slate-100 dark:border-white/10 p-3 rounded-xl">
-                        <div className={`w-5 h-5 rounded-full ${steps[activeStep].textColor} ${steps[activeStep].lightBg} dark:bg-slate-700 flex items-center justify-center shrink-0`}>
-                          <Check size={11} strokeWidth={3} />
+                      <div key={i} className="flex items-center gap-2 bg-[#030407] border border-[#1F51FF]/30 p-2.5 rounded-xl">
+                        <div className="w-4.5 h-4.5 rounded-full bg-[#D4FF24] text-[#030407] flex items-center justify-center shrink-0">
+                          <Check size={10} strokeWidth={3} />
                         </div>
-                        <span className="text-slate-700 dark:text-slate-200 text-xs font-semibold">{action}</span>
+                        <span className="text-slate-200 text-xs font-medium line-clamp-1">{action}</span>
                       </div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Major Deliverable Pin */}
-                <div className="flex flex-wrap items-center gap-3 pt-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-400">
+                <motion.div 
+                  key={`deliverable-${activeStep}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.1 }}
+                  className="flex flex-wrap items-center gap-2.5 pt-1"
+                >
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                     Primary Deliverable:
                   </span>
-                  <span className={`text-xs font-bold px-3.5 py-1.5 rounded-xl border ${steps[activeStep].textColor} ${steps[activeStep].lightBg} dark:bg-slate-800/80 ${steps[activeStep].borderColor} dark:border-white/15 flex items-center gap-2`}>
+                  <span className="text-xs font-bold px-3 py-1.5 rounded-xl border text-[#D4FF24] bg-[#1F51FF]/20 border-[#1F51FF]/40 flex items-center gap-1.5">
                     <Sparkles size={12} />
                     {steps[activeStep].deliverable}
                   </span>
-                </div>
+                </motion.div>
               </div>
 
-              {/* Right Column: Visual Flowchart Simulator Card */}
-              <div className="lg:col-span-5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-white/10 rounded-3xl p-6 relative overflow-hidden self-stretch flex flex-col justify-between group">
-                <div className="absolute top-3 right-3 text-[10px] font-mono font-bold text-slate-300 dark:text-slate-500">
-                  FLOW DIAGRAM
+              {/* Right Column: Visual Flowchart Simulator Card (Without unnecessary buttons) */}
+              <div className="lg:col-span-5 bg-[#030407] border border-[#1F51FF]/30 rounded-2xl p-5 relative overflow-hidden self-stretch flex flex-col justify-between">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-[10px] font-mono font-bold text-[#1F51FF] uppercase tracking-wider">
+                    Flow Diagram
+                  </span>
+                  <span className="text-[10px] font-mono text-slate-400">
+                    Stage 0{activeStep + 1} of 05
+                  </span>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-2.5 my-auto py-2">
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-bold text-slate-400 uppercase">Process Progress</span>
-                    <span className={`text-xs font-black font-mono ${steps[activeStep].textColor}`}>
-                      {Math.round(((activeStep + 1) / 5) * 100)}% Complete
+                    <span className="text-sm font-black font-mono text-[#D4FF24]">
+                      {progressPercentage}% Complete
                     </span>
                   </div>
                   
                   {/* Progress bar inside panel */}
-                  <div className="w-full h-2.5 bg-slate-200/60 dark:bg-slate-700 rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-[#1F51FF]/20">
                     <motion.div 
-                      className={`h-full ${steps[activeStep].color}`}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${((activeStep + 1) / 5) * 100}%` }}
-                      transition={{ duration: 0.5 }}
+                      className="h-full bg-gradient-to-r from-[#1F51FF] to-[#D4FF24]"
+                      animate={{ width: `${progressPercentage}%` }}
+                      transition={{ duration: 0.4 }}
                     />
                   </div>
                 </div>
 
-                {/* Simulated visual flow nodes */}
-                <div className="my-8 flex justify-center items-center gap-3">
-                  {[0, 1, 2, 3, 4].map((nodeIdx) => {
+                {/* Simulated visual flow nodes - Clickable to quickly jump */}
+                <div className="mt-4 pt-3 border-t border-[#1F51FF]/20 flex justify-center items-center gap-2">
+                  {steps.map((s, nodeIdx) => {
                     const isNodeActive = nodeIdx === activeStep;
                     const isNodePast = nodeIdx < activeStep;
                     return (
                       <React.Fragment key={nodeIdx}>
-                        <div 
-                          className={`w-7 h-7 rounded-full flex items-center justify-center font-mono text-xs font-black transition-all duration-300 ${
+                        <button
+                          type="button"
+                          onClick={() => handleSelectStep(nodeIdx)}
+                          title={`Jump to ${s.title}`}
+                          className={`w-7 h-7 rounded-full flex items-center justify-center font-mono text-xs font-black transition-all duration-300 cursor-pointer ${
                             isNodeActive 
-                              ? `${steps[activeStep].color} text-white ring-4 ring-offset-2 ring-primary/40 scale-110` 
+                              ? "bg-[#D4FF24] text-[#030407] ring-4 ring-[#1F51FF]/40 scale-110 shadow-sm" 
                               : isNodePast 
-                                ? "bg-slate-300 dark:bg-slate-600 text-slate-600 dark:text-slate-200" 
-                                : "bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-400"
+                                ? "bg-[#1F51FF] text-white hover:opacity-90" 
+                                : "bg-slate-900 text-slate-500 border border-[#1F51FF]/30 hover:border-[#1F51FF]"
                           }`}
                         >
                           {nodeIdx + 1}
-                        </div>
-                        {nodeIdx < 4 && (
-                          <div className={`h-0.5 w-6 transition-all duration-300 ${nodeIdx < activeStep ? "bg-slate-300 dark:bg-slate-600" : "bg-slate-200 dark:bg-slate-700"}`} />
+                        </button>
+                        {nodeIdx < steps.length - 1 && (
+                          <div className={`h-0.5 w-5 sm:w-6 transition-all duration-300 ${nodeIdx < activeStep ? "bg-[#1F51FF]" : "bg-slate-800"}`} />
                         )}
                       </React.Fragment>
                     );
                   })}
                 </div>
 
-                {/* Interactive controller button */}
-                <div className="flex justify-between items-center gap-4 pt-4 border-t border-slate-200/40 dark:border-white/10">
-                  <span className="text-[11px] font-medium text-slate-400 dark:text-slate-400">
-                    Click steps above or use navigation:
-                  </span>
-                  <button
-                    onClick={() => setActiveStep((prev) => (prev + 1) % 5)}
-                    className="flex items-center gap-1.5 bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 dark:hover:bg-slate-600 text-white text-[11px] font-bold py-1.5 px-3 rounded-full shadow-sm hover:shadow transition-all cursor-pointer select-none"
-                  >
-                    Next Stage <ArrowRight size={12} />
-                  </button>
-                </div>
-
               </div>
 
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
@@ -4306,9 +4223,9 @@ const Contact = ({ onOpenResume }: { onOpenResume?: () => void }) => {
   };
 
   return (
-    <section id="contact" className="py-16 md:py-24 bg-slate-50 dark:bg-[#070b14] px-4 sm:px-6 md:px-12 lg:px-24 relative overflow-hidden transition-colors duration-300 border-t border-slate-200/50 dark:border-white/5">
+    <section id="contact" className="py-16 md:py-24 bg-[#030407] text-[#F5F7FC] px-4 sm:px-6 md:px-12 lg:px-24 relative overflow-hidden transition-colors duration-300 border-t border-[#1F51FF]/20">
       {/* Background soft styling details */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-50/50 dark:bg-blue-900/20 rounded-full blur-[120px] pointer-events-none -z-10" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#1F51FF]/15 rounded-full blur-[140px] pointer-events-none -z-10" />
 
       <div className="max-w-3xl mx-auto relative z-10">
         <motion.div
@@ -4316,23 +4233,23 @@ const Contact = ({ onOpenResume }: { onOpenResume?: () => void }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-white dark:bg-slate-900/90 border border-slate-200/60 dark:border-white/10 p-6 sm:p-10 md:p-14 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-500 relative text-center backdrop-blur-md"
+          className="bg-[#070b14] border border-[#1F51FF]/30 p-6 sm:p-10 md:p-14 rounded-[2rem] shadow-xl hover:shadow-[0_0_35px_rgba(31, 81, 255,0.25)] hover:border-[#1F51FF]/60 transition-all duration-500 relative text-center backdrop-blur-md"
         >
           {/* Subtle design gradient accent */}
-          <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-50 to-transparent dark:from-blue-950/30 dark:to-transparent rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#1F51FF]/20 to-transparent rounded-full blur-3xl pointer-events-none" />
 
           {/* Centered Main Content Container */}
           <div className="max-w-xl mx-auto flex flex-col items-center">
             
             {/* Header Area */}
             <div className="flex flex-col items-center mb-8">
-              <span className="text-xs uppercase tracking-[0.25em] text-primary font-bold mb-3.5 inline-block bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-800/40 px-4 py-1.5 rounded-full select-none">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#D4FF24] font-bold mb-3.5 inline-block bg-[#1F51FF]/20 border border-[#1F51FF]/40 px-4 py-1.5 rounded-full select-none">
                 GET IN TOUCH
               </span>
-              <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black leading-tight text-navy dark:text-white mb-4 tracking-tight">
-                Let’s Build Something Great Together
+              <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black leading-tight text-white mb-4 tracking-tight">
+                Let’s Build Something <span className="text-[#D4FF24]">Great</span> Together
               </h3>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-semibold max-w-lg mx-auto">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-semibold max-w-lg mx-auto">
                 Looking for someone reliable to handle your design, social page growth, or video edit plans? Send a message and let's discuss details directly on WhatsApp!
               </p>
             </div>
@@ -4342,30 +4259,30 @@ const Contact = ({ onOpenResume }: { onOpenResume?: () => void }) => {
               {/* Direct Call Card */}
               <a 
                 href="tel:6385941180"
-                className="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/70 hover:bg-slate-100/60 dark:hover:bg-slate-800 p-4 rounded-xl border border-slate-200/40 dark:border-white/10 hover:border-primary/20 dark:hover:border-primary/30 transition-all group shadow-sm w-full"
+                className="flex items-center gap-4 bg-[#030407] hover:bg-[#0b1426] p-4 rounded-xl border border-[#1F51FF]/30 hover:border-[#1F51FF] hover:shadow-[0_0_15px_rgba(31, 81, 255,0.2)] transition-all group shadow-sm w-full"
               >
-                <div className="w-10 h-10 bg-primary/5 dark:bg-primary/20 rounded-lg flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
+                <div className="w-10 h-10 bg-[#1F51FF]/20 rounded-lg flex items-center justify-center text-[#D4FF24] shrink-0 group-hover:bg-[#1F51FF] group-hover:text-white transition-all">
                   <Phone size={16} />
                 </div>
                 <div>
-                  <p className="text-[9px] text-slate-400 dark:text-slate-400 font-bold uppercase tracking-wider leading-none">Call Me</p>
-                  <p className="text-sm sm:text-base font-bold text-navy dark:text-white mt-1.5">6385941180</p>
+                  <p className="text-[9px] text-[#1F51FF] font-bold uppercase tracking-wider leading-none">Call Me</p>
+                  <p className="text-sm sm:text-base font-bold text-white mt-1.5">6385941180</p>
                 </div>
               </a>
 
               {/* Email Card with Quick Click-to-Copy */}
               <div 
                 onClick={handleCopyEmail}
-                className="flex items-center justify-between gap-4 bg-slate-50 dark:bg-slate-800/70 hover:bg-slate-100/60 dark:hover:bg-slate-800 p-4 rounded-xl border border-slate-200/40 dark:border-white/10 hover:border-primary/20 dark:hover:border-primary/30 transition-all group shadow-sm cursor-pointer relative w-full"
+                className="flex items-center justify-between gap-4 bg-[#030407] hover:bg-[#0b1426] p-4 rounded-xl border border-[#1F51FF]/30 hover:border-[#1F51FF] hover:shadow-[0_0_15px_rgba(31, 81, 255,0.2)] transition-all group shadow-sm cursor-pointer relative w-full"
                 title="Click to copy email address"
               >
                 <div className="flex items-center gap-4 min-w-0">
-                  <div className="w-10 h-10 bg-primary/5 dark:bg-primary/20 rounded-lg flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
+                  <div className="w-10 h-10 bg-[#1F51FF]/20 rounded-lg flex items-center justify-center text-[#D4FF24] shrink-0 group-hover:bg-[#1F51FF] group-hover:text-white transition-all">
                     <Mail size={16} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[9px] text-slate-400 dark:text-slate-400 font-bold uppercase tracking-wider leading-none">Email Me</p>
-                    <p className="text-sm sm:text-base font-bold text-navy dark:text-white mt-1.5 select-all leading-none font-sans block truncate">
+                    <p className="text-[9px] text-[#1F51FF] font-bold uppercase tracking-wider leading-none">Email Me</p>
+                    <p className="text-sm sm:text-base font-bold text-white mt-1.5 select-all leading-none font-sans block truncate">
                       naveenraja3663@gmail.com
                     </p>
                   </div>
@@ -4373,15 +4290,15 @@ const Contact = ({ onOpenResume }: { onOpenResume?: () => void }) => {
 
                 <button 
                   type="button"
-                  className="p-1.5 rounded-md hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all shrink-0"
+                  className="p-1.5 rounded-md hover:bg-[#1F51FF]/30 text-slate-400 hover:text-white transition-all shrink-0"
                   aria-label="Copy email address"
                 >
                   {copied ? (
-                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-1 rounded border border-emerald-100 dark:border-emerald-800/50 flex items-center gap-1">
+                    <span className="text-[10px] font-bold text-[#030407] bg-[#D4FF24] px-2 py-1 rounded border border-[#D4FF24] flex items-center gap-1 shadow-sm">
                       <Check size={11} strokeWidth={3} /> Copied!
                     </span>
                   ) : (
-                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-300 group-hover:text-primary flex items-center gap-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 px-2 py-1 rounded-lg transition-colors">
+                    <span className="text-[10px] font-bold text-[#D4FF24] group-hover:text-white flex items-center gap-1.5 bg-[#1F51FF]/20 group-hover:bg-[#1F51FF] border border-[#1F51FF]/40 px-2 py-1 rounded-lg transition-colors">
                       <Copy size={11} /> Copy
                     </span>
                   )}
@@ -4395,14 +4312,14 @@ const Contact = ({ onOpenResume }: { onOpenResume?: () => void }) => {
                 href={`https://wa.me/6385941180?text=${encodeURIComponent("Hello Naveen, I'm reaching out from your Portfolio. Let's collaborate!")}`} 
                 target="_blank" 
                 rel="noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-green-100 dark:hover:shadow-green-950/30 transition-all text-xs sm:text-sm select-none"
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#D4FF24] hover:bg-[#1F51FF] text-[#030407] hover:text-white px-6 py-3.5 rounded-xl font-black shadow-lg shadow-[#D4FF24]/20 transition-all text-xs sm:text-sm select-none"
               >
                 <MessageSquare size={16} /> Chat on WhatsApp
               </a>
               <button 
                 type="button"
                 onClick={onOpenResume}
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-navy dark:bg-slate-800 hover:bg-navy/95 dark:hover:bg-slate-700 text-white border border-transparent dark:border-white/10 px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-navy/10 transition-all text-xs sm:text-sm select-none cursor-pointer"
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-transparent hover:bg-[#1F51FF]/15 text-white hover:text-[#D4FF24] border border-[#1F51FF] hover:border-[#D4FF24] px-6 py-3.5 rounded-xl font-bold transition-all text-xs sm:text-sm select-none cursor-pointer"
               >
                 <FileText size={16} /> View Resume
               </button>
@@ -4420,16 +4337,16 @@ const Footer = () => {
   const [showPrivacy, setShowPrivacy] = useState(false);
 
   return (
-    <footer className="bg-[#0B0F19] text-white pt-20 pb-10 border-t border-white/5 relative overflow-hidden">
+    <footer className="bg-[#030407] text-white pt-20 pb-10 border-t border-[#1F51FF]/20 relative overflow-hidden">
       {/* Abstract Grid Background overlays */}
-      <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-10 pointer-events-none" />
-      <div className="absolute -top-40 -left-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(#1F51FF_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none" />
+      <div className="absolute -top-40 -left-40 w-80 h-80 bg-[#1F51FF]/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-[#1F51FF]/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
         <div className="grid md:grid-cols-12 gap-12 mb-16">
           <div className="md:col-span-5">
-            <h5 className="font-bold font-display text-xs uppercase tracking-widest text-[#4F8CFF] mb-6">About Me</h5>
+            <h5 className="font-bold font-display text-xs uppercase tracking-widest text-[#1F51FF] mb-6">About Me</h5>
             <p className="text-slate-400 max-w-md leading-relaxed text-xs md:text-sm">
               Expert Social Media Manager & Creative Designer helping healthcare, real estate, and digital brands build massive credibility, grow community engagement, and drive high-yield lead generation campaigns through refined aesthetic assets.
             </p>
@@ -4438,9 +4355,9 @@ const Footer = () => {
                 href="https://www.linkedin.com/in/naveen-raja-22b451400/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-[#0A66C2]/15 hover:bg-[#0A66C2]/25 text-[#388dff] hover:text-white border border-[#0A66C2]/30 hover:border-[#0A66C2]/70 text-xs font-semibold transition-all group shadow-sm hover:shadow-lg hover:shadow-[#0A66C2]/10"
+                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-[#1F51FF]/20 hover:bg-[#D4FF24] text-white hover:text-[#030407] border border-[#1F51FF]/40 hover:border-[#D4FF24] text-xs font-semibold transition-all group shadow-sm hover:shadow-lg hover:shadow-[#D4FF24]/10"
               >
-                <div className="w-5 h-5 rounded bg-[#0A66C2] flex items-center justify-center text-white shrink-0 group-hover:scale-105 transition-transform">
+                <div className="w-5 h-5 rounded bg-[#1F51FF] group-hover:bg-[#030407] flex items-center justify-center text-white group-hover:text-[#D4FF24] shrink-0 group-hover:scale-105 transition-transform">
                   <Linkedin size={12} fill="currentColor" />
                 </div>
                 <span>Connect on LinkedIn</span>
@@ -4450,21 +4367,21 @@ const Footer = () => {
           </div>
 
           <div className="md:col-span-3">
-            <h5 className="font-bold font-display text-xs uppercase tracking-widest text-[#4F8CFF] mb-6">Quick Links</h5>
+            <h5 className="font-bold font-display text-xs uppercase tracking-widest text-[#1F51FF] mb-6">Quick Links</h5>
             <ul className="space-y-3.5 text-slate-400 font-semibold text-xs md:text-sm">
-              <li><a href="#about" className="hover:text-primary transition-colors">About Who I Am</a></li>
-              <li><a href="#services" className="hover:text-primary transition-colors">Services Offered</a></li>
-              <li><a href="#experience" className="hover:text-primary transition-colors">Work Experience</a></li>
-              <li><a href="#work" className="hover:text-primary transition-colors">Creative Showcase</a></li>
-              <li><a href="#contact" className="hover:text-primary transition-colors">Get In Touch</a></li>
+              <li><a href="#about" className="hover:text-[#D4FF24] transition-colors">About Who I Am</a></li>
+              <li><a href="#services" className="hover:text-[#D4FF24] transition-colors">Services Offered</a></li>
+              <li><a href="#experience" className="hover:text-[#D4FF24] transition-colors">Work Experience</a></li>
+              <li><a href="#work" className="hover:text-[#D4FF24] transition-colors">Creative Showcase</a></li>
+              <li><a href="#contact" className="hover:text-[#D4FF24] transition-colors">Get In Touch</a></li>
               <li>
                 <a 
                   href="https://www.linkedin.com/in/naveen-raja-22b451400/" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="hover:text-[#388dff] transition-colors inline-flex items-center gap-2 text-slate-300"
+                  className="hover:text-[#D4FF24] transition-colors inline-flex items-center gap-2 text-slate-300"
                 >
-                  <Linkedin size={13} className="text-[#0A66C2]" />
+                  <Linkedin size={13} className="text-[#1F51FF]" />
                   <span>LinkedIn Profile</span>
                 </a>
               </li>
@@ -4472,19 +4389,19 @@ const Footer = () => {
           </div>
 
           <div className="md:col-span-4">
-            <h5 className="font-bold font-display text-xs uppercase tracking-widest text-[#4F8CFF] mb-6">For Hiring Managers</h5>
-            <div className="border-l-2 border-primary/40 pl-4 py-1">
+            <h5 className="font-bold font-display text-xs uppercase tracking-widest text-[#1F51FF] mb-6">For Hiring Managers</h5>
+            <div className="border-l-2 border-[#1F51FF] pl-4 py-1">
               <p className="text-xs md:text-sm text-slate-300 italic font-medium leading-relaxed">
                 "Great design and high-converting content are deliberately engineered. If you need a partner who takes absolute ownership of visual branding and social growth to deliver actual, measurable outcomes, let me deliver excellence for your team."
               </p>
-              <p className="text-[10px] text-primary font-bold uppercase tracking-wider mt-3">
+              <p className="text-[10px] text-[#D4FF24] font-bold uppercase tracking-wider mt-3">
                 ✦ Available for Contracts, Retainers, & Roles
               </p>
             </div>
           </div>
         </div>
 
-        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-slate-500 font-semibold">
+        <div className="pt-10 border-t border-[#1F51FF]/20 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-slate-500 font-semibold">
           <p className="font-medium">
             © {new Date().getFullYear()} Naveen Raja. All rights reserved. Built with pride.
           </p>
@@ -4493,15 +4410,15 @@ const Footer = () => {
               href="https://www.linkedin.com/in/naveen-raja-22b451400/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#388dff] text-slate-400 transition-colors inline-flex items-center gap-1.5"
+              className="hover:text-[#D4FF24] text-slate-400 transition-colors inline-flex items-center gap-1.5"
               title="Visit Naveen Raja on LinkedIn"
             >
-              <Linkedin size={14} className="text-[#0A66C2]" />
+              <Linkedin size={14} className="text-[#1F51FF]" />
               <span>LinkedIn</span>
             </a>
             <button 
               onClick={() => setShowPrivacy(true)}
-              className="hover:text-slate-300 transition-colors cursor-pointer text-xs font-semibold focus:outline-none"
+              className="hover:text-[#D4FF24] transition-colors cursor-pointer text-xs font-semibold focus:outline-none"
             >
               Privacy Statement
             </button>
@@ -4524,16 +4441,16 @@ const Footer = () => {
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="bg-[#0B0F19] text-white rounded-[2.5rem] p-6 md:p-8 max-w-xl w-full border border-white/10 shadow-2xl relative z-10 max-h-[80vh] overflow-y-auto text-left"
+              className="bg-[#070b14] text-white rounded-[2.5rem] p-6 md:p-8 max-w-xl w-full border border-[#1F51FF]/40 shadow-2xl relative z-10 max-h-[80vh] overflow-y-auto text-left"
             >
               <button 
                 onClick={() => setShowPrivacy(false)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2.5 transition-all cursor-pointer focus:outline-none"
+                className="absolute top-4 right-4 text-slate-400 hover:text-white bg-white/5 hover:bg-[#1F51FF]/30 rounded-full p-2.5 transition-all cursor-pointer focus:outline-none"
               >
                 <X size={18} />
               </button>
-              <div className="flex items-center gap-2.5 mb-6 border-b border-white/10 pb-4">
-                <CheckCircle2 className="text-primary" size={24} />
+              <div className="flex items-center gap-2.5 mb-6 border-b border-[#1F51FF]/20 pb-4">
+                <CheckCircle2 className="text-[#D4FF24]" size={24} />
                 <h4 className="text-xl md:text-2xl font-display font-black tracking-tight">Privacy Policy</h4>
               </div>
               <div className="space-y-4 text-xs md:text-sm text-slate-300 leading-relaxed font-normal">
@@ -4541,28 +4458,28 @@ const Footer = () => {
                   Welcome to the digital portfolio of <strong>Naveen Raja</strong>. Your privacy is protected with professional standards.
                 </p>
                 <div>
-                  <h5 className="font-bold text-white mb-1 uppercase font-mono tracking-wider text-xs text-primary">1. Information Collection</h5>
+                  <h5 className="font-bold mb-1 uppercase font-mono tracking-wider text-xs text-[#1F51FF]">1. Information Collection</h5>
                   <p>
                     When using the "Get In Touch" message system, personal parameters including your <strong>Name, Email, Category Focus Selection, and Custom Text body</strong> are safely collected strictly for forming communications.
                   </p>
                 </div>
                 <div>
-                  <h5 className="font-bold text-white mb-1 uppercase font-mono tracking-wider text-xs text-primary">2. Direct Transfer Channels (WhatsApp)</h5>
+                  <h5 className="font-bold mb-1 uppercase font-mono tracking-wider text-xs text-[#1F51FF]">2. Direct Transfer Channels (WhatsApp)</h5>
                   <p>
                     The dynamic message form converts user variables directly into a standard formatted redirection query delivered straight to secure WhatsApp servers. <strong>Your private credentials are not logged, cached, or saved on databases or tracking cookies.</strong>
                   </p>
                 </div>
                 <div>
-                  <h5 className="font-bold text-white mb-1 uppercase font-mono tracking-wider text-xs text-primary">3. Tracking and Analytics</h5>
+                  <h5 className="font-bold mb-1 uppercase font-mono tracking-wider text-xs text-[#1F51FF]">3. Tracking and Analytics</h5>
                   <p>
                     No invasive analytics tracking scripts run on this platform. We remain fully committed to browser integrity without tracking user geographical logs.
                   </p>
                 </div>
               </div>
-              <div className="mt-8 pt-4 border-t border-white/10 text-center">
+              <div className="mt-8 pt-4 border-t border-[#1F51FF]/20 text-center">
                 <button 
                   onClick={() => setShowPrivacy(false)}
-                  className="px-6 py-2.5 bg-primary hover:bg-primary/95 text-white font-bold rounded-xl text-xs transition-all cursor-pointer focus:outline-none"
+                  className="px-6 py-2.5 bg-[#D4FF24] hover:bg-[#1F51FF] text-[#030407] hover:text-white font-bold rounded-xl text-xs transition-all cursor-pointer focus:outline-none"
                 >
                   I Acknowledge & Close
                 </button>
@@ -4622,17 +4539,17 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", duration: 0.4 }}
-            className="relative z-10 w-full max-w-4xl bg-slate-100 dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200/80 dark:border-white/10 my-auto flex flex-col max-h-[92vh] overflow-hidden"
+            className="relative z-10 w-full max-w-4xl bg-[#070b14] rounded-3xl shadow-2xl border border-[#1F51FF]/30 my-auto flex flex-col max-h-[92vh] overflow-hidden"
           >
             {/* Top Toolbar (hidden in print) */}
-            <div className="no-print bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-4 sm:px-6 py-3 border-b border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 shrink-0">
+            <div className="no-print bg-[#030407]/95 backdrop-blur-md px-4 sm:px-6 py-3 border-b border-[#1F51FF]/20 flex flex-wrap items-center justify-between gap-3 shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-primary flex items-center justify-center font-bold shrink-0">
+                <div className="w-8 h-8 rounded-xl bg-[#1F51FF]/20 text-[#D4FF24] flex items-center justify-center font-bold shrink-0 border border-[#1F51FF]/40">
                   <FileText size={18} />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-navy dark:text-white leading-none">Naveen Raja S — Resume</h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium mt-1">Updated Sep 2026 • 2+ Years Experience • 30+ Accounts</p>
+                  <h3 className="text-sm font-bold text-white leading-none">Naveen Raja S — Resume</h3>
+                  <p className="text-[11px] text-slate-400 font-medium mt-1">Updated Sep 2026 • 2+ Years Experience • 30+ Accounts</p>
                 </div>
               </div>
 
@@ -4641,7 +4558,7 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                 <button
                   type="button"
                   onClick={handlePrint}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent dark:border-white/10 transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-200 bg-[#070b14] hover:bg-[#1F51FF] hover:text-white border border-[#1F51FF]/40 transition-colors cursor-pointer"
                   title="Print or Save as PDF"
                 >
                   <Printer size={14} />
@@ -4652,7 +4569,7 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                   href="https://drive.google.com/file/d/1WDRO1gBi7c5ap7K8Zse0qcteeXM7R1sC/view?usp=sharing"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-primary hover:bg-blue-600 transition-colors shadow-sm cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-[#030407] hover:text-white bg-[#D4FF24] hover:bg-[#1F51FF] transition-colors shadow-sm cursor-pointer shadow-[#D4FF24]/20"
                   title="Open in Google Drive"
                 >
                   <ExternalLink size={13} />
@@ -4662,7 +4579,7 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                 <button
                   type="button"
                   onClick={onClose}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ml-1 cursor-pointer"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#1F51FF]/20 transition-colors ml-1 cursor-pointer"
                   aria-label="Close resume viewer"
                 >
                   <X size={20} />
@@ -4683,37 +4600,37 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                   </h1>
                   <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs text-slate-700 font-medium">
                     <span className="inline-flex items-center gap-1.5">
-                      <Phone size={13} className="text-primary" />
+                      <Phone size={13} className="text-[#1F51FF]" />
                       <strong>Mobile Number:</strong> +91 6385941180
                     </span>
                     <span className="text-slate-300 hidden sm:inline">•</span>
                     <span className="inline-flex items-center gap-1.5">
-                      <Mail size={13} className="text-primary" />
+                      <Mail size={13} className="text-[#1F51FF]" />
                       <strong>Email:</strong>
                       <span className="cursor-pointer hover:underline" onClick={handleCopyEmail}>
                         naveenraja3663@gmail.com
                       </span>
-                      {copiedEmail && <span className="text-[10px] text-emerald-600 font-bold ml-1">(Copied)</span>}
+                      {copiedEmail && <span className="text-[10px] text-[#1F51FF] font-bold ml-1">(Copied)</span>}
                     </span>
                   </div>
                   <div className="mt-1.5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs text-slate-700 font-medium">
                     <span className="inline-flex items-center gap-1.5">
-                      <MapPin size={13} className="text-primary" />
+                      <MapPin size={13} className="text-[#1F51FF]" />
                       <strong>Location:</strong> Coimbatore, Tamil Nadu
                     </span>
                     <span className="text-slate-300 hidden sm:inline">•</span>
                     <span className="inline-flex items-center gap-1.5">
-                      <Globe size={13} className="text-primary" />
+                      <Globe size={13} className="text-[#1F51FF]" />
                       <strong>Portfolio:</strong>
-                      <a href="https://naveenraja.netlify.app/" target="_blank" rel="noreferrer" className="text-primary hover:underline font-bold">
+                      <a href="https://naveenraja.netlify.app/" target="_blank" rel="noreferrer" className="text-[#1F51FF] hover:underline font-bold">
                         https://naveenraja.netlify.app/
                       </a>
                     </span>
                     <span className="text-slate-300 hidden sm:inline">•</span>
                     <span className="inline-flex items-center gap-1.5">
-                      <Linkedin size={13} className="text-[#0A66C2]" />
+                      <Linkedin size={13} className="text-[#1F51FF]" />
                       <strong>LinkedIn:</strong>
-                      <a href="https://www.linkedin.com/in/naveen-raja-22b451400/" target="_blank" rel="noreferrer" className="text-primary hover:underline font-bold">
+                      <a href="https://www.linkedin.com/in/naveen-raja-22b451400/" target="_blank" rel="noreferrer" className="text-[#1F51FF] hover:underline font-bold">
                         naveen-raja
                       </a>
                     </span>
@@ -4746,9 +4663,9 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                         Sep 2026 – Present
                       </span>
                     </div>
-                    <div className="text-xs font-bold text-primary mb-2 flex items-center gap-2">
+                    <div className="text-xs font-bold text-[#1F51FF] mb-2 flex items-center gap-2">
                       <span>Remedo Clinitech Private Ltd</span>
-                      <span className="text-[10px] font-mono bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">
+                      <span className="text-[10px] font-mono bg-[#1F51FF]/15 text-[#1F51FF] px-2 py-0.5 rounded border border-[#1F51FF]/30">
                         Current Position
                       </span>
                     </div>
@@ -4778,9 +4695,9 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                         Nov 2024 – Jun 2026
                       </span>
                     </div>
-                    <div className="text-xs font-bold text-primary mb-2 flex items-center gap-2">
+                    <div className="text-xs font-bold text-[#1F51FF] mb-2 flex items-center gap-2">
                       <span>Apollo Dental Clinic</span>
-                      <span className="text-[10px] font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200">
+                      <span className="text-[10px] font-mono bg-[#1F51FF]/15 text-[#1F51FF] px-2 py-0.5 rounded border border-[#1F51FF]/30">
                         Coimbatore, Tamil Nadu
                       </span>
                     </div>
@@ -4848,41 +4765,16 @@ const ResumeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
 
 export default function PortfolioApp() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("portfolio-theme");
-      if (saved === "dark" || saved === "light") return saved;
-      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        return "dark";
-      }
-    }
-    return "light";
-  });
 
   useEffect(() => {
-    const root = document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-    try {
-      localStorage.setItem("portfolio-theme", theme);
-    } catch {}
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-  };
+    document.documentElement.classList.add("dark");
+  }, []);
 
   return (
-    <div className="antialiased min-h-screen bg-slate-50 dark:bg-[#070b14] text-navy dark:text-slate-100 transition-colors duration-300">
-      <Navbar 
-        onOpenResume={() => setIsResumeOpen(true)} 
-        theme={theme}
-        onToggleTheme={toggleTheme}
-      />
-      <main>
+    <div className="relative antialiased min-h-screen bg-[#030407] text-slate-100 selection:bg-[#D4FF24] selection:text-[#030407] transition-colors duration-300">
+      <FloatingParticlesBackground />
+      <Navbar onOpenResume={() => setIsResumeOpen(true)} />
+      <main className="relative z-10">
         <Hero onOpenResume={() => setIsResumeOpen(true)} />
         <About />
         <Services />
@@ -4893,7 +4785,9 @@ export default function PortfolioApp() {
         <Process />
         <Contact onOpenResume={() => setIsResumeOpen(true)} />
       </main>
-      <Footer />
+      <div className="relative z-10">
+        <Footer />
+      </div>
       <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </div>
   );

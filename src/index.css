@@ -1,11 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+:root {
+  --color-midnight: #030407;
+  --color-neon-blue: #1F51FF;
+  --color-cobalt: #1F51FF;
+  --color-lime: #D4FF24;
+}
+
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Poppins", sans-serif;
-  --color-navy: #0f172a;
-  --color-primary: #4f8cff;
+  --color-midnight: #030407;
+  --color-neon-blue: #1f51ff;
+  --color-cobalt: #1f51ff;
+  --color-lime: #d4ff24;
+  --color-navy: #030407;
+  --color-primary: #1f51ff;
+  --color-accent: #d4ff24;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -13,19 +25,23 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-  }
-  html.dark {
     color-scheme: dark;
   }
   body {
-    @apply font-sans text-navy bg-white antialiased transition-colors duration-300;
+    background-color: #030407;
+    color: #f5f7fc;
+    @apply font-sans antialiased transition-colors duration-300;
   }
   html.dark body {
-    background-color: #070b14;
-    color: #f1f5f9;
+    background-color: #030407;
+    color: #f5f7fc;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold tracking-tight;
+    @apply font-display font-bold tracking-tight text-white;
+  }
+  ::selection {
+    background-color: #D4FF24;
+    color: #030407;
   }
 }
 
@@ -34,11 +50,7 @@
 }
 
 .card-shadow {
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
-}
-
-.dark .card-shadow {
-  box-shadow: 0 4px 25px -2px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 25px -2px rgba(0, 0, 0, 0.6);
 }
 
 .hover-lift {
@@ -50,11 +62,17 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  @apply bg-slate-50 dark:bg-slate-900;
+  background-color: #030407;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 dark:bg-slate-800 rounded-full hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors;
+  background-color: #172642;
+  border-radius: 9999px;
+  border: 1px solid rgba(31, 81, 255, 0.2);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #1F51FF;
 }
 
 @keyframes spin-slow {
@@ -64,6 +82,34 @@
 
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
+}
+
+/* Background floating micro particles animation */
+@keyframes floatParticleUp {
+  0% {
+    transform: translate3d(0, 105vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--p-opacity, 0.25);
+  }
+  50% {
+    transform: translate3d(var(--p-drift, 20px), 50vh, 0) rotate(var(--p-rot, 180deg));
+  }
+  90% {
+    opacity: var(--p-opacity, 0.25);
+  }
+  100% {
+    transform: translate3d(calc(var(--p-drift, 20px) * -0.6), -8vh, 0) rotate(calc(var(--p-rot, 180deg) * 2));
+    opacity: 0;
+  }
+}
+
+.particle-float {
+  animation-name: floatParticleUp;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
 }
 
 @media print {
